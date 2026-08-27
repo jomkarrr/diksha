@@ -1,0 +1,163 @@
+[
+  {
+    "course_id": "igot-stat-101",
+    "title": "Introduction to Survey Design & Methodology",
+    "node_ids": ["stat-survey-design-101"],
+    "depth": "basic",
+    "duration_hours": 8
+  },
+  {
+    "course_id": "igot-stat-102",
+    "title": "Advanced Survey Questionnaire & Field Protocol",
+    "node_ids": ["stat-survey-design-101"],
+    "depth": "intermediate",
+    "duration_hours": 12
+  },
+  {
+    "course_id": "igot-stat-103",
+    "title": "Foundations of Sampling Design & Estimation",
+    "node_ids": ["stat-sampling-101"],
+    "depth": "basic",
+    "duration_hours": 6
+  },
+  {
+    "course_id": "igot-stat-104",
+    "title": "Complex Sampling & Variance Estimation in Official Surveys",
+    "node_ids": ["stat-sampling-101"],
+    "depth": "intermediate",
+    "duration_hours": 16
+  },
+  {
+    "course_id": "igot-stat-105",
+    "title": "National Accounts & GDP Compilation Essentials",
+    "node_ids": ["stat-national-accounts-101"],
+    "depth": "basic",
+    "duration_hours": 10
+  },
+  {
+    "course_id": "igot-stat-106",
+    "title": "Macroeconomic Aggregates & System of National Accounts (SNA)",
+    "node_ids": ["stat-national-accounts-101"],
+    "depth": "intermediate",
+    "duration_hours": 18
+  },
+  {
+    "course_id": "igot-stat-107",
+    "title": "Consumer Price Index (CPI) Basket & Computation",
+    "node_ids": ["stat-price-stats-101"],
+    "depth": "basic",
+    "duration_hours": 8
+  },
+  {
+    "course_id": "igot-stat-108",
+    "title": "Periodic Labour Force Survey (PLFS) Methodology",
+    "node_ids": ["stat-labour-stats-101"],
+    "depth": "intermediate",
+    "duration_hours": 14
+  },
+  {
+    "course_id": "igot-stat-109",
+    "title": "SDG National Indicator Framework (NIF) Monitoring",
+    "node_ids": ["stat-sdg-indicators-101"],
+    "depth": "basic",
+    "duration_hours": 6
+  },
+  {
+    "course_id": "igot-stat-110",
+    "title": "UN NQAF Data Quality Assurance & Auditing",
+    "node_ids": ["stat-data-quality-101"],
+    "depth": "intermediate",
+    "duration_hours": 10
+  },
+  {
+    "course_id": "igot-tech-201",
+    "title": "Python Basics for Public Sector Data Analysts",
+    "node_ids": ["tech-python-101"],
+    "depth": "basic",
+    "duration_hours": 12
+  },
+  {
+    "course_id": "igot-tech-202",
+    "title": "Data Wrangling with Pandas & NumPy",
+    "node_ids": ["tech-python-101"],
+    "depth": "intermediate",
+    "duration_hours": 15
+  },
+  {
+    "course_id": "igot-tech-203",
+    "title": "SQL & Relational Database Essentials",
+    "node_ids": ["tech-sql-101"],
+    "depth": "basic",
+    "duration_hours": 10
+  },
+  {
+    "course_id": "igot-tech-204",
+    "title": "Advanced SQL & Database Management for Officials",
+    "node_ids": ["tech-sql-101"],
+    "depth": "intermediate",
+    "duration_hours": 14
+  },
+  {
+    "course_id": "igot-tech-205",
+    "title": "Data Visualization & Executive Dashboarding",
+    "node_ids": ["tech-data-vis-101"],
+    "depth": "basic",
+    "duration_hours": 8
+  },
+  {
+    "course_id": "igot-tech-206",
+    "title": "GIS Mapping & Spatial Statistics with QGIS",
+    "node_ids": ["tech-gis-101"],
+    "depth": "intermediate",
+    "duration_hours": 16
+  },
+  {
+    "course_id": "igot-tech-207",
+    "title": "Practical AI/ML Applications in Government Statistics",
+    "node_ids": ["tech-ai-ml-101"],
+    "depth": "intermediate",
+    "duration_hours": 20
+  },
+  {
+    "course_id": "igot-gov-301",
+    "title": "Cybersecurity & Data Safety in Government",
+    "node_ids": ["gov-cybersecurity-101"],
+    "depth": "basic",
+    "duration_hours": 6
+  },
+  {
+    "course_id": "igot-gov-302",
+    "title": "DPDP Act Compliance & Data Anonymization Guidelines",
+    "node_ids": ["gov-data-privacy-101"],
+    "depth": "intermediate",
+    "duration_hours": 8
+  },
+  {
+    "course_id": "igot-gov-303",
+    "title": "MeghRaj Cloud & e-Governance Deployment Protocols",
+    "node_ids": ["gov-cloud-101"],
+    "depth": "intermediate",
+    "duration_hours": 10
+  },
+  {
+    "course_id": "igot-mgr-401",
+    "title": "Statistical Report Writing & Executive Communication",
+    "node_ids": ["mgr-communication-101"],
+    "depth": "basic",
+    "duration_hours": 6
+  },
+  {
+    "course_id": "igot-mgr-402",
+    "title": "Leadership & Team Management for Statistical Officers",
+    "node_ids": ["mgr-leadership-101"],
+    "depth": "intermediate",
+    "duration_hours": 12
+  },
+  {
+    "course_id": "igot-mgr-403",
+    "title": "Project Management Frameworks for Public Sector",
+    "node_ids": ["mgr-project-mgmt-101"],
+    "depth": "intermediate",
+    "duration_hours": 10
+  }
+]

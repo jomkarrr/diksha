@@ -1,0 +1,37 @@
+[
+  {
+    "profile_id": "emp-101",
+    "name": "Rajesh Kumar",
+    "department": "National Sample Survey Office (NSSO)",
+    "avg_gap_severity": "medium",
+    "top_gaps": ["Sampling Techniques", "Python for Data Analysis"]
+  },
+  {
+    "profile_id": "emp-102",
+    "name": "Priya Sharma",
+    "department": "Central Statistics Office (CSO)",
+    "avg_gap_severity": "high",
+    "top_gaps": ["National Accounts & GDP Estimation", "AI/ML in Official Statistics"]
+  },
+  {
+    "profile_id": "emp-103",
+    "name": "Amitabh Verma",
+    "department": "Ministry of Statistics and Programme Implementation (MoSPI)",
+    "avg_gap_severity": "low",
+    "top_gaps": ["Data Privacy & Governance (DPDP Act)"]
+  },
+  {
+    "profile_id": "emp-104",
+    "name": "Sunita Patel",
+    "department": "Price Statistics Division",
+    "avg_gap_severity": "high",
+    "top_gaps": ["Price Statistics & Index Numbers", "Data Visualization & Dashboards"]
+  },
+  {
+    "profile_id": "emp-105",
+    "name": "Vikram Singh",
+    "department": "Labour Statistics Wing",
+    "avg_gap_severity": "medium",
+    "top_gaps": ["Labour & Employment Statistics", "SQL & Relational Databases"]
+  }
+]

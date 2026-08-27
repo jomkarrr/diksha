@@ -1,0 +1,39 @@
+{
+  "Statistical Investigator": [
+    { "node_id": "stat-survey-design-101", "required_level": "intermediate" },
+    { "node_id": "stat-sampling-101", "required_level": "intermediate" },
+    { "node_id": "stat-data-quality-101", "required_level": "intermediate" },
+    { "node_id": "tech-python-101", "required_level": "basic" },
+    { "node_id": "tech-sql-101", "required_level": "basic" },
+    { "node_id": "gov-cybersecurity-101", "required_level": "basic" },
+    { "node_id": "mgr-communication-101", "required_level": "basic" }
+  ],
+  "Data Analyst": [
+    { "node_id": "tech-python-101", "required_level": "intermediate" },
+    { "node_id": "tech-sql-101", "required_level": "intermediate" },
+    { "node_id": "tech-data-vis-101", "required_level": "intermediate" },
+    { "node_id": "stat-sampling-101", "required_level": "basic" },
+    { "node_id": "tech-ai-ml-101", "required_level": "basic" },
+    { "node_id": "gov-data-privacy-101", "required_level": "basic" }
+  ],
+  "Director / Senior Statistical Officer": [
+    { "node_id": "stat-national-accounts-101", "required_level": "intermediate" },
+    { "node_id": "stat-sdg-indicators-101", "required_level": "intermediate" },
+    { "node_id": "mgr-leadership-101", "required_level": "intermediate" },
+    { "node_id": "mgr-project-mgmt-101", "required_level": "intermediate" },
+    { "node_id": "gov-data-privacy-101", "required_level": "intermediate" },
+    { "node_id": "tech-data-vis-101", "required_level": "basic" }
+  ],
+  "Field Officer": [
+    { "node_id": "stat-survey-design-101", "required_level": "basic" },
+    { "node_id": "stat-sampling-101", "required_level": "basic" },
+    { "node_id": "gov-cybersecurity-101", "required_level": "basic" },
+    { "node_id": "mgr-communication-101", "required_level": "basic" }
+  ],
+  "default": [
+    { "node_id": "stat-survey-design-101", "required_level": "basic" },
+    { "node_id": "tech-python-101", "required_level": "basic" },
+    { "node_id": "gov-cybersecurity-101", "required_level": "basic" },
+    { "node_id": "mgr-communication-101", "required_level": "basic" }
+  ]
+}

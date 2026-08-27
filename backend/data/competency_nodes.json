@@ -1,0 +1,146 @@
+[
+  {
+    "id": "stat-survey-design-101",
+    "name": "Survey Design & Methodology",
+    "domain": "statistical",
+    "prerequisites": [],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Principles of designing national statistical surveys, questionnaire formulation, and field methodology."
+  },
+  {
+    "id": "stat-sampling-101",
+    "name": "Sampling Techniques",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Simple random sampling, stratified sampling, cluster sampling, frame estimation, and sampling error calculation."
+  },
+  {
+    "id": "stat-national-accounts-101",
+    "name": "National Accounts & GDP Estimation",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "System of National Accounts (SNA), gross value added, GDP compilation, and macro-economic metrics."
+  },
+  {
+    "id": "stat-price-stats-101",
+    "name": "Price Statistics & Index Numbers",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Consumer Price Index (CPI), Wholesale Price Index (WPI), inflation indices, and basket weighting."
+  },
+  {
+    "id": "stat-labour-stats-101",
+    "name": "Labour & Employment Statistics",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Periodic Labour Force Survey (PLFS), workforce participation rate, activity status classification."
+  },
+  {
+    "id": "stat-sdg-indicators-101",
+    "name": "SDG Indicators & Monitoring",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "National Indicator Framework (NIF) for Sustainable Development Goals, target metrics, and tracking."
+  },
+  {
+    "id": "stat-data-quality-101",
+    "name": "Data Quality Frameworks",
+    "domain": "statistical",
+    "prerequisites": ["stat-survey-design-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "UN National Quality Assurance Framework (NQAF), validation rules, outlier detection, and data auditing."
+  },
+  {
+    "id": "tech-python-101",
+    "name": "Python for Data Analysis",
+    "domain": "technical",
+    "prerequisites": [],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Data manipulation using Pandas, NumPy, statistical computations, and automated data pipelines."
+  },
+  {
+    "id": "tech-sql-101",
+    "name": "SQL & Relational Databases",
+    "domain": "technical",
+    "prerequisites": [],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Relational data modeling, SQL queries, aggregations, joins, window functions, and database management."
+  },
+  {
+    "id": "tech-data-vis-101",
+    "name": "Data Visualization & Dashboards",
+    "domain": "technical",
+    "prerequisites": ["tech-python-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Interactive data visualization using Matplotlib, Seaborn, PowerBI, and web-based dashboarding."
+  },
+  {
+    "id": "tech-gis-101",
+    "name": "GIS & Spatial Analytics",
+    "domain": "technical",
+    "prerequisites": ["tech-sql-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Geographical Information Systems, spatial data mapping, geo-tagging survey data, and QGIS."
+  },
+  {
+    "id": "tech-ai-ml-101",
+    "name": "AI/ML in Official Statistics",
+    "domain": "technical",
+    "prerequisites": ["tech-python-101", "tech-sql-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Machine learning algorithms, predictive analytics, automated classification, and LLM applications for statistics."
+  },
+  {
+    "id": "gov-cybersecurity-101",
+    "name": "Government Cybersecurity Fundamentals",
+    "domain": "digital_governance",
+    "prerequisites": [],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Information security policies, threat mitigation, data encryption, and secure handling of census/survey data."
+  },
+  {
+    "id": "gov-data-privacy-101",
+    "name": "Data Privacy & Governance (DPDP Act)",
+    "domain": "digital_governance",
+    "prerequisites": ["gov-cybersecurity-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Digital Personal Data Protection Act compliance, anonymization techniques, data sharing guidelines, and ethics."
+  },
+  {
+    "id": "gov-cloud-101",
+    "name": "MeghRaj & Government Cloud Infrastructure",
+    "domain": "digital_governance",
+    "prerequisites": ["gov-cybersecurity-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "NIC Cloud services, server deployment, API gateway management, and cloud security for government apps."
+  },
+  {
+    "id": "mgr-communication-101",
+    "name": "Effective Communication & Reporting",
+    "domain": "behavioural",
+    "prerequisites": [],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Statistical report writing, policy briefing preparation, presentation skills, and stakeholder communication."
+  },
+  {
+    "id": "mgr-leadership-101",
+    "name": "Statistical Team Leadership",
+    "domain": "behavioural",
+    "prerequisites": ["mgr-communication-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Field team management, task allocation, performance evaluation, and organizational leadership."
+  },
+  {
+    "id": "mgr-project-mgmt-101",
+    "name": "Project Management in Government",
+    "domain": "behavioural",
+    "prerequisites": ["mgr-communication-101"],
+    "depth_levels": ["basic", "intermediate", "advanced"],
+    "description": "Agile/waterfall project execution, procurement, timeline monitoring, and resource management."
+  }
+]
