@@ -12,9 +12,9 @@ Welcome Omkar! This document contains everything you need to build the frontend 
    - Keeping code in `/frontend` guarantees **zero merge conflicts** when merging your branch with `aditya-backend`.
 
 2. **Ports & Local Dev**:
-   - Backend runs on: `http://localhost:5000`
+   - Backend runs on: `http://localhost:5001`
    - Frontend runs on: `http://localhost:3000`
-   - Configure Next.js rewrites/proxy or call `http://localhost:5000/api/*` directly.
+   - Configure Next.js rewrites/proxy or call `http://localhost:5001/api/*` directly.
 
 ---
 
@@ -57,7 +57,7 @@ All endpoints accept and return `application/json`.
 ### 1. `POST /api/profile`
 Takes official profile details and returns inferred current competency levels.
 
-**Endpoint URL**: `http://localhost:5000/api/profile`
+**Endpoint URL**: `http://localhost:5001/api/profile`
 
 **Request Payload:**
 ```json
@@ -90,7 +90,7 @@ Takes official profile details and returns inferred current competency levels.
 ### 2. `POST /api/roadmap`
 Generates a prerequisite-ordered, gap-scored roadmap with matched iGOT Karmayogi courses.
 
-**Endpoint URL**: `http://localhost:5000/api/roadmap`
+**Endpoint URL**: `http://localhost:5001/api/roadmap`
 
 **Request Payload:**
 ```json
@@ -146,7 +146,7 @@ Generates a prerequisite-ordered, gap-scored roadmap with matched iGOT Karmayogi
 ### 3. `POST /api/quiz`
 Generates 3 multiple-choice questions from pasted learning text.
 
-**Endpoint URL**: `http://localhost:5000/api/quiz`
+**Endpoint URL**: `http://localhost:5001/api/quiz`
 
 **Request Payload:**
 ```json
@@ -179,7 +179,7 @@ Generates 3 multiple-choice questions from pasted learning text.
 ### 4. `GET /api/dashboard/admin`
 Retrieves employee overview for the administrator monitoring dashboard.
 
-**Endpoint URL**: `http://localhost:5000/api/dashboard/admin`
+**Endpoint URL**: `http://localhost:5001/api/dashboard/admin`
 
 **Response Payload:**
 ```json
@@ -210,7 +210,7 @@ Retrieves employee overview for the administrator monitoring dashboard.
 Here is a ready-to-use fetch helper for your React components:
 
 ```typescript
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:5001/api';
 
 export async function submitProfile(profileData: {
   designation: string;
@@ -249,6 +249,6 @@ export async function fetchRoadmap(profileId: string, jobRole: string) {
 2. Activate virtual environment and start backend server:
    ```bash
    source backend/venv/bin/activate
-   python -m uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+   python -m uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
    ```
-3. Test endpoints interactively at `http://localhost:5000/docs`.
+3. Test endpoints interactively at `http://localhost:5001/docs`.

@@ -39,10 +39,10 @@ To enable live LLM calls, set your key in `.env`:
 
 ### 4. Run Development Server
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+python -m uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
 ```
-The server will run at: **`http://localhost:5000`**
-Interactive Swagger Documentation: **`http://localhost:5000/docs`**
+The server will run at: **`http://localhost:5001`**
+Interactive Swagger Documentation: **`http://localhost:5001/docs`**
 
 ---
 

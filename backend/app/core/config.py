@@ -2,7 +2,7 @@ import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    PORT: int = 5000
+    PORT: int = 5001
     ENVIRONMENT: str = "development"
     ANTHROPIC_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
