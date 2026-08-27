@@ -249,6 +249,6 @@ export async function fetchRoadmap(profileId: string, jobRole: string) {
 2. Activate virtual environment and start backend server:
    ```bash
    source backend/venv/bin/activate
-   python -m uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
+   python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 5001 --reload
    ```
 3. Test endpoints interactively at `http://localhost:5001/docs`.

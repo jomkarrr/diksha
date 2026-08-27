@@ -38,7 +38,15 @@ To enable live LLM calls, set your key in `.env`:
 *(Note: If no API key is provided, the backend automatically uses intelligent built-in fallback parsers and quiz generators).*
 
 ### 4. Run Development Server
+
+Option A (From `diksha` root):
 ```bash
+python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 5001 --reload
+```
+
+Option B (From inside `backend/`):
+```bash
+cd backend
 python -m uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
 ```
 The server will run at: **`http://localhost:5001`**
