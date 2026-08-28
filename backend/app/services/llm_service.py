@@ -32,7 +32,6 @@ Official Profile:
 Return ONLY a valid JSON array of objects, with keys "node_id" and "current_level".
 Do NOT include any markdown formatting, code blocks, or extra text.
 """
-        # Try Gemini API first
         api_key = settings.GEMINI_API_KEY or settings.ANTHROPIC_API_KEY or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
         if api_key:
@@ -49,7 +48,6 @@ Do NOT include any markdown formatting, code blocks, or extra text.
             except Exception as e:
                 print(f"[LLMService] Gemini API profile parse failed: {e}. Falling back...")
 
-        # Try Claude API if key available
         if settings.ANTHROPIC_API_KEY:
             try:
                 import anthropic
@@ -66,34 +64,33 @@ Do NOT include any markdown formatting, code blocks, or extra text.
             except Exception as e:
                 print(f"[LLMService] Claude API profile parse failed: {e}. Falling back...")
 
-        # Heuristic deterministic parser fallback
         return cls._heuristic_profile_parse(request, nodes)
 
     @classmethod
     def generate_quiz(cls, content_text: str) -> List[QuizQuestion]:
         prompt = f"""
-System: You are an AI Quiz Generator for government statistical training material.
-Generate between 5 to 8 distinct multiple-choice questions (MCQs) based STRICTLY on the provided learning content text.
-The questions MUST be specifically tailored to the subjects, keywords, and facts mentioned in the text.
-Do NOT use generic boilerplate questions.
+System: You are an expert AI Quiz Generator.
+Generate between 5 to 8 distinct multiple-choice questions (MCQs) based on the provided input text.
+Note: If the input text is a short topic name or keywords (such as "quantum computing", "data privacy", "python pandas"), generate 5 to 8 multiple-choice questions testing core concepts, definitions, techniques, and principles of THAT SPECIFIC SUBJECT.
 
-Content Text:
+Do NOT mix subjects. The questions must be 100% focused on the topic: "{content_text}".
+
+Input Content / Topic:
 \"\"\"{content_text}\"\"\"
 
 Return ONLY a valid JSON array of question objects matching this exact structure:
 [
   {{
-    "question": "Question text here?",
+    "question": "Clear question text?",
     "options": ["Option A", "Option B", "Option C", "Option D"],
     "correct_index": 0,
     "explanation": "Detailed explanation here."
   }}
 ]
-Do NOT include markdown formatting or extra commentary.
+Do NOT include markdown formatting, backticks, or extra commentary.
 """
         api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
-        # Try Gemini API
         if api_key:
             try:
                 from google import genai
@@ -108,7 +105,6 @@ Do NOT include markdown formatting or extra commentary.
             except Exception as e:
                 print(f"[LLMService] Gemini API quiz failed: {e}. Falling back...")
 
-        # Try Claude API
         if settings.ANTHROPIC_API_KEY:
             try:
                 import anthropic
@@ -124,7 +120,6 @@ Do NOT include markdown formatting or extra commentary.
             except Exception as e:
                 print(f"[LLMService] Claude API quiz failed: {e}. Falling back...")
 
-        # Dynamic fallback quiz generator tailored to text subject
         return cls._fallback_quiz_generate(content_text)
 
     @classmethod
@@ -168,10 +163,48 @@ Do NOT include markdown formatting or extra commentary.
 
     @classmethod
     def _fallback_quiz_generate(cls, text: str) -> List[QuizQuestion]:
-        lowered = text.lower()
+        lowered = text.lower().strip()
 
         # Subject Specific Fallbacks
-        if "python" in lowered or "pandas" in lowered or "numpy" in lowered:
+        if "quantum" in lowered:
+            return [
+                QuizQuestion(
+                    question="1. What is the fundamental unit of quantum information in quantum computing?",
+                    options=["Qubit (Quantum Bit)", "Binary Bit", "Byte", "Trit"],
+                    correct_index=0,
+                    explanation="A qubit is the basic unit of quantum information, utilizing quantum mechanics."
+                ),
+                QuizQuestion(
+                    question="2. Which principle allows a qubit to exist in a state of 0, 1, or both simultaneously?",
+                    options=["Superposition", "Entanglement", "Decoherence", "Interference"],
+                    correct_index=0,
+                    explanation="Superposition enables qubits to hold combinations of 0 and 1 simultaneously."
+                ),
+                QuizQuestion(
+                    question="3. What phenomenon links two qubits such that the state of one instantaneously determines the other?",
+                    options=["Quantum Entanglement", "Quantum Teleportation", "Superconductivity", "Tunneling"],
+                    correct_index=0,
+                    explanation="Entanglement correlates quantum states regardless of spatial separation."
+                ),
+                QuizQuestion(
+                    question="4. Which algorithm provides exponential speedup for factoring large integers on a quantum computer?",
+                    options=["Shor's Algorithm", "Grover's Algorithm", "Dijkstra's Algorithm", "QuickSort"],
+                    correct_index=0,
+                    explanation="Shor's algorithm efficiently factors integers, posing implications for RSA cryptography."
+                ),
+                QuizQuestion(
+                    question="5. What is 'Quantum Decoherence' in quantum processing?",
+                    options=[
+                        "Loss of quantum coherence due to environmental noise and interaction",
+                        "The process of creating new qubits",
+                        "Amplifying quantum signal output",
+                        "Storing quantum data permanently on disk"
+                    ],
+                    correct_index=0,
+                    explanation="Decoherence causes qubits to collapse back into classical states due to interference."
+                )
+            ]
+        elif "python" in lowered or "pandas" in lowered or "numpy" in lowered:
             return [
                 QuizQuestion(
                     question="1. What is the primary data structure in Pandas for 2D tabular data manipulation?",
@@ -263,63 +296,63 @@ Do NOT include markdown formatting or extra commentary.
                 )
             ]
 
-        # Generic Statistical Fallback
-        topic = text[:40].strip("- *•") if text else "Statistical Concepts"
+        # Generic Dynamic Topic Fallback
+        topic = text[:35].strip("- *•") if text else "General Knowledge"
         return [
             QuizQuestion(
-                question=f"1. According to the material on '{topic}', what is essential for statistical survey validity?",
+                question=f"1. What is the fundamental concept underlying '{topic}'?",
                 options=[
-                    "Adherence to standardized sampling frames and validation protocols",
-                    "Manual omission of field survey outliers",
-                    "Replacing primary field collection with estimates",
-                    "Restricting survey access to single departments"
+                    f"Core principles, methodology, and foundational frameworks of {topic}",
+                    "Ignoring standard protocols and validation steps",
+                    "Manual override of system safety metrics",
+                    "Restricting operational transparency"
                 ],
                 correct_index=0,
-                explanation="Standardized sampling frames and audit protocols ensure statistical validity across official surveys."
+                explanation=f"Understanding foundational principles is essential when studying {topic}."
             ),
             QuizQuestion(
-                question=f"2. What is the primary objective of data quality frameworks regarding '{topic}'?",
+                question=f"2. Which key metric is used to evaluate performance in '{topic}'?",
                 options=[
-                    "Ensuring accuracy, timeliness, and public credibility of indicators",
-                    "Slowing down report publication cycles",
-                    "Restricting open data sharing with researchers",
-                    "Eliminating the need for periodic revisions"
+                    f"Accuracy, reliability, and precision of {topic} implementations",
+                    "File size on local storage disks",
+                    "Manual paper documentation count",
+                    "Arbitrary preference scores"
                 ],
                 correct_index=0,
-                explanation="Quality frameworks (e.g. UN NQAF) safeguard accuracy, timeliness, and user credibility."
+                explanation=f"Performance in {topic} is measured by system accuracy, precision, and reliability."
             ),
             QuizQuestion(
-                question="3. How does stratified sampling improve estimation over simple random sampling?",
+                question=f"3. What is a primary real-world application of '{topic}'?",
                 options=[
-                    "By reducing sampling variance across heterogeneous sub-groups",
-                    "By eliminating non-sampling errors completely",
-                    "By doubling the required total sample size",
-                    "By removing the need for weighting factors"
+                    f"Optimizing data processing, analytics, and operational efficiency",
+                    "Replacing digital systems with manual ledgers",
+                    "Eliminating security verification steps",
+                    "Bypassing regulatory compliance checks"
                 ],
                 correct_index=0,
-                explanation="Stratification groups homogeneous sub-populations, reducing overall sampling variance."
+                explanation=f"Real-world deployment of {topic} focuses on efficiency, optimization, and accurate analysis."
             ),
             QuizQuestion(
-                question="4. Which metric best measures sampling precision in official sample surveys?",
+                question=f"4. What security or governance protocol applies when implementing '{topic}'?",
                 options=[
-                    "Standard error and coefficient of variation (CV)",
-                    "Number of survey enumerator pages",
-                    "Total budget allocated for field travel",
-                    "Font size used in official questionnaires"
+                    "Applying strict access control, audit logging, and compliance standards",
+                    "Disabling user authentication",
+                    "Publishing unencrypted private data publicly",
+                    "Removing system safety monitoring"
                 ],
                 correct_index=0,
-                explanation="Standard error and coefficient of variation quantify sampling precision."
+                explanation="Access control, security standards, and compliance govern technical implementations."
             ),
             QuizQuestion(
-                question="5. What is the primary role of National Accounts aggregates like GDP and GVA?",
+                question=f"5. What best practice should be followed when scaling '{topic}'?",
                 options=[
-                    "Measuring national economic performance and sectoral output",
-                    "Tracking individual household income receipts",
-                    "Setting retail prices for agricultural commodities",
-                    "Managing local municipal tax collection"
+                    f"Continuous evaluation, structured testing, and modular architecture",
+                    "Deploying untested changes directly into production",
+                    "Eliminating documentation and code reviews",
+                    "Hardcoding static parameters"
                 ],
                 correct_index=0,
-                explanation="GVA and GDP measure national and sectoral macroeconomic performance."
+                explanation="Modular architecture and structured testing enable reliable scaling."
             )
         ]
 
