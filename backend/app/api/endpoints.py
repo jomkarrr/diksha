@@ -1,10 +1,11 @@
 import uuid
+from typing import List
 from fastapi import APIRouter, HTTPException, status
 from app.schemas.contracts import (
     ProfileRequest, ProfileResponse, CompetencyItem,
     RoadmapRequest, RoadmapResponse,
     QuizRequest, QuizResponse,
-    AdminDashboardResponse, AdminEmployeeItem
+    AdminDashboardResponse, AdminEmployeeItem, GapSeverity
 )
 from app.services.data_loader import DataLoader
 from app.services.llm_service import LLMService
@@ -53,7 +54,6 @@ def generate_roadmap(payload: RoadmapRequest):
     else:
         # Fallback if profile_id is unknown or direct query
         job_role = payload.job_role or "Statistical Investigator"
-        # Parse default dummy profile
         dummy_req = ProfileRequest(
             designation="Officer",
             department="Statistics",
@@ -73,7 +73,7 @@ def generate_roadmap(payload: RoadmapRequest):
 def generate_quiz(payload: QuizRequest):
     """
     POST /api/quiz
-    Generate multiple-choice questions from provided learning material text.
+    Generate between 5 to 8 multiple-choice questions from provided learning material text.
     """
     if not payload.content_text.strip():
         raise HTTPException(status_code=400, detail="content_text cannot be empty")
@@ -83,12 +83,52 @@ def generate_quiz(payload: QuizRequest):
 
 
 @router.get("/dashboard/admin", response_model=AdminDashboardResponse, status_code=status.HTTP_200_OK)
-
 def get_admin_dashboard():
     """
     GET /api/dashboard/admin
     Retrieve overview of employee skill gaps for admin dashboard monitoring.
+    Dynamically processes employee profiles to compute average gap severities and top gaps.
     """
-    employees = DataLoader.get_employees()
-    formatted = [AdminEmployeeItem(**emp) for emp in employees]
-    return AdminDashboardResponse(employees=formatted)
+    raw_employees = DataLoader.get_employees()
+    admin_items: List[AdminEmployeeItem] = []
+
+    for emp in raw_employees:
+        profile_req = ProfileRequest(
+            designation=emp.get("designation", "Officer"),
+            department=emp.get("department", "Statistics"),
+            job_role=emp.get("job_role", "Statistical Investigator"),
+            experience_years=float(emp.get("experience_years", 2.0)),
+            education=emp.get("education", "Bachelor"),
+            prior_trainings=emp.get("prior_trainings", [])
+        )
+        
+        raw_comps = LLMService.parse_profile(profile_req)
+        competencies = [{"node_id": c["node_id"], "current_level": c["current_level"]} for c in raw_comps]
+        roadmap = RoadmapEngine.calculate_roadmap(competencies, profile_req.job_role)
+
+        high_count = sum(1 for node in roadmap if node.gap_severity == "high")
+        medium_count = sum(1 for node in roadmap if node.gap_severity == "medium")
+        total_gaps = len(roadmap)
+
+        if high_count >= 1 or total_gaps >= 4:
+            avg_severity: GapSeverity = "high"
+        elif medium_count >= 1 or total_gaps >= 2:
+            avg_severity = "medium"
+        else:
+            avg_severity = "low"
+
+        top_gaps = [node.name for node in roadmap[:3]]
+        if not top_gaps:
+            top_gaps = ["All Required Competencies Met"]
+
+        admin_items.append(
+            AdminEmployeeItem(
+                profile_id=emp.get("profile_id", "emp_unknown"),
+                name=emp.get("name", "Official"),
+                department=emp.get("department", "Statistics Department"),
+                avg_gap_severity=avg_severity,
+                top_gaps=top_gaps
+            )
+        )
+
+    return AdminDashboardResponse(employees=admin_items)

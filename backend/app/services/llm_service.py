@@ -71,7 +71,8 @@ Do NOT include any markdown formatting, code blocks, or extra text.
     def generate_quiz(cls, content_text: str) -> List[QuizQuestion]:
         prompt = f"""
 System: You are an AI Quiz Generator for government statistical training material.
-Generate 3 distinct multiple-choice questions (MCQs) based on the provided text.
+Generate between 5 to 8 distinct multiple-choice questions (MCQs) based on the provided learning content text.
+The input content may be a dense technical paragraph, a bulleted list of rules, or a document summary.
 
 Content Text:
 \"\"\"{content_text}\"\"\"
@@ -94,11 +95,11 @@ Do NOT include markdown formatting or extra commentary.
                 client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
                 res = client.messages.create(
                     model="claude-3-5-sonnet-20241022",
-                    max_tokens=2048,
+                    max_tokens=3072,
                     messages=[{"role": "user", "content": prompt}]
                 )
                 parsed = cls._extract_json(res.content[0].text)
-                if isinstance(parsed, list):
+                if isinstance(parsed, list) and len(parsed) >= 3:
                     return [QuizQuestion(**q) for q in parsed]
             except Exception as e:
                 print(f"[LLMService] Claude API quiz failed: {e}. Falling back...")
@@ -113,7 +114,7 @@ Do NOT include markdown formatting or extra commentary.
                     contents=prompt
                 )
                 parsed = cls._extract_json(res.text)
-                if isinstance(parsed, list):
+                if isinstance(parsed, list) and len(parsed) >= 3:
                     return [QuizQuestion(**q) for q in parsed]
             except Exception as e:
                 print(f"[LLMService] Gemini API quiz failed: {e}. Falling back...")
@@ -126,6 +127,11 @@ Do NOT include markdown formatting or extra commentary.
         results = []
         text_corpus = f"{req.designation} {req.department} {req.job_role} {req.education} {' '.join(req.prior_trainings)}".lower()
 
+        # Edge case check: Sparse profile (no prior training, < 1 year experience)
+        is_sparse = (req.experience_years < 1.0) and (not req.prior_trainings)
+        # Edge case check: Senior official (8+ years experience)
+        is_senior = req.experience_years >= 8.0
+
         for node in nodes:
             node_id = node["id"]
             node_name = node["name"].lower()
@@ -133,18 +139,28 @@ Do NOT include markdown formatting or extra commentary.
 
             level = "none"
 
-            # Check matching keywords in profile
-            if any(term in text_corpus for term in node_name.split()) or any(tr.lower() in text_corpus for tr in req.prior_trainings):
-                if req.experience_years >= 5:
-                    level = "intermediate"
-                elif req.experience_years >= 2:
+            if is_sparse:
+                # Sparse profiles start with "none" or "basic" if education strongly matches
+                if any(term in text_corpus for term in node_name.split()):
                     level = "basic"
                 else:
+                    level = "none"
+            elif is_senior:
+                # Senior officials have at least basic/intermediate on domain nodes
+                if any(term in text_corpus for term in node_name.split()) or any(tr.lower() in text_corpus for tr in req.prior_trainings):
+                    level = "advanced"
+                elif domain in ["statistical", "behavioural"]:
+                    level = "intermediate"
+                else:
                     level = "basic"
-            elif domain == "statistical" and ("stat" in text_corpus or "investigator" in text_corpus):
-                level = "basic" if req.experience_years < 3 else "intermediate"
-            elif domain == "behavioural" and req.experience_years >= 3:
-                level = "basic"
+            else:
+                # Mid-level profiles (1-7 years experience)
+                if any(term in text_corpus for term in node_name.split()) or any(tr.lower() in text_corpus for tr in req.prior_trainings):
+                    level = "intermediate" if req.experience_years >= 4 else "basic"
+                elif domain == "statistical" and ("stat" in text_corpus or "investigator" in text_corpus):
+                    level = "basic" if req.experience_years < 3 else "intermediate"
+                elif domain == "behavioural" and req.experience_years >= 3:
+                    level = "basic"
 
             results.append({"node_id": node_id, "current_level": level})
 
@@ -152,52 +168,86 @@ Do NOT include markdown formatting or extra commentary.
 
     @classmethod
     def _fallback_quiz_generate(cls, text: str) -> List[QuizQuestion]:
-        topic = text[:40].strip() if text else "Statistical Concepts"
-        return [
+        lines = [line.strip("- *•") for line in text.split("\n") if line.strip()]
+        topic = lines[0][:50] if lines else "Official Statistical Methodology"
+
+        questions = [
             QuizQuestion(
-                question=f"Based on the training content regarding '{topic}...', which principle is essential?",
+                question=f"1. According to the content on '{topic}', what is the core requirement for statistical validity?",
                 options=[
-                    "Adherence to standard statistical methodology & data validation",
-                    "Ignoring sampling error bounds during estimation",
-                    "Manual override of automated quality checks",
-                    "Elimination of survey documentation"
+                    "Adherence to standardized sampling frames and validation protocols",
+                    "Manual omission of field survey outliers",
+                    "Replacing primary field collection with estimates",
+                    "Restricting survey access to single departments"
                 ],
                 correct_index=0,
-                explanation="Standard statistical methodology and data validation ensure reliable national indicators."
+                explanation="Standardized sampling frames and audit protocols ensure statistical validity across official surveys."
             ),
             QuizQuestion(
-                question="What is the primary objective of data quality frameworks in official statistics?",
+                question="2. What is the primary objective of establishing data quality frameworks in official statistics?",
                 options=[
-                    "Reducing data collection speed",
-                    "Ensuring accuracy, timeliness, and credibility of metrics",
-                    "Limiting public access to statistical reports",
-                    "Replacing field surveys with assumptions"
+                    "Slowing down report publication cycles",
+                    "Ensuring accuracy, timeliness, and public credibility of indicators",
+                    "Restricting open data sharing with researchers",
+                    "Eliminating the need for periodic revisions"
                 ],
                 correct_index=1,
-                explanation="Quality frameworks (like UN NQAF) ensure data accuracy, timeliness, and user trust."
+                explanation="Quality frameworks (e.g. UN NQAF) safeguard accuracy, timeliness, and user credibility."
             ),
             QuizQuestion(
-                question="Which practice enhances security when handling official survey datasets?",
+                question="3. When handling micro-data under the DPDP Act guidelines, which practice is mandatory?",
                 options=[
-                    "Storing unencrypted raw data on public drives",
-                    "Sharing administrative credentials across departments",
-                    "Applying data anonymization and encryption protocols",
-                    "Disabling firewall protections"
+                    "Publishing un-anonymized household identifiers",
+                    "Storing raw survey data on non-encrypted public drives",
+                    "Applying strict anonymization techniques and role-based access control",
+                    "Disabling security logging"
                 ],
                 correct_index=2,
-                explanation="Data anonymization and encryption safeguard sensitive personal information under DPDP guidelines."
+                explanation="DPDP Act guidelines mandate data anonymization and role-based access control for micro-data."
+            ),
+            QuizQuestion(
+                question="4. Which metric best measures sampling precision in large-scale sample surveys?",
+                options=[
+                    "Standard error and coefficient of variation (CV)",
+                    "Number of survey enumerator pages",
+                    "Total budget allocated for field travel",
+                    "Font size used in official questionnaires"
+                ],
+                correct_index=0,
+                explanation="Standard error and coefficient of variation quantify sampling precision."
+            ),
+            QuizQuestion(
+                question="5. How does stratified sampling improve estimation over simple random sampling?",
+                options=[
+                    "By eliminating non-sampling errors completely",
+                    "By reducing sampling variance across heterogeneous sub-groups",
+                    "By doubling the required total sample size",
+                    "By removing the need for weighting factors"
+                ],
+                correct_index=1,
+                explanation="Stratification groups homogeneous sub-populations, reducing overall sampling variance."
+            ),
+            QuizQuestion(
+                question="6. What is the primary role of National Accounts aggregates like Gross Value Added (GVA)?",
+                options=[
+                    "Tracking individual household income receipts",
+                    "Measuring economic performance and sectoral output across the nation",
+                    "Setting retail prices for agricultural commodities",
+                    "Managing local municipal tax collection"
+                ],
+                correct_index=1,
+                explanation="GVA and GDP measure national and sectoral macroeconomic performance."
             )
         ]
+        return questions
 
     @classmethod
     def _extract_json(cls, raw_text: str) -> Any:
         try:
-            # Strip markdown code fencing if present
             cleaned = re.sub(r"```json\s*", "", raw_text)
             cleaned = re.sub(r"```\s*", "", cleaned).strip()
             return json.loads(cleaned)
         except Exception:
-            # Try regex to locate json array
             match = re.search(r"\[.*\]", raw_text, re.DOTALL)
             if match:
                 try:

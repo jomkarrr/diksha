@@ -2,36 +2,61 @@
   {
     "profile_id": "emp-101",
     "name": "Rajesh Kumar",
+    "designation": "Statistical Investigator Grade II",
     "department": "National Sample Survey Office (NSSO)",
-    "avg_gap_severity": "medium",
-    "top_gaps": ["Sampling Techniques", "Python for Data Analysis"]
+    "job_role": "Statistical Investigator",
+    "experience_years": 1.5,
+    "education": "B.Sc. Statistics",
+    "prior_trainings": ["Field Survey Basics"]
   },
   {
     "profile_id": "emp-102",
     "name": "Priya Sharma",
+    "designation": "Senior Statistical Officer",
     "department": "Central Statistics Office (CSO)",
-    "avg_gap_severity": "high",
-    "top_gaps": ["National Accounts & GDP Estimation", "AI/ML in Official Statistics"]
+    "job_role": "Director / Senior Statistical Officer",
+    "experience_years": 8.0,
+    "education": "M.Sc. Mathematical Statistics",
+    "prior_trainings": ["National Accounts", "SNA 2008 Framework"]
   },
   {
     "profile_id": "emp-103",
     "name": "Amitabh Verma",
-    "department": "Ministry of Statistics and Programme Implementation (MoSPI)",
-    "avg_gap_severity": "low",
-    "top_gaps": ["Data Privacy & Governance (DPDP Act)"]
+    "designation": "Data Analyst",
+    "department": "Data Quality & Analytics Division",
+    "job_role": "Data Analyst",
+    "experience_years": 3.0,
+    "education": "B.Tech. Computer Science",
+    "prior_trainings": ["Python Programming", "SQL Database Management"]
   },
   {
     "profile_id": "emp-104",
     "name": "Sunita Patel",
-    "department": "Price Statistics Division",
-    "avg_gap_severity": "high",
-    "top_gaps": ["Price Statistics & Index Numbers", "Data Visualization & Dashboards"]
+    "designation": "Field Officer",
+    "department": "Price Statistics Wing",
+    "job_role": "Field Officer",
+    "experience_years": 0.5,
+    "education": "B.A. Economics",
+    "prior_trainings": []
   },
   {
     "profile_id": "emp-105",
     "name": "Vikram Singh",
-    "department": "Labour Statistics Wing",
-    "avg_gap_severity": "medium",
-    "top_gaps": ["Labour & Employment Statistics", "SQL & Relational Databases"]
+    "designation": "Assistant Director",
+    "department": "Labour Statistics Division",
+    "job_role": "Statistical Investigator",
+    "experience_years": 6.0,
+    "education": "M.A. Economics",
+    "prior_trainings": ["PLFS Survey Design", "Basic R"]
+  },
+  {
+    "profile_id": "emp-106",
+    "name": "Ananya Roy",
+    "designation": "IT & Governance Lead",
+    "department": "MoSPI Digital Governance Cell",
+    "job_role": "Data Analyst",
+    "experience_years": 5.0,
+    "education": "M.Tech. Data Science",
+    "prior_trainings": ["Cybersecurity Guidelines", "DPDP Compliance"]
   }
 ]
