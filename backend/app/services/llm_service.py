@@ -32,7 +32,24 @@ Official Profile:
 Return ONLY a valid JSON array of objects, with keys "node_id" and "current_level".
 Do NOT include any markdown formatting, code blocks, or extra text.
 """
-        # Try Claude API first if key available
+        # Try Gemini API first
+        api_key = settings.GEMINI_API_KEY or settings.ANTHROPIC_API_KEY or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+
+        if api_key:
+            try:
+                from google import genai
+                client = genai.Client(api_key=api_key)
+                res = client.models.generate_content(
+                    model="gemini-3.6-flash",
+                    contents=prompt
+                )
+                parsed = cls._extract_json(res.text)
+                if isinstance(parsed, list):
+                    return parsed
+            except Exception as e:
+                print(f"[LLMService] Gemini API profile parse failed: {e}. Falling back...")
+
+        # Try Claude API if key available
         if settings.ANTHROPIC_API_KEY:
             try:
                 import anthropic
@@ -47,22 +64,7 @@ Do NOT include any markdown formatting, code blocks, or extra text.
                 if isinstance(parsed, list):
                     return parsed
             except Exception as e:
-                print(f"[LLMService] Claude API failed: {e}. Falling back...")
-
-        # Try Gemini API if key available
-        if settings.GEMINI_API_KEY:
-            try:
-                from google import genai
-                client = genai.Client(api_key=settings.GEMINI_API_KEY)
-                res = client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=prompt
-                )
-                parsed = cls._extract_json(res.text)
-                if isinstance(parsed, list):
-                    return parsed
-            except Exception as e:
-                print(f"[LLMService] Gemini API failed: {e}. Falling back...")
+                print(f"[LLMService] Claude API profile parse failed: {e}. Falling back...")
 
         # Heuristic deterministic parser fallback
         return cls._heuristic_profile_parse(request, nodes)
@@ -71,8 +73,9 @@ Do NOT include any markdown formatting, code blocks, or extra text.
     def generate_quiz(cls, content_text: str) -> List[QuizQuestion]:
         prompt = f"""
 System: You are an AI Quiz Generator for government statistical training material.
-Generate between 5 to 8 distinct multiple-choice questions (MCQs) based on the provided learning content text.
-The input content may be a dense technical paragraph, a bulleted list of rules, or a document summary.
+Generate between 5 to 8 distinct multiple-choice questions (MCQs) based STRICTLY on the provided learning content text.
+The questions MUST be specifically tailored to the subjects, keywords, and facts mentioned in the text.
+Do NOT use generic boilerplate questions.
 
 Content Text:
 \"\"\"{content_text}\"\"\"
@@ -88,7 +91,24 @@ Return ONLY a valid JSON array of question objects matching this exact structure
 ]
 Do NOT include markdown formatting or extra commentary.
 """
-        # Try Claude API first
+        api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+
+        # Try Gemini API
+        if api_key:
+            try:
+                from google import genai
+                client = genai.Client(api_key=api_key)
+                res = client.models.generate_content(
+                    model="gemini-3.6-flash",
+                    contents=prompt
+                )
+                parsed = cls._extract_json(res.text)
+                if isinstance(parsed, list) and len(parsed) >= 3:
+                    return [QuizQuestion(**q) for q in parsed]
+            except Exception as e:
+                print(f"[LLMService] Gemini API quiz failed: {e}. Falling back...")
+
+        # Try Claude API
         if settings.ANTHROPIC_API_KEY:
             try:
                 import anthropic
@@ -104,22 +124,7 @@ Do NOT include markdown formatting or extra commentary.
             except Exception as e:
                 print(f"[LLMService] Claude API quiz failed: {e}. Falling back...")
 
-        # Try Gemini API
-        if settings.GEMINI_API_KEY:
-            try:
-                from google import genai
-                client = genai.Client(api_key=settings.GEMINI_API_KEY)
-                res = client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=prompt
-                )
-                parsed = cls._extract_json(res.text)
-                if isinstance(parsed, list) and len(parsed) >= 3:
-                    return [QuizQuestion(**q) for q in parsed]
-            except Exception as e:
-                print(f"[LLMService] Gemini API quiz failed: {e}. Falling back...")
-
-        # Heuristic fallback quiz generator
+        # Dynamic fallback quiz generator tailored to text subject
         return cls._fallback_quiz_generate(content_text)
 
     @classmethod
@@ -127,9 +132,7 @@ Do NOT include markdown formatting or extra commentary.
         results = []
         text_corpus = f"{req.designation} {req.department} {req.job_role} {req.education} {' '.join(req.prior_trainings)}".lower()
 
-        # Edge case check: Sparse profile (no prior training, < 1 year experience)
         is_sparse = (req.experience_years < 1.0) and (not req.prior_trainings)
-        # Edge case check: Senior official (8+ years experience)
         is_senior = req.experience_years >= 8.0
 
         for node in nodes:
@@ -140,13 +143,11 @@ Do NOT include markdown formatting or extra commentary.
             level = "none"
 
             if is_sparse:
-                # Sparse profiles start with "none" or "basic" if education strongly matches
                 if any(term in text_corpus for term in node_name.split()):
                     level = "basic"
                 else:
                     level = "none"
             elif is_senior:
-                # Senior officials have at least basic/intermediate on domain nodes
                 if any(term in text_corpus for term in node_name.split()) or any(tr.lower() in text_corpus for tr in req.prior_trainings):
                     level = "advanced"
                 elif domain in ["statistical", "behavioural"]:
@@ -154,7 +155,6 @@ Do NOT include markdown formatting or extra commentary.
                 else:
                     level = "basic"
             else:
-                # Mid-level profiles (1-7 years experience)
                 if any(term in text_corpus for term in node_name.split()) or any(tr.lower() in text_corpus for tr in req.prior_trainings):
                     level = "intermediate" if req.experience_years >= 4 else "basic"
                 elif domain == "statistical" and ("stat" in text_corpus or "investigator" in text_corpus):
@@ -168,12 +168,106 @@ Do NOT include markdown formatting or extra commentary.
 
     @classmethod
     def _fallback_quiz_generate(cls, text: str) -> List[QuizQuestion]:
-        lines = [line.strip("- *•") for line in text.split("\n") if line.strip()]
-        topic = lines[0][:50] if lines else "Official Statistical Methodology"
+        lowered = text.lower()
 
-        questions = [
+        # Subject Specific Fallbacks
+        if "python" in lowered or "pandas" in lowered or "numpy" in lowered:
+            return [
+                QuizQuestion(
+                    question="1. What is the primary data structure in Pandas for 2D tabular data manipulation?",
+                    options=["DataFrame", "Series", "ndarray", "Dictionary"],
+                    correct_index=0,
+                    explanation="A DataFrame is Pandas' 2-dimensional labeled data structure with rows and columns."
+                ),
+                QuizQuestion(
+                    question="2. Which library is the core foundation for fast numerical array computations in Python?",
+                    options=["SciPy", "NumPy", "Matplotlib", "Seaborn"],
+                    correct_index=1,
+                    explanation="NumPy provides the ndarray object for efficient vector mathematical operations."
+                ),
+                QuizQuestion(
+                    question="3. How do you handle missing values (NaN) in a Pandas DataFrame?",
+                    options=["df.dropna() or df.fillna()", "df.remove_null()", "df.clean()", "df.drop_na_rows()"],
+                    correct_index=0,
+                    explanation="dropna() removes rows/columns with missing values, while fillna() fills missing values."
+                ),
+                QuizQuestion(
+                    question="4. Which function in Pandas is used to read CSV data files into a DataFrame?",
+                    options=["pd.load_csv()", "pd.read_csv()", "pd.import_csv()", "pd.open_csv()"],
+                    correct_index=1,
+                    explanation="pd.read_csv() is the standard method for parsing CSV data into DataFrames."
+                ),
+                QuizQuestion(
+                    question="5. What method is used to group data and compute aggregate metrics in Pandas?",
+                    options=["groupby()", "aggregate_by()", "cluster()", "partition()"],
+                    correct_index=0,
+                    explanation="df.groupby() enables split-apply-combine data aggregations."
+                )
+            ]
+        elif "privacy" in lowered or "cybersecurity" in lowered or "dpdp" in lowered:
+            return [
+                QuizQuestion(
+                    question="1. What is mandatory when handling survey micro-data under the DPDP Act?",
+                    options=[
+                        "Anonymization and role-based access control",
+                        "Storing raw data on non-encrypted public drives",
+                        "Sharing passwords across departments",
+                        "Disabling audit logging"
+                    ],
+                    correct_index=0,
+                    explanation="The DPDP Act mandates data anonymization and strict role-based access control."
+                ),
+                QuizQuestion(
+                    question="2. What does 'Data Anonymization' accomplish in official datasets?",
+                    options=[
+                        "Irreversibly removes personal identifiers from data records",
+                        "Encrypts data temporary during transfer only",
+                        "Reduces file storage size",
+                        "Deletes survey responses completely"
+                    ],
+                    correct_index=0,
+                    explanation="Anonymization removes personal identifiers so individuals cannot be identified."
+                ),
+                QuizQuestion(
+                    question="3. Which security measure protects government cloud applications on MeghRaj?",
+                    options=[
+                        "TLS/SSL Encryption in transit and at rest",
+                        "Open HTTP without SSL certificates",
+                        "Hardcoding credentials in source code",
+                        "Disabling firewall security rules"
+                    ],
+                    correct_index=0,
+                    explanation="Encryption in transit and at rest safeguards public sector cloud infrastructure."
+                ),
+                QuizQuestion(
+                    question="4. What is the role of a Data Protection Officer (DPO) in government bodies?",
+                    options=[
+                        "Overseeing data privacy compliance and addressing grievances",
+                        "Managing field survey enumeration budgets",
+                        "Writing statistical news releases",
+                        "Setting pricing for public data requests"
+                    ],
+                    correct_index=0,
+                    explanation="A DPO ensures organizational compliance with data privacy regulations."
+                ),
+                QuizQuestion(
+                    question="5. What is 'Principle of Least Privilege' in cybersecurity?",
+                    options=[
+                        "Granting users only the minimal permissions necessary for their job role",
+                        "Giving all employees administrator rights",
+                        "Restricting data access to senior executives only",
+                        "Disabling user login passwords"
+                    ],
+                    correct_index=0,
+                    explanation="Least privilege limits access rights to only what is strictly necessary for tasks."
+                )
+            ]
+
+        # Generic Statistical Fallback
+        topic = text[:40].strip("- *•") if text else "Statistical Concepts"
+        return [
             QuizQuestion(
-                question=f"1. According to the content on '{topic}', what is the core requirement for statistical validity?",
+                question=f"1. According to the material on '{topic}', what is essential for statistical survey validity?",
                 options=[
                     "Adherence to standardized sampling frames and validation protocols",
                     "Manual omission of field survey outliers",
@@ -184,29 +278,29 @@ Do NOT include markdown formatting or extra commentary.
                 explanation="Standardized sampling frames and audit protocols ensure statistical validity across official surveys."
             ),
             QuizQuestion(
-                question="2. What is the primary objective of establishing data quality frameworks in official statistics?",
+                question=f"2. What is the primary objective of data quality frameworks regarding '{topic}'?",
                 options=[
-                    "Slowing down report publication cycles",
                     "Ensuring accuracy, timeliness, and public credibility of indicators",
+                    "Slowing down report publication cycles",
                     "Restricting open data sharing with researchers",
                     "Eliminating the need for periodic revisions"
                 ],
-                correct_index=1,
+                correct_index=0,
                 explanation="Quality frameworks (e.g. UN NQAF) safeguard accuracy, timeliness, and user credibility."
             ),
             QuizQuestion(
-                question="3. When handling micro-data under the DPDP Act guidelines, which practice is mandatory?",
+                question="3. How does stratified sampling improve estimation over simple random sampling?",
                 options=[
-                    "Publishing un-anonymized household identifiers",
-                    "Storing raw survey data on non-encrypted public drives",
-                    "Applying strict anonymization techniques and role-based access control",
-                    "Disabling security logging"
+                    "By reducing sampling variance across heterogeneous sub-groups",
+                    "By eliminating non-sampling errors completely",
+                    "By doubling the required total sample size",
+                    "By removing the need for weighting factors"
                 ],
-                correct_index=2,
-                explanation="DPDP Act guidelines mandate data anonymization and role-based access control for micro-data."
+                correct_index=0,
+                explanation="Stratification groups homogeneous sub-populations, reducing overall sampling variance."
             ),
             QuizQuestion(
-                question="4. Which metric best measures sampling precision in large-scale sample surveys?",
+                question="4. Which metric best measures sampling precision in official sample surveys?",
                 options=[
                     "Standard error and coefficient of variation (CV)",
                     "Number of survey enumerator pages",
@@ -217,29 +311,17 @@ Do NOT include markdown formatting or extra commentary.
                 explanation="Standard error and coefficient of variation quantify sampling precision."
             ),
             QuizQuestion(
-                question="5. How does stratified sampling improve estimation over simple random sampling?",
+                question="5. What is the primary role of National Accounts aggregates like GDP and GVA?",
                 options=[
-                    "By eliminating non-sampling errors completely",
-                    "By reducing sampling variance across heterogeneous sub-groups",
-                    "By doubling the required total sample size",
-                    "By removing the need for weighting factors"
-                ],
-                correct_index=1,
-                explanation="Stratification groups homogeneous sub-populations, reducing overall sampling variance."
-            ),
-            QuizQuestion(
-                question="6. What is the primary role of National Accounts aggregates like Gross Value Added (GVA)?",
-                options=[
+                    "Measuring national economic performance and sectoral output",
                     "Tracking individual household income receipts",
-                    "Measuring economic performance and sectoral output across the nation",
                     "Setting retail prices for agricultural commodities",
                     "Managing local municipal tax collection"
                 ],
-                correct_index=1,
+                correct_index=0,
                 explanation="GVA and GDP measure national and sectoral macroeconomic performance."
             )
         ]
-        return questions
 
     @classmethod
     def _extract_json(cls, raw_text: str) -> Any:
