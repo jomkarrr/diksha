@@ -1,0 +1,92 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { AppShell } from "@/components/layout/AppShell";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Badge } from "@/components/ui/Badge";
+import { Icon } from "@/components/ui/Icon";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { generateQuiz } from "@/lib/api/quiz";
+import { demoQuizQuestions } from "@/lib/mock/data";
+import type { QuizQuestion } from "@/lib/types/contracts";
+
+export default function AssessmentsPage() {
+  const [questions, setQuestions] = useState<QuizQuestion[]>(demoQuizQuestions);
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [content, setContent] = useState("Stratified random sampling divides a population into homogeneous strata before random selection.");
+  const [status, setStatus] = useState<"demo" | "loading" | "ready">("demo");
+
+  async function loadQuiz() {
+    setStatus("loading");
+    try {
+      const data = await generateQuiz(content);
+      setQuestions(data.questions.length ? data.questions : demoQuizQuestions);
+      setCurrent(0);
+      setSelected(null);
+      setStatus("ready");
+    } catch {
+      setQuestions(demoQuizQuestions);
+      setStatus("demo");
+    }
+  }
+
+  const question = questions[current];
+
+  return (
+    <AppShell>
+      <PageHeader
+        eyebrow="Assessment"
+        title="Competency Assessment: Sampling Techniques"
+        description="Generate MCQs from pasted learning text using the current backend quiz endpoint."
+        action={<Badge tone={status === "ready" ? "success" : "warning"}>{status === "ready" ? "Backend quiz" : "Demo-ready"}</Badge>}
+      />
+      <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+        <section className="card h-fit p-5">
+          <h2 className="text-xl font-semibold">Learning Material</h2>
+          <textarea value={content} onChange={(event) => setContent(event.target.value)} className="focus-ring mt-4 min-h-40 w-full rounded-lg border border-slate-200 p-3 text-sm" />
+          <button onClick={loadQuiz} disabled={status === "loading"} className="focus-ring mt-4 w-full rounded-lg bg-[#F4511E] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white disabled:opacity-60">
+            {status === "loading" ? "Generating..." : "Generate Quiz"}
+          </button>
+        </section>
+        <section className="card p-6">
+          <div className="flex items-center justify-between">
+            <p className="font-semibold">Question {current + 1} of {questions.length}</p>
+            <Badge tone="primary">In Progress</Badge>
+          </div>
+          <div className="mt-4"><ProgressBar value={Math.round(((current + 1) / questions.length) * 100)} /></div>
+          <h2 className="mt-8 text-xl font-semibold">{question.question}</h2>
+          <div className="mt-5 space-y-3">
+            {question.options.map((option, index) => (
+              <button
+                key={option}
+                onClick={() => setSelected(index)}
+                className={`focus-ring flex w-full items-center gap-3 rounded-lg border p-4 text-left text-sm ${
+                  selected === index ? "border-[#F4511E] bg-[#F4511E]/5" : "border-slate-200 bg-white hover:bg-slate-50"
+                }`}
+              >
+                <span className="grid h-5 w-5 place-items-center rounded-full border border-slate-300 text-xs">{String.fromCharCode(65 + index)}</span>
+                {option}
+              </button>
+            ))}
+          </div>
+          <div className="mt-6 flex items-center justify-between">
+            <button onClick={() => setCurrent(Math.max(0, current - 1))} className="focus-ring rounded-lg border border-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#F4511E]">
+              Previous
+            </button>
+            {current === questions.length - 1 ? (
+              <Link href="/assessments/results" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+                Submit <Icon name="arrow_forward" />
+              </Link>
+            ) : (
+              <button onClick={() => { setCurrent(Math.min(questions.length - 1, current + 1)); setSelected(null); }} className="focus-ring rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+                Next
+              </button>
+            )}
+          </div>
+        </section>
+      </div>
+    </AppShell>
+  );
+}

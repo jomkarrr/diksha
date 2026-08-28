@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&family=Public+Sans:wght@400;600;700&family=Inter:wght@600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: #f8f9ff;
+  --surface-container: #ffffff;
+  --surface-container-low: #eff4ff;
+  --surface-container-high: #dde9ff;
+  --on-surface: #0d1c2f;
+  --on-surface-variant: #5a413a;
+  --primary: #832000;
+  --primary-container: #ac2d00;
+  --action: #f4511e;
+  --outline-soft: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--surface);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: "Public Sans", Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.material-symbols-outlined {
+  direction: ltr;
+  display: inline-block;
+  font-family: "Material Symbols Outlined";
+  font-feature-settings: "liga";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(51, 65, 85, 0.05);
+}
+
+.label {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid rgba(244, 81, 30, 0.45);
+  outline-offset: 2px;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #ac2d00 0%, #f4511e 50%, #ac2d00 100%);
+  background-size: 220% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 220% 0;
+  }
+
+  100% {
+    background-position: -220% 0;
+  }
+}
