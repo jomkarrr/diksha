@@ -5,12 +5,14 @@ Provides profile competency parsing, prerequisite-ordered learning roadmap gener
 
 ---
 
-## 🚀 Quick Start Guide
+## Getting Started
 
 ### 1. Prerequisites
 - **Python 3.10+** (Python 3.13 tested)
 
-### 2. Environment Setup
+### 2 Environment Setup
+- Using pip
+
 From the `backend/` directory:
 
 ```bash
@@ -21,7 +23,11 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -e .
+```
+- Using [uv](https://docs.astral.sh/uv/getting-started/installation/)
+```bash
+uv sync
 ```
 
 ### 3. Environment Variables Configuration
