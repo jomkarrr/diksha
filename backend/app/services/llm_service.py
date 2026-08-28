@@ -55,7 +55,7 @@ Do NOT include any markdown formatting, code blocks, or extra text.
                 from google import genai
                 client = genai.Client(api_key=settings.GEMINI_API_KEY)
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-3.6-flash",
                     contents=prompt
                 )
                 parsed = cls._extract_json(res.text)
@@ -110,7 +110,7 @@ Do NOT include markdown formatting or extra commentary.
                 from google import genai
                 client = genai.Client(api_key=settings.GEMINI_API_KEY)
                 res = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-3.6-flash",
                     contents=prompt
                 )
                 parsed = cls._extract_json(res.text)
