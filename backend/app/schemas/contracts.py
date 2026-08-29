@@ -53,6 +53,7 @@ class QuizRequest(BaseModel):
     content_text: str = Field(..., json_schema_extra={"example": "Sampling error decreases as sample size increases in simple random sampling."})
 
 class QuizQuestion(BaseModel):
+    node_id: str = Field(default="stat-sampling-101", json_schema_extra={"example": "stat-sampling-101"})
     question: str
     options: List[str]
     correct_index: int
@@ -60,6 +61,45 @@ class QuizQuestion(BaseModel):
 
 class QuizResponse(BaseModel):
     questions: List[QuizQuestion]
+
+# --- Quiz Submission & Mastery Endpoints ---
+class QuizAnswerItem(BaseModel):
+    node_id: str
+    is_correct: bool
+
+class QuizSubmitRequest(BaseModel):
+    profile_id: str = Field(..., json_schema_extra={"example": "prof_12345"})
+    answers: List[QuizAnswerItem]
+
+class MasteryUpdateItem(BaseModel):
+    node_id: str
+    mastery: float
+    current_level: CompetencyLevel
+    last_reviewed: str
+
+class QuizSubmitResponse(BaseModel):
+    profile_id: str
+    mastery_updates: List[MasteryUpdateItem]
+
+
+# --- Employee Dashboard Endpoints ---
+class CompetencySummaryItem(BaseModel):
+    node_id: str
+    name: str
+    mastery: float
+    last_reviewed: str
+
+class RevisionSuggestion(BaseModel):
+    node_id: str
+    name: str
+    reason: str
+
+class EmployeeDashboardResponse(BaseModel):
+    profile_id: str
+    competency_summary: List[CompetencySummaryItem]
+    learning_hours_logged: float
+    overall_progress_pct: float
+    revision_suggestions: List[RevisionSuggestion]
 
 
 # --- Dashboard Admin Endpoints ---

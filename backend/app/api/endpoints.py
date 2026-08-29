@@ -1,15 +1,18 @@
 import uuid
-from typing import List
-from fastapi import APIRouter, HTTPException, status
+from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Query, status
 from app.schemas.contracts import (
     ProfileRequest, ProfileResponse, CompetencyItem,
     RoadmapRequest, RoadmapResponse,
     QuizRequest, QuizResponse,
+    QuizSubmitRequest, QuizSubmitResponse,
+    EmployeeDashboardResponse,
     AdminDashboardResponse, AdminEmployeeItem, GapSeverity
 )
 from app.services.data_loader import DataLoader
 from app.services.llm_service import LLMService
 from app.services.roadmap_engine import RoadmapEngine
+from app.services.mastery_engine import MasteryEngine
 
 router = APIRouter()
 
@@ -80,6 +83,29 @@ def generate_quiz(payload: QuizRequest):
 
     questions = LLMService.generate_quiz(payload.content_text)
     return QuizResponse(questions=questions)
+
+
+@router.post("/quiz/submit", response_model=QuizSubmitResponse, status_code=status.HTTP_200_OK)
+def submit_quiz_answers(payload: QuizSubmitRequest):
+    """
+    POST /api/quiz/submit
+    Submit quiz answers for a profile, persist attempt history, and update competency mastery scores.
+    """
+    if not payload.answers:
+        raise HTTPException(status_code=400, detail="answers array cannot be empty")
+
+    updates = MasteryEngine.process_quiz_submission(payload.profile_id, payload.answers)
+    return QuizSubmitResponse(profile_id=payload.profile_id, mastery_updates=updates)
+
+
+@router.get("/dashboard/employee", response_model=EmployeeDashboardResponse, status_code=status.HTTP_200_OK)
+def get_employee_dashboard(profile_id: str = Query("prof_demo", description="Official Profile ID")):
+    """
+    GET /api/dashboard/employee?profile_id=...
+    Retrieve employee adaptive learning dashboard metrics: node mastery scores, learning hours,
+    overall progress %, and SM-2 forgetting-curve revision priority suggestions.
+    """
+    return MasteryEngine.get_employee_dashboard(profile_id)
 
 
 @router.get("/dashboard/admin", response_model=AdminDashboardResponse, status_code=status.HTTP_200_OK)

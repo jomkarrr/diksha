@@ -118,33 +118,15 @@ Generates a prerequisite-ordered, gap-scored roadmap with matched iGOT Karmayogi
           "duration_hours": 16
         }
       ]
-    },
-    {
-      "node_id": "tech-python-101",
-      "name": "Python for Data Analysis",
-      "domain": "technical",
-      "current_level": "basic",
-      "required_level": "intermediate",
-      "gap_severity": "medium",
-      "matched_courses": [
-        {
-          "course_id": "igot-tech-202",
-          "title": "Data Wrangling with Pandas & NumPy",
-          "duration_hours": 15
-        }
-      ]
     }
   ]
 }
 ```
-*`domain` values*: `"statistical"`, `"technical"`, `"digital_governance"`, `"behavioural"`  
-*`gap_severity` values*: `"low"`, `"medium"`, `"high"`  
-*Order of items in `roadmap` array = Recommended learning sequence (pre-sorted by prerequisites).*
 
 ---
 
 ### 3. `POST /api/quiz`
-Generates 3 multiple-choice questions from pasted learning text.
+Generates 5 to 8 multiple-choice questions from pasted learning material text, tagged with `node_id`.
 
 **Endpoint URL**: `http://localhost:5001/api/quiz`
 
@@ -160,6 +142,7 @@ Generates 3 multiple-choice questions from pasted learning text.
 {
   "questions": [
     {
+      "node_id": "stat-sampling-101",
       "question": "Which principle is essential when conducting stratified sampling?",
       "options": [
         "Partitioning population into non-overlapping homogeneous strata",
@@ -176,28 +159,38 @@ Generates 3 multiple-choice questions from pasted learning text.
 
 ---
 
-### 4. `GET /api/dashboard/admin`
-Retrieves employee overview for the administrator monitoring dashboard.
+### 4. `POST /api/quiz/submit` (NEW for Day 3)
+Submits user quiz answers, persists attempt history, updates node mastery scores, and updates official competency levels!
 
-**Endpoint URL**: `http://localhost:5001/api/dashboard/admin`
+**Endpoint URL**: `http://localhost:5001/api/quiz/submit`
+
+**Request Payload:**
+```json
+{
+  "profile_id": "prof_a1b2c3d4",
+  "answers": [
+    { "node_id": "stat-sampling-101", "is_correct": true },
+    { "node_id": "tech-python-101", "is_correct": false }
+  ]
+}
+```
 
 **Response Payload:**
 ```json
 {
-  "employees": [
+  "profile_id": "prof_a1b2c3d4",
+  "mastery_updates": [
     {
-      "profile_id": "emp-101",
-      "name": "Rajesh Kumar",
-      "department": "National Sample Survey Office (NSSO)",
-      "avg_gap_severity": "medium",
-      "top_gaps": ["Sampling Techniques", "Python for Data Analysis"]
+      "node_id": "stat-sampling-101",
+      "mastery": 75.0,
+      "current_level": "intermediate",
+      "last_reviewed": "2026-08-29T21:00:00Z"
     },
     {
-      "profile_id": "emp-102",
-      "name": "Priya Sharma",
-      "department": "Central Statistics Office (CSO)",
-      "avg_gap_severity": "high",
-      "top_gaps": ["National Accounts & GDP Estimation", "AI/ML in Official Statistics"]
+      "node_id": "tech-python-101",
+      "mastery": 30.0,
+      "current_level": "basic",
+      "last_reviewed": "2026-08-29T21:00:00Z"
     }
   ]
 }
@@ -205,50 +198,71 @@ Retrieves employee overview for the administrator monitoring dashboard.
 
 ---
 
-## 💻 Sample React / Next.js API Integration Code
+### 5. `GET /api/dashboard/employee` (NEW for Day 3)
+Retrieves adaptive learning progress, mastery per competency node, total learning hours logged, overall progress percentage, and SM-2 spaced repetition **"What to Revise Next"** suggestions!
 
-Here is a ready-to-use fetch helper for your React components:
+**Endpoint URL**: `http://localhost:5001/api/dashboard/employee?profile_id=prof_a1b2c3d4`
 
-```typescript
-const API_BASE_URL = 'http://localhost:5001/api';
-
-export async function submitProfile(profileData: {
-  designation: string;
-  department: string;
-  job_role: string;
-  experience_years: number;
-  education: string;
-  prior_trainings: string[];
-}) {
-  const res = await fetch(`${API_BASE_URL}/profile`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(profileData),
-  });
-  return res.json();
-}
-
-export async function fetchRoadmap(profileId: string, jobRole: string) {
-  const res = await fetch(`${API_BASE_URL}/roadmap`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ profile_id: profileId, job_role: jobRole }),
-  });
-  return res.json();
+**Response Payload:**
+```json
+{
+  "profile_id": "prof_a1b2c3d4",
+  "competency_summary": [
+    {
+      "node_id": "stat-sampling-101",
+      "name": "Sampling Techniques",
+      "mastery": 75.0,
+      "last_reviewed": "2026-08-29T21:00:00Z"
+    },
+    {
+      "node_id": "tech-python-101",
+      "name": "Python for Data Analysis",
+      "mastery": 30.0,
+      "last_reviewed": "2026-08-29T21:00:00Z"
+    }
+  ],
+  "learning_hours_logged": 14.5,
+  "overall_progress_pct": 68.0,
+  "revision_suggestions": [
+    {
+      "node_id": "tech-python-101",
+      "name": "Python for Data Analysis",
+      "reason": "Shaky foundation (mastery 30%), review recommended"
+    },
+    {
+      "node_id": "stat-sampling-101",
+      "name": "Sampling Techniques",
+      "reason": "Not reviewed in 4 days, moderate mastery (75%)"
+    }
+  ]
 }
 ```
 
 ---
 
-## ⚡ How to Run Backend locally for UI testing
+### 6. `GET /api/dashboard/admin`
+Retrieves employee overview for the administrator monitoring dashboard.
 
-1. Open a terminal and navigate to the project directory:
-   ```bash
-   cd diksha
-   ```
-2. Activate virtual environment and start backend server:
-   ```bash
-   source backend/venv/bin/activate
-   python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 5001 --reload
-   ```
-3. Test endpoints interactively at `http://localhost:5001/docs`.
+**Endpoint URL**: `http://localhost:5001/api/dashboard/admin`
+
+---
+
+## 💻 Sample React API Integration Code (Updated for Day 3)
+
+```typescript
+const API_BASE_URL = 'http://localhost:5001/api';
+
+export async function submitQuizAnswers(profileId: string, answers: Array<{ node_id: string; is_correct: boolean }>) {
+  const res = await fetch(`${API_BASE_URL}/quiz/submit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ profile_id: profileId, answers }),
+  });
+  return res.json();
+}
+
+export async function fetchEmployeeDashboard(profileId: string) {
+  const res = await fetch(`${API_BASE_URL}/dashboard/employee?profile_id=${encodeURIComponent(profileId)}`);
+  return res.json();
+}
+```

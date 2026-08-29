@@ -81,6 +81,7 @@ Input Content / Topic:
 Return ONLY a valid JSON array of question objects matching this exact structure:
 [
   {{
+    "node_id": "stat-sampling-101",
     "question": "Clear question text?",
     "options": ["Option A", "Option B", "Option C", "Option D"],
     "correct_index": 0,

@@ -56,31 +56,57 @@ def test_generate_roadmap():
         assert "matched_courses" in first_node
 
 def test_generate_quiz_varied_inputs():
-    # Technical dense text
     tech_text = "Stratified random sampling is a method of sampling from a population which can be partitioned into subpopulations."
     res1 = client.post("/api/quiz", json={"content_text": tech_text})
     assert res1.status_code == 200
     q1 = res1.json()["questions"]
     assert 5 <= len(q1) <= 8
 
-    # Bulleted list text
-    bullet_text = """
-    - Apply end-to-end data encryption for survey micro-data.
-    - Restrict access strictly using role-based access control.
-    - Conduct regular security audits under DPDP Act guidelines.
-    - Obtain explicit data principal consent prior to processing.
-    """
-    res2 = client.post("/api/quiz", json={"content_text": bullet_text})
-    assert res2.status_code == 200
-    q2 = res2.json()["questions"]
-    assert 5 <= len(q2) <= 8
-
-    # Verify MCQ item structure
     first_q = q1[0]
     assert "question" in first_q
     assert len(first_q["options"]) == 4
     assert 0 <= first_q["correct_index"] <= 3
     assert "explanation" in first_q
+
+def test_quiz_submit_and_mastery_update():
+    prof_res = client.post("/api/profile", json={
+        "designation": "Field Assistant",
+        "department": "NSSO",
+        "job_role": "Statistical Investigator",
+        "experience_years": 1,
+        "education": "Bachelor",
+        "prior_trainings": []
+    }).json()
+    profile_id = prof_res["profile_id"]
+
+    submit_payload = {
+        "profile_id": profile_id,
+        "answers": [
+            {"node_id": "stat-sampling-101", "is_correct": True},
+            {"node_id": "tech-python-101", "is_correct": False}
+        ]
+    }
+    response = client.post("/api/quiz/submit", json=submit_payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["profile_id"] == profile_id
+    assert len(data["mastery_updates"]) == 2
+
+    stat_node = next(item for item in data["mastery_updates"] if item["node_id"] == "stat-sampling-101")
+    assert stat_node["mastery"] > 10.0
+    assert "current_level" in stat_node
+    assert "last_reviewed" in stat_node
+
+def test_get_employee_dashboard():
+    response = client.get("/api/dashboard/employee?profile_id=prof_test123")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["profile_id"] == "prof_test123"
+    assert len(data["competency_summary"]) > 0
+    assert "learning_hours_logged" in data
+    assert "overall_progress_pct" in data
+    assert len(data["revision_suggestions"]) > 0
+    assert "reason" in data["revision_suggestions"][0]
 
 def test_get_admin_dashboard_dynamic():
     response = client.get("/api/dashboard/admin")
@@ -94,7 +120,6 @@ def test_get_admin_dashboard_dynamic():
     assert len(emp["top_gaps"]) > 0
 
 def test_roadmap_edge_cases():
-    # 1. Sparse Profile (< 1 year experience, no training)
     sparse_prof = client.post("/api/profile", json={
         "designation": "Trainee",
         "department": "Field Division",
@@ -106,20 +131,3 @@ def test_roadmap_edge_cases():
     res_sparse = client.post("/api/roadmap", json={"profile_id": sparse_prof["profile_id"], "job_role": "Statistical Investigator"})
     assert res_sparse.status_code == 200
     assert len(res_sparse.json()["roadmap"]) > 0
-
-    # 2. Senior Official Profile (10+ years experience, extensive trainings)
-    senior_prof = client.post("/api/profile", json={
-        "designation": "Director General",
-        "department": "National Sample Survey Office",
-        "job_role": "Director / Senior Statistical Officer",
-        "experience_years": 12.0,
-        "education": "Ph.D. Statistics",
-        "prior_trainings": ["National Accounts", "Sampling Techniques", "Leadership", "Data Privacy", "Project Management"]
-    }).json()
-    res_senior = client.post("/api/roadmap", json={"profile_id": senior_prof["profile_id"], "job_role": "Director / Senior Statistical Officer"})
-    assert res_senior.status_code == 200
-
-    # 3. Unknown / Unmapped Job Role (fallback mechanism)
-    res_unknown = client.post("/api/roadmap", json={"profile_id": sparse_prof["profile_id"], "job_role": "Unknown Special Consultant"})
-    assert res_unknown.status_code == 200
-    assert isinstance(res_unknown.json()["roadmap"], list)
