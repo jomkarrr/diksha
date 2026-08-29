@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
+import { PageTransition } from "@/components/motion/PageTransition";
+import { AnimatePresence, motion } from "framer-motion";
 
 const navItems = [
   { href: "/dashboard", icon: "dashboard", label: "Dashboard" },
@@ -23,9 +26,55 @@ const secondary = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const navContent = (
+    <>
+      <nav className="mt-8 flex flex-1 flex-col gap-1">
+        {navItems.map((item) => {
+          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setSidebarOpen(false)}
+              className={`focus-ring flex items-center gap-4 rounded-lg px-2 py-2 text-xs font-semibold uppercase tracking-wide transition ${
+                active
+                  ? "bg-primary-container text-on-primary-container"
+                  : "text-on-surface-variant hover:bg-surface-container-high"
+              }`}
+            >
+              <Icon name={item.icon} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="border-t border-slate-200 pt-4">
+        {secondary.map((item) => {
+          const active = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setSidebarOpen(false)}
+              className={`focus-ring flex items-center gap-4 rounded-lg px-2 py-2 text-xs font-semibold uppercase tracking-wide transition ${
+                active ? "bg-surface-container text-primary" : "text-on-surface-variant hover:bg-surface-container-high"
+              }`}
+            >
+              <Icon name={item.icon} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-surface text-on-surface">
+      {/* Desktop Sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r border-slate-200 bg-white px-4 py-6 shadow-soft lg:flex">
         <Link href="/dashboard" className="focus-ring flex items-center gap-3 rounded-lg">
           <div className="grid h-9 w-9 place-items-center rounded bg-primary-container text-on-primary">
@@ -36,50 +85,59 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="text-[10px] font-semibold uppercase tracking-wide text-on-surface-variant">Skill Intelligence</p>
           </div>
         </Link>
-
-        <nav className="mt-8 flex flex-1 flex-col gap-1">
-          {navItems.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`focus-ring flex items-center gap-4 rounded-lg px-2 py-2 text-xs font-semibold uppercase tracking-wide transition ${
-                  active
-                    ? "bg-primary-container text-on-primary-container"
-                    : "text-on-surface-variant hover:bg-surface-container-high"
-                }`}
-              >
-                <Icon name={item.icon} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="border-t border-slate-200 pt-4">
-          {secondary.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`focus-ring flex items-center gap-4 rounded-lg px-2 py-2 text-xs font-semibold uppercase tracking-wide transition ${
-                  active ? "bg-surface-container text-primary" : "text-on-surface-variant hover:bg-surface-container-high"
-                }`}
-              >
-                <Icon name={item.icon} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
+        {navContent}
       </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <div className="lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/30"
+              onClick={() => setSidebarOpen(false)}
+            />
+            <motion.aside
+              initial={{ x: -244 }}
+              animate={{ x: 0 }}
+              exit={{ x: -244 }}
+              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+              className="fixed inset-y-0 left-0 z-50 flex w-[244px] flex-col border-r border-slate-200 bg-white px-4 py-6 shadow-soft"
+            >
+              <div className="flex items-center justify-between">
+                <Link href="/dashboard" className="focus-ring flex items-center gap-3 rounded-lg" onClick={() => setSidebarOpen(false)}>
+                  <div className="grid h-9 w-9 place-items-center rounded bg-primary-container text-on-primary">
+                    <Icon name="hub" filled />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold tracking-wide text-primary">DIKSHA</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-on-surface-variant">Skill Intelligence</p>
+                  </div>
+                </Link>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="focus-ring rounded-full p-2 text-on-surface-variant hover:bg-surface-container-low"
+                  aria-label="Close navigation"
+                >
+                  <Icon name="close" />
+                </button>
+              </div>
+              {navContent}
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
 
       <div className="lg:pl-[244px]">
         <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur lg:px-8">
           <div className="flex items-center justify-between gap-4">
-            <button className="focus-ring rounded-full p-2 text-on-surface-variant hover:bg-surface-container-low lg:hidden" aria-label="Open navigation">
+            <button 
+              className="focus-ring rounded-full p-2 text-on-surface-variant hover:bg-surface-container-low lg:hidden" 
+              aria-label="Open navigation"
+              onClick={() => setSidebarOpen(true)}
+            >
               <Icon name="menu" />
             </button>
             <div className="relative hidden w-full max-w-sm sm:block">
@@ -106,7 +164,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </header>
-        <main className="px-4 py-6 lg:px-8">{children}</main>
+        <main className="px-4 py-6 lg:px-8">
+          <PageTransition>{children}</PageTransition>
+        </main>
       </div>
     </div>
   );

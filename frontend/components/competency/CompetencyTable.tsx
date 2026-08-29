@@ -1,50 +1,87 @@
+"use client";
+
+import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { LevelDots } from "./LevelDots";
 import { competencyCatalogue, domainLabels } from "@/lib/mock/data";
+import { FadeIn } from "@/components/motion/FadeIn";
+import type { CompetencyDetailItem } from "@/lib/mock/data";
 
-export function CompetencyTable() {
+type CompetencyTableProps = {
+  items?: CompetencyDetailItem[];
+};
+
+export function CompetencyTable({ items = competencyCatalogue }: CompetencyTableProps) {
   return (
-    <div className="card overflow-hidden">
-      <div className="flex items-center justify-between border-b border-slate-200 p-4">
-        <div>
-          <h2 className="text-xl font-semibold">Detailed Matrix</h2>
-          <p className="mt-1 text-sm text-on-surface-variant">Current competency state against role requirements.</p>
+    <FadeIn>
+      <div className="card overflow-hidden">
+        <div className="flex items-center justify-between border-b border-slate-200 p-4">
+          <div>
+            <h2 className="text-xl font-semibold">Detailed Matrix</h2>
+            <p className="mt-1 text-sm text-on-surface-variant">
+              Showing {items.length} competency {items.length === 1 ? "node" : "nodes"} mapped against role expectations.
+            </p>
+          </div>
+          <button className="focus-ring rounded-lg border border-[#F4511E] px-3 py-2 text-xs font-semibold uppercase tracking-wide text-[#F4511E]">
+            View History
+          </button>
         </div>
-        <button className="focus-ring rounded-lg border border-[#F4511E] px-3 py-2 text-xs font-semibold uppercase tracking-wide text-[#F4511E]">
-          View History
-        </button>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-b border-slate-200 text-on-surface-variant">
-            <tr>
-              <th className="label px-4 py-3">Competency</th>
-              <th className="label px-4 py-3">Domain</th>
-              <th className="label px-4 py-3">Current</th>
-              <th className="label px-4 py-3">Required</th>
-              <th className="label px-4 py-3">Gap</th>
-              <th className="label px-4 py-3">Priority</th>
-            </tr>
-          </thead>
-          <tbody>
-            {competencyCatalogue.map((item) => (
-              <tr key={item.node_id} className="border-b border-slate-100 hover:bg-slate-50">
-                <td className="px-4 py-4 font-semibold">{item.name}</td>
-                <td className="px-4 py-4 text-on-surface-variant">{domainLabels[item.domain]}</td>
-                <td className="px-4 py-4">
-                  <LevelDots current={item.current_level} />
-                  <span className="mt-1 block text-xs capitalize text-on-surface-variant">{item.current_level}</span>
-                </td>
-                <td className="px-4 py-4 capitalize">{item.required_level}</td>
-                <td className="px-4 py-4">
-                  <Badge severity={item.gap_severity}>{item.gap_severity}</Badge>
-                </td>
-                <td className="px-4 py-4 text-on-surface-variant">{item.priority}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-left text-sm">
+            <thead className="border-b border-slate-200 text-on-surface-variant">
+              <tr>
+                <th className="label px-4 py-3">Competency</th>
+                <th className="label px-4 py-3">Domain</th>
+                <th className="label px-4 py-3">Current</th>
+                <th className="label px-4 py-3">Required</th>
+                <th className="label px-4 py-3">Gap</th>
+                <th className="label px-4 py-3">Priority</th>
+                <th className="label px-4 py-3">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-on-surface-variant">
+                    No matching competencies found. Try adjusting your search query or filters.
+                  </td>
+                </tr>
+              ) : (
+                items.map((item) => (
+                  <tr key={item.node_id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-4 font-semibold">
+                      <Link
+                        href={`/competencies/${item.node_id}`}
+                        className="text-on-surface hover:text-[#F4511E] hover:underline"
+                      >
+                        {item.name}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-4 text-on-surface-variant">{domainLabels[item.domain]}</td>
+                    <td className="px-4 py-4">
+                      <LevelDots current={item.current_level} />
+                      <span className="mt-1 block text-xs capitalize text-on-surface-variant">{item.current_level}</span>
+                    </td>
+                    <td className="px-4 py-4 capitalize">{item.required_level}</td>
+                    <td className="px-4 py-4">
+                      <Badge severity={item.gap_severity}>{item.gap_severity}</Badge>
+                    </td>
+                    <td className="px-4 py-4 text-on-surface-variant">{item.priority}</td>
+                    <td className="px-4 py-4">
+                      <Link
+                        href={`/competencies/${item.node_id}`}
+                        className="text-xs font-semibold uppercase text-[#F4511E] hover:underline"
+                      >
+                        Detail &rarr;
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </FadeIn>
   );
 }

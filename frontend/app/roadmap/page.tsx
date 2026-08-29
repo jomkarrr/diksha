@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { fetchRoadmap } from "@/lib/api/roadmap";
 import { demoLearner, demoRoadmap } from "@/lib/mock/data";
 import type { RoadmapItem } from "@/lib/types/contracts";
+import { FadeIn } from "@/components/motion/FadeIn";
 
 export default function RoadmapPage() {
   const [items, setItems] = useState<RoadmapItem[]>(demoRoadmap);
@@ -36,12 +37,16 @@ export default function RoadmapPage() {
         action={status === "demo" ? <Badge tone="warning">Mock fallback</Badge> : status === "loading" ? <Badge>Loading</Badge> : <Badge tone="success">Backend data</Badge>}
       />
       {status === "loading" ? (
-        <div className="card p-6">
-          <p className="font-semibold">Generating personalized roadmap...</p>
-          <div className="shimmer mt-4 h-2 rounded-full" />
-        </div>
+        <FadeIn>
+          <div className="card p-6">
+            <p className="font-semibold">Generating personalized roadmap...</p>
+            <div className="shimmer mt-4 h-2 rounded-full" />
+          </div>
+        </FadeIn>
       ) : status === "empty" ? (
-        <EmptyState icon="task_alt" title="No competency gaps identified" description="The backend returned an empty roadmap for this profile and role." />
+        <FadeIn>
+          <EmptyState icon="task_alt" title="No competency gaps identified" description="The backend returned an empty roadmap for this profile and role." />
+        </FadeIn>
       ) : (
         <RoadmapTimeline items={items} />
       )}
