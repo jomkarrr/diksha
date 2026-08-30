@@ -32,7 +32,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <>
       <nav className="mt-8 flex flex-1 flex-col gap-1">
         {navItems.map((item) => {
-          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const active =
+            pathname === item.href ||
+            pathname.startsWith(`${item.href}/`) ||
+            (item.href === "/assessments" && (pathname === "/quiz" || pathname.startsWith("/quiz")));
           return (
             <Link
               key={item.href}

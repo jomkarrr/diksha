@@ -30,9 +30,13 @@ export function RoadmapTimeline({ items }: RoadmapTimelineProps) {
       <StaggerChildren>
         {items.map((item, index) => {
           const status = statusByIndex[index] || "Recommended";
-          const firstCourse = item.matched_courses[0];
+          const firstCourse =
+            Array.isArray(item.matched_courses) && item.matched_courses.length > 0
+              ? item.matched_courses[0]
+              : undefined;
+
           return (
-            <StaggerItem key={item.node_id}>
+            <StaggerItem key={item.node_id || `node-${index}`}>
               <div className="relative pl-7">
                 <div className="absolute left-2 top-0 h-full w-px bg-slate-200" />
                 <div className="absolute left-0 top-5 grid h-4 w-4 place-items-center rounded-full bg-[#F4511E] text-white">
@@ -40,30 +44,33 @@ export function RoadmapTimeline({ items }: RoadmapTimelineProps) {
                 </div>
                 <section className="card p-4">
                   <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-                    <div>
+                    <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge severity={item.gap_severity}>{item.gap_severity} gap</Badge>
+                        <Badge severity={item.gap_severity}>{item.gap_severity || "medium"} gap</Badge>
                         <Badge tone="neutral">{status}</Badge>
+                        {item.domain ? (
+                          <Badge tone="neutral">{item.domain.replace("_", " ")}</Badge>
+                        ) : null}
                       </div>
-                      <h3 className="mt-3 text-xl font-semibold">{item.name}</h3>
+                      <h3 className="mt-3 text-xl font-semibold text-on-surface">{item.name || "Competency Node"}</h3>
                       <p className="mt-2 text-sm leading-6 text-on-surface-variant">
-                        Move from <span className="font-semibold capitalize text-on-surface">{item.current_level}</span> to{" "}
-                        <span className="font-semibold capitalize text-on-surface">{item.required_level}</span> through targeted learning,
+                        Move from <span className="font-semibold capitalize text-on-surface">{item.current_level || "none"}</span> to{" "}
+                        <span className="font-semibold capitalize text-on-surface">{item.required_level || "intermediate"}</span> through targeted learning,
                         practice, and assessment.
                       </p>
                       {firstCourse ? (
                         <div className="mt-4 rounded-lg border border-slate-200 bg-surface p-3">
                           <p className="label text-on-surface-variant">Recommended learning</p>
-                          <p className="mt-1 font-semibold">{firstCourse.title}</p>
+                          <p className="mt-1 font-semibold text-on-surface">{firstCourse.title || "Course Module"}</p>
                           <p className="mt-1 flex items-center gap-1 text-sm text-on-surface-variant">
-                            <Icon name="schedule" className="text-[16px]" /> {firstCourse.duration_hours} hours
+                            <Icon name="schedule" className="text-[16px]" /> {firstCourse.duration_hours || 0} hours
                           </p>
                         </div>
                       ) : null}
                     </div>
                     <Link
-                      href={firstCourse ? `/resources/${firstCourse.course_id}` : "/resources"}
-                      className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white"
+                      href={firstCourse?.course_id ? `/resources/${firstCourse.course_id}` : "/resources"}
+                      className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shrink-0 hover:bg-[#d84315] transition"
                     >
                       View Resource <Icon name="arrow_forward" />
                     </Link>
