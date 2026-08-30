@@ -5,3 +5,8 @@ __pycache__/
 .env
 .pytest_cache/
 .DS_Store
+
+# Generated/local application data
+frontend/next-env.d.ts
+backend/data/attempts/
+backend/data/knowledge/

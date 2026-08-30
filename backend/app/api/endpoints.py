@@ -1,18 +1,20 @@
 import uuid
 from typing import List, Optional
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, UploadFile, File, status
 from app.schemas.contracts import (
     ProfileRequest, ProfileResponse, CompetencyItem,
     RoadmapRequest, RoadmapResponse,
     QuizRequest, QuizResponse,
     QuizSubmitRequest, QuizSubmitResponse,
     EmployeeDashboardResponse,
-    AdminDashboardResponse, AdminEmployeeItem, GapSeverity
+    AdminDashboardResponse, AdminEmployeeItem, GapSeverity,
+    KnowledgeDocument, KnowledgeDocumentListResponse
 )
 from app.services.data_loader import DataLoader
 from app.services.llm_service import LLMService
 from app.services.roadmap_engine import RoadmapEngine
 from app.services.mastery_engine import MasteryEngine
+from app.services.document_service import DocumentService
 
 router = APIRouter()
 
@@ -76,7 +78,7 @@ def generate_roadmap(payload: RoadmapRequest):
 def generate_quiz(payload: QuizRequest):
     """
     POST /api/quiz
-    Generate between 5 to 8 multiple-choice questions from provided learning material text.
+    Generate between 8 to 10 multiple-choice questions from provided learning material text.
     """
     if not payload.content_text.strip():
         raise HTTPException(status_code=400, detail="content_text cannot be empty")
@@ -158,3 +160,22 @@ def get_admin_dashboard():
         )
 
     return AdminDashboardResponse(employees=admin_items)
+
+
+@router.post("/knowledge/upload", response_model=KnowledgeDocument, status_code=status.HTTP_200_OK)
+async def upload_knowledge_document(file: UploadFile = File(...)):
+    """
+    POST /api/knowledge/upload
+    Upload learning material document (PDF, TXT, MD, DOCX) and persist metadata.
+    """
+    return await DocumentService.upload_document(file)
+
+
+@router.get("/knowledge/documents", response_model=KnowledgeDocumentListResponse, status_code=status.HTTP_200_OK)
+def get_knowledge_documents():
+    """
+    GET /api/knowledge/documents
+    Retrieve list of uploaded knowledge documents and metadata.
+    """
+    docs = DocumentService.list_documents()
+    return KnowledgeDocumentListResponse(documents=docs)

@@ -113,3 +113,17 @@ export type AdminEmployee = {
 export type AdminDashboard = {
   employees: AdminEmployee[];
 };
+
+export type KnowledgeDocument = {
+  document_id: string;
+  filename: string;
+  file_type: string;
+  size_bytes: number;
+  uploaded_at: string;
+  status: string;
+};
+
+export type KnowledgeDocumentListResponse = {
+  documents: KnowledgeDocument[];
+};
+
