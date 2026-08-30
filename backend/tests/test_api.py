@@ -131,3 +131,44 @@ def test_roadmap_edge_cases():
     res_sparse = client.post("/api/roadmap", json={"profile_id": sparse_prof["profile_id"], "job_role": "Statistical Investigator"})
     assert res_sparse.status_code == 200
     assert len(res_sparse.json()["roadmap"]) > 0
+
+def test_knowledge_upload_and_list():
+    # 1. Test uploading a valid text document
+    test_content = b"Official NSSTA Sample Survey Scrutiny Manual 2026."
+    response = client.post(
+        "/api/knowledge/upload",
+        files={"file": ("Sample_Survey_Scrutiny.txt", test_content, "text/plain")}
+    )
+    assert response.status_code == 200
+    doc_data = response.json()
+    assert "document_id" in doc_data
+    assert doc_data["filename"] == "Sample_Survey_Scrutiny.txt"
+    assert doc_data["file_type"] == "TXT"
+    assert doc_data["size_bytes"] == len(test_content)
+    assert doc_data["status"] == "ready"
+
+    # 2. Test listing documents
+    list_res = client.get("/api/knowledge/documents")
+    assert list_res.status_code == 200
+    list_data = list_res.json()
+    assert "documents" in list_data
+    doc_ids = [d["document_id"] for d in list_data["documents"]]
+    assert doc_data["document_id"] in doc_ids
+
+def test_knowledge_upload_validation():
+    # 1. Unsupported extension
+    res_unsupported = client.post(
+        "/api/knowledge/upload",
+        files={"file": ("malicious_script.exe", b"binary content", "application/octet-stream")}
+    )
+    assert res_unsupported.status_code == 400
+    assert "Unsupported file extension" in res_unsupported.json()["detail"]
+
+    # 2. Empty file
+    res_empty = client.post(
+        "/api/knowledge/upload",
+        files={"file": ("empty_notes.txt", b"", "text/plain")}
+    )
+    assert res_empty.status_code == 400
+    assert "empty" in res_empty.json()["detail"]
+
