@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Badge } from "@/components/ui/Badge";
@@ -14,11 +15,13 @@ import { generateQuiz } from "@/lib/api/quiz";
 import { demoQuizQuestions } from "@/lib/mock/data";
 import type { QuizQuestion } from "@/lib/types/contracts";
 
-export default function AssessmentsPage() {
+const DEFAULT_CONTENT = "Stratified random sampling divides a population into homogeneous strata before random selection.";
+
+function AssessmentRunner({ topic }: { topic: string | null }) {
   const [questions, setQuestions] = useState<QuizQuestion[]>(demoQuizQuestions);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [content, setContent] = useState("Stratified random sampling divides a population into homogeneous strata before random selection.");
+  const [content, setContent] = useState(topic || DEFAULT_CONTENT);
   const [status, setStatus] = useState<"demo" | "loading" | "ready">("demo");
 
   async function loadQuiz() {
@@ -61,8 +64,17 @@ export default function AssessmentsPage() {
         <FadeIn from="left">
           <section className="card h-fit p-5">
             <h2 className="text-xl font-semibold">Learning Material</h2>
-            <textarea value={content} onChange={(event) => setContent(event.target.value)} className="focus-ring mt-4 min-h-40 w-full rounded-lg border border-slate-200 p-3 text-sm" />
-            <button onClick={loadQuiz} disabled={status === "loading"} className="focus-ring mt-4 w-full rounded-lg bg-[#F4511E] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white disabled:opacity-60">
+            <textarea
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
+              className="focus-ring mt-4 min-h-40 w-full rounded-lg border border-slate-200 p-3 text-sm"
+              placeholder="Paste official learning text or syllabus notes here..."
+            />
+            <button
+              onClick={loadQuiz}
+              disabled={status === "loading"}
+              className="focus-ring mt-4 w-full rounded-lg bg-[#F4511E] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white disabled:opacity-60 hover:bg-[#d84315] transition"
+            >
               {status === "loading" ? "Generating..." : "Generate Quiz"}
             </button>
           </section>
@@ -100,11 +112,11 @@ export default function AssessmentsPage() {
               Previous
             </button>
             {current === questions.length - 1 ? (
-              <Link href="/assessments/results" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+              <Link href="/assessments/results" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#d84315] transition">
                 Submit <Icon name="arrow_forward" />
               </Link>
             ) : (
-              <button onClick={() => { setCurrent(Math.min(questions.length - 1, current + 1)); setSelected(null); }} className="focus-ring rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+              <button onClick={() => { setCurrent(Math.min(questions.length - 1, current + 1)); setSelected(null); }} className="focus-ring rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#d84315] transition">
                 Next
               </button>
             )}
@@ -112,5 +124,20 @@ export default function AssessmentsPage() {
         </section>
       </div>
     </AppShell>
+  );
+}
+
+function AssessmentContent() {
+  const searchParams = useSearchParams();
+  const topicParam = searchParams.get("topic");
+
+  return <AssessmentRunner key={topicParam || "default"} topic={topicParam} />;
+}
+
+export default function AssessmentsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-sm text-slate-500">Loading assessment module...</div>}>
+      <AssessmentContent />
+    </Suspense>
   );
 }

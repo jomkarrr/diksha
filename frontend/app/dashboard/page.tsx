@@ -28,8 +28,10 @@ export default function DashboardPage() {
   const [status, setStatus] = useState<"loading" | "ready" | "demo">("loading");
 
   useEffect(() => {
-    const profileId = window.localStorage.getItem("diksha_profile_id") || "demo-profile";
-    fetchRoadmap({ profile_id: profileId, job_role: demoLearner.job_role })
+    const profileId = typeof window !== "undefined" ? window.localStorage.getItem("diksha_profile_id") || "demo-profile" : "demo-profile";
+    const jobRole = typeof window !== "undefined" ? window.localStorage.getItem("diksha_job_role") || demoLearner.job_role : demoLearner.job_role;
+
+    fetchRoadmap({ profile_id: profileId, job_role: jobRole })
       .then((data) => {
         setRoadmap(data.roadmap.length ? data.roadmap : demoRoadmap);
         setStatus("ready");
