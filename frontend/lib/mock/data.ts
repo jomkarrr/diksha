@@ -9,7 +9,7 @@ import type {
 } from "@/lib/types/contracts";
 
 export const demoLearner: ProfileRequest & { name: string; current_assignment: string } = {
-  name: "Babita Gada",
+  name: "Rajesh",
   designation: "Statistical Investigator Grade II",
   department: "National Sample Survey Office",
   job_role: "Statistical Investigator",
@@ -265,7 +265,7 @@ export const mockAdminDashboard: AdminDashboard = {
   employees: [
     {
       profile_id: "emp-101",
-      name: "babita gada",
+      name: "Rajesh",
       department: "National Sample Survey Office",
       avg_gap_severity: "medium",
       top_gaps: ["Sampling Techniques", "Python for Data Analysis"]
