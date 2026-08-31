@@ -112,3 +112,17 @@ class AdminEmployeeItem(BaseModel):
 
 class AdminDashboardResponse(BaseModel):
     employees: List[AdminEmployeeItem]
+
+
+# --- Knowledge Hub Endpoints ---
+class KnowledgeDocument(BaseModel):
+    document_id: str
+    filename: str
+    file_type: str
+    size_bytes: int
+    uploaded_at: str
+    status: str = "ready"
+
+class KnowledgeDocumentListResponse(BaseModel):
+    documents: List[KnowledgeDocument]
+

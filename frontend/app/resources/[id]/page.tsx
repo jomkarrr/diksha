@@ -33,7 +33,10 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                 <span className="flex items-center gap-1"><Icon name="verified" className="text-[16px]" /> Mock catalogue</span>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/assessments" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#F4511E] px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white">
+                <Link
+                  href={`/assessments?topic=${encodeURIComponent(`${resource.title}. ${resource.reason || ""}`.trim())}`}
+                  className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#F4511E] px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#d84315] transition"
+                >
                   Start Learning <Icon name="play_arrow" />
                 </Link>
                 <button className="focus-ring inline-flex items-center gap-2 rounded-lg border border-[#F4511E] px-5 py-3 text-xs font-semibold uppercase tracking-wide text-[#F4511E]">

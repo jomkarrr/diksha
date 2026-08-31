@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -23,21 +23,22 @@ type QuizResultData = {
   timestamp: string;
 };
 
-export default function AssessmentResultsPage() {
-  const [result, setResult] = useState<QuizResultData | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const raw = window.sessionStorage.getItem("diksha_quiz_result");
-      if (raw) {
-        try {
-          setResult(JSON.parse(raw));
-        } catch {
-          // Keep default
-        }
+function getInitialQuizResult(): QuizResultData | null {
+  if (typeof window !== "undefined") {
+    const raw = window.sessionStorage.getItem("diksha_quiz_result");
+    if (raw) {
+      try {
+        return JSON.parse(raw) as QuizResultData;
+      } catch {
+        return null;
       }
     }
-  }, []);
+  }
+  return null;
+}
+
+export default function AssessmentResultsPage() {
+  const [result] = useState<QuizResultData | null>(getInitialQuizResult);
 
   const scorePct = result ? result.score_pct : 80;
   const correctCount = result ? result.correct_count : 4;
