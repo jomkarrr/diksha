@@ -127,3 +127,16 @@ export type KnowledgeDocumentListResponse = {
   documents: KnowledgeDocument[];
 };
 
+export type PracticeDatasetResponse = {
+  dataset_name: string;
+  data_type: string;
+  source_note: string;
+  survey_name: string;
+  linked_competency_node?: string;
+  target_job_role?: string;
+  total_records: number;
+  quality_issue_count: number;
+  records: Record<string, any>[];
+};
+
+

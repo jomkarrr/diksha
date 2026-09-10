@@ -1,0 +1,322 @@
+{
+  "dataset_name": "NSSTA_Training_Registry_Sample",
+  "data_type": "synthetic_demo",
+  "source_note": "Synthetic data for hackathon demonstration; not official government data.",
+  "survey_name": "National Statistical Systems Training Academy (NSSTA) Course Registry",
+  "linked_competency_node": "stat-survey-design-101",
+  "target_job_role": "Director / Senior Statistical Officer",
+  "total_records": 20,
+  "quality_issue_count": 1,
+  "records": [
+    {
+      "nssta_module_code": "NSSTA-SURV-101",
+      "linked_competency_node": "stat-survey-design-101",
+      "linked_course_id": "igot-stat-101",
+      "module_title": "Survey Methodology & Questionnaire Design",
+      "target_cadre": [
+        "Field Officer",
+        "Statistical Investigator"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-SURV-102",
+      "linked_competency_node": "stat-survey-design-101",
+      "linked_course_id": "igot-stat-102",
+      "module_title": "Advanced Survey Protocols & Schedule Scrutiny",
+      "target_cadre": [
+        "Statistical Investigator"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-SAMP-101",
+      "linked_competency_node": "stat-sampling-101",
+      "linked_course_id": "igot-stat-103",
+      "module_title": "Sampling Techniques & Frame Error Analysis",
+      "target_cadre": [
+        "Statistical Investigator",
+        "Data Analyst"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-SAMP-102",
+      "linked_competency_node": "stat-sampling-101",
+      "linked_course_id": "igot-stat-104",
+      "module_title": "Variance Estimation in Multi-Stage Designs",
+      "target_cadre": [
+        "Data Analyst",
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-ECON-101",
+      "linked_competency_node": "stat-national-accounts-101",
+      "linked_course_id": "igot-stat-105",
+      "module_title": "National Accounts & GDP Compilation",
+      "target_cadre": [
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-ECON-102",
+      "linked_competency_node": "stat-national-accounts-101",
+      "linked_course_id": "igot-stat-106",
+      "module_title": "Macroeconomic Aggregates & SNA 2008",
+      "target_cadre": [
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-PRIC-101",
+      "linked_competency_node": "stat-price-stats-101",
+      "linked_course_id": "igot-stat-107",
+      "module_title": "CPI Basket Weighting & Laspeyres Calculation",
+      "target_cadre": [
+        "Data Analyst"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-LABR-101",
+      "linked_competency_node": "stat-labour-stats-101",
+      "linked_course_id": "igot-stat-108",
+      "module_title": "PLFS Schedule 10.4 & CWS Activity Coding",
+      "target_cadre": [
+        "Statistical Investigator",
+        "Field Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-SDG-101",
+      "linked_competency_node": "stat-sdg-indicators-101",
+      "linked_course_id": "igot-stat-109",
+      "module_title": "SDG National Indicator Framework (NIF)",
+      "target_cadre": [
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-QUAL-101",
+      "linked_competency_node": "stat-data-quality-101",
+      "linked_course_id": "igot-stat-110",
+      "module_title": "UN NQAF Data Quality Assurance",
+      "target_cadre": [
+        "Statistical Investigator",
+        "Data Analyst"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-PYTH-101",
+      "linked_competency_node": "tech-python-101",
+      "linked_course_id": "igot-tech-201",
+      "module_title": "Python for Public Sector Statistics",
+      "target_cadre": [
+        "Data Analyst"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 1,
+      "credit_hours": 48.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": true,
+      "quality_issue_type": "excessive_credits_per_day"
+    },
+    {
+      "nssta_module_code": "NSSTA-PYTH-102",
+      "linked_competency_node": "tech-python-101",
+      "linked_course_id": "igot-tech-202",
+      "module_title": "Data Wrangling with Pandas & NumPy",
+      "target_cadre": [
+        "Data Analyst"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-SQL-101",
+      "linked_competency_node": "tech-sql-101",
+      "linked_course_id": "igot-tech-203",
+      "module_title": "Relational Database Management for Cadres",
+      "target_cadre": [
+        "Statistical Investigator",
+        "Data Analyst"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-VIS-101",
+      "linked_competency_node": "tech-data-vis-101",
+      "linked_course_id": "igot-tech-205",
+      "module_title": "Executive Dashboards & Statistical Charts",
+      "target_cadre": [
+        "Data Analyst",
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-GIS-101",
+      "linked_competency_node": "tech-gis-101",
+      "linked_course_id": "igot-tech-206",
+      "module_title": "Spatial Data Analysis with QGIS",
+      "target_cadre": [
+        "Statistical Investigator"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-AIML-101",
+      "linked_competency_node": "tech-ai-ml-101",
+      "linked_course_id": "igot-tech-207",
+      "module_title": "Machine Learning in Official Statistics",
+      "target_cadre": [
+        "Data Analyst"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Hands-on Microdata Lab",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-CYBER-101",
+      "linked_competency_node": "gov-cybersecurity-101",
+      "linked_course_id": "igot-gov-301",
+      "module_title": "Cybersecurity Protocols in Survey Collection",
+      "target_cadre": [
+        "Field Officer",
+        "Statistical Investigator"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-DPDP-101",
+      "linked_competency_node": "gov-data-privacy-101",
+      "linked_course_id": "igot-gov-302",
+      "module_title": "DPDP Act 2023 Compliance & Anonymization",
+      "target_cadre": [
+        "Data Analyst",
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-COMM-101",
+      "linked_competency_node": "mgr-communication-101",
+      "linked_course_id": "igot-mgr-401",
+      "module_title": "Statistical Report Writing & Briefings",
+      "target_cadre": [
+        "Statistical Investigator",
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Virtual Interactive",
+      "duration_days": 5,
+      "credit_hours": 30.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "nssta_module_code": "NSSTA-LEAD-101",
+      "linked_competency_node": "mgr-leadership-101",
+      "linked_course_id": "igot-mgr-402",
+      "module_title": "Leadership in Statistical Field Operations",
+      "target_cadre": [
+        "Director / Senior Statistical Officer"
+      ],
+      "delivery_mode": "Residential (Campus Greater Noida)",
+      "duration_days": 3,
+      "credit_hours": 18.0,
+      "pedagogical_approach": "Lecture & Case Study",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    }
+  ]
+}

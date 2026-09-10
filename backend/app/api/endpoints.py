@@ -8,7 +8,8 @@ from app.schemas.contracts import (
     QuizSubmitRequest, QuizSubmitResponse,
     EmployeeDashboardResponse,
     AdminDashboardResponse, AdminEmployeeItem, GapSeverity,
-    KnowledgeDocument, KnowledgeDocumentListResponse
+    KnowledgeDocument, KnowledgeDocumentListResponse,
+    PracticeDatasetResponse
 )
 from app.services.data_loader import DataLoader
 from app.services.llm_service import LLMService
@@ -179,3 +180,19 @@ def get_knowledge_documents():
     """
     docs = DocumentService.list_documents()
     return KnowledgeDocumentListResponse(documents=docs)
+
+
+@router.get("/practice/{domain}", response_model=PracticeDatasetResponse, status_code=status.HTTP_200_OK)
+def get_practice_dataset(domain: str):
+    """
+    GET /api/practice/{domain}
+    Retrieve official statistical practice dataset and metadata by domain.
+    Supported domains: plfs, asi, cpi, iip, hces, asuse, nas, nada, nssta, igot
+    """
+    dataset = DataLoader.get_practice_dataset(domain)
+    if not dataset:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Practice dataset for domain '{domain}' not found. Supported domains: plfs, asi, cpi, iip, hces, asuse, nas, nada, nssta, igot"
+        )
+    return dataset

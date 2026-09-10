@@ -1,0 +1,758 @@
+{
+  "dataset_name": "iGOT_Karmayogi_Competency_Mapping_Sample",
+  "data_type": "synthetic_demo",
+  "source_note": "Synthetic data for hackathon demonstration; not official government data.",
+  "survey_name": "iGOT Karmayogi FRAC Competency Framework",
+  "linked_competency_node": "stat-survey-design-101",
+  "target_job_role": "Director / Senior Statistical Officer",
+  "total_records": 20,
+  "quality_issue_count": 1,
+  "records": [
+    {
+      "frac_competency_id": "IGOT-COMP-001",
+      "competency_name": "Survey Design & Methodology",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-survey-design-101",
+      "mapped_job_roles": [
+        "Statistical Investigator",
+        "Field Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-101",
+        "igot-stat-102"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-002",
+      "competency_name": "Sampling Techniques & Frame Design",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-sampling-101",
+      "mapped_job_roles": [
+        "Statistical Investigator",
+        "Data Analyst"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-103",
+        "igot-stat-104"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-003",
+      "competency_name": "National Accounts & Macro Estimation",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-national-accounts-101",
+      "mapped_job_roles": [
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-105",
+        "igot-stat-106"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-004",
+      "competency_name": "Price Statistics & Index Numbers",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-price-stats-101",
+      "mapped_job_roles": [
+        "Data Analyst"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-107"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-005",
+      "competency_name": "Labour & Employment Survey Methods",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-labour-stats-101",
+      "mapped_job_roles": [
+        "Statistical Investigator",
+        "Field Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-108"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-006",
+      "competency_name": "SDG Indicators & Tracking",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-sdg-indicators-101",
+      "mapped_job_roles": [
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-109"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-007",
+      "competency_name": "Data Quality & Scrutiny Frameworks",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-data-quality-101",
+      "mapped_job_roles": [
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-110"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-008",
+      "competency_name": "Python Programming for Public Data",
+      "competency_type": "Technical",
+      "mapped_diksha_node_id": "tech-python-101",
+      "mapped_job_roles": [
+        "Data Analyst",
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        }
+      ],
+      "linked_courses": [
+        "igot-tech-201",
+        "igot-tech-202"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": true,
+      "quality_issue_type": "missing_mandatory_proficiency_levels"
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-009",
+      "competency_name": "SQL Databases & Data Extraction",
+      "competency_type": "Technical",
+      "mapped_diksha_node_id": "tech-sql-101",
+      "mapped_job_roles": [
+        "Data Analyst",
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-tech-203",
+        "igot-tech-204"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-010",
+      "competency_name": "Data Visualization & Public Dashboards",
+      "competency_type": "Technical",
+      "mapped_diksha_node_id": "tech-data-vis-101",
+      "mapped_job_roles": [
+        "Data Analyst",
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-tech-205"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-011",
+      "competency_name": "Geospatial Analysis & QGIS",
+      "competency_type": "Technical",
+      "mapped_diksha_node_id": "tech-gis-101",
+      "mapped_job_roles": [
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-tech-206"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-012",
+      "competency_name": "Artificial Intelligence & ML in Statistics",
+      "competency_type": "Technical",
+      "mapped_diksha_node_id": "tech-ai-ml-101",
+      "mapped_job_roles": [
+        "Data Analyst"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-tech-207"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-013",
+      "competency_name": "Cybersecurity Fundamentals in Government",
+      "competency_type": "Governance",
+      "mapped_diksha_node_id": "gov-cybersecurity-101",
+      "mapped_job_roles": [
+        "Field Officer",
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-gov-301"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-014",
+      "competency_name": "Data Privacy & DPDP Compliance",
+      "competency_type": "Governance",
+      "mapped_diksha_node_id": "gov-data-privacy-101",
+      "mapped_job_roles": [
+        "Data Analyst",
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-gov-302"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-015",
+      "competency_name": "Government Cloud Infrastructure (MeghRaj)",
+      "competency_type": "Governance",
+      "mapped_diksha_node_id": "gov-cloud-101",
+      "mapped_job_roles": [
+        "Data Analyst"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-gov-303"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-016",
+      "competency_name": "Statistical Communication & Briefing",
+      "competency_type": "Behavioural",
+      "mapped_diksha_node_id": "mgr-communication-101",
+      "mapped_job_roles": [
+        "Statistical Investigator",
+        "Field Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-mgr-401"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-017",
+      "competency_name": "Statistical Team Leadership",
+      "competency_type": "Behavioural",
+      "mapped_diksha_node_id": "mgr-leadership-101",
+      "mapped_job_roles": [
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-mgr-402"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-018",
+      "competency_name": "Government Project Management",
+      "competency_type": "Behavioural",
+      "mapped_diksha_node_id": "mgr-project-mgmt-101",
+      "mapped_job_roles": [
+        "Director / Senior Statistical Officer"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-mgr-403"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-019",
+      "competency_name": "Field Scrutiny Protocol",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-data-quality-101",
+      "mapped_job_roles": [
+        "Field Officer",
+        "Statistical Investigator"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-110"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    },
+    {
+      "frac_competency_id": "IGOT-COMP-020",
+      "competency_name": "Applied Sampling Estimation",
+      "competency_type": "Domain (Statistical)",
+      "mapped_diksha_node_id": "stat-sampling-101",
+      "mapped_job_roles": [
+        "Statistical Investigator",
+        "Data Analyst"
+      ],
+      "proficiency_levels": [
+        {
+          "level": "none",
+          "label": "No Prior Knowledge",
+          "description": "Candidate has not undergone structured training on this competency."
+        },
+        {
+          "level": "basic",
+          "label": "Foundational / Operational",
+          "description": "Can canvass standard schedules and apply basic field scrutiny rules under supervision."
+        },
+        {
+          "level": "intermediate",
+          "label": "Proficient / Analytical",
+          "description": "Can validate sampling multipliers, scrutinize anomalies, and execute statistical scripts independently."
+        },
+        {
+          "level": "advanced",
+          "label": "Expert / Policy Design",
+          "description": "Can design survey methodologies, formulate national index weights, and train state statistical cadres."
+        }
+      ],
+      "linked_courses": [
+        "igot-stat-104"
+      ],
+      "ministry_anchor": "Ministry of Statistics and Programme Implementation (MoSPI)",
+      "is_quality_issue": false,
+      "quality_issue_type": null
+    }
+  ]
+}

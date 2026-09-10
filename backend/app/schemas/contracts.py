@@ -126,3 +126,17 @@ class KnowledgeDocument(BaseModel):
 class KnowledgeDocumentListResponse(BaseModel):
     documents: List[KnowledgeDocument]
 
+
+# --- Practice Microdata Endpoints ---
+class PracticeDatasetResponse(BaseModel):
+    dataset_name: str
+    data_type: str
+    source_note: str
+    survey_name: str
+    linked_competency_node: Optional[str] = None
+    target_job_role: Optional[str] = None
+    total_records: int
+    quality_issue_count: int
+    records: List[dict]
+
+

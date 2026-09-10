@@ -68,3 +68,28 @@ class DataLoader:
     @classmethod
     def get_profile(cls, profile_id: str) -> Optional[Dict[str, Any]]:
         return cls._profiles_cache.get(profile_id)
+
+    @classmethod
+    def get_practice_dataset(cls, domain: str) -> Optional[Dict[str, Any]]:
+        valid_domains = {
+            "plfs": "plfs_sample.json",
+            "asi": "asi_sample.json",
+            "cpi": "cpi_sample.json",
+            "iip": "iip_sample.json",
+            "hces": "hces_sample.json",
+            "asuse": "asuse_sample.json",
+            "nas": "nas_sample.json",
+            "nada": "nada_sample.json",
+            "nssta": "nssta_sample.json",
+            "igot": "igot_sample.json"
+        }
+        filename = valid_domains.get(domain.lower().strip())
+        if not filename:
+            return None
+
+        file_path = DATA_DIR / "datasets" / filename
+        if not file_path.exists():
+            return None
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
