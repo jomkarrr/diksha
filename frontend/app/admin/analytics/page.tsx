@@ -115,21 +115,7 @@ export default function WorkforceAnalyticsPage() {
         eyebrow="Workforce Analytics"
         title="Workforce Competency Overview"
         description="Supervisor analytics for official statistics readiness, high-priority gaps, and learning completion across departments."
-        action={
-          <Badge tone={demo ? "warning" : "success"}>
-            {demo ? "Mock fallback dataset" : "Live backend telemetry"}
-          </Badge>
-        }
       />
-
-      {apiError && (
-        <div className="mb-6 flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
-          <div className="flex items-center gap-2">
-            <Icon name="info" className="text-amber-700" />
-            <span>Notice: Backend API unavailable ({apiError}). Showing verified mock dataset.</span>
-          </div>
-        </div>
-      )}
 
       {/* KPI Cards */}
       {loading ? (

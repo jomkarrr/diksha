@@ -46,19 +46,6 @@ function AssessmentRunner({ topic }: { topic: string | null }) {
         eyebrow="Assessment"
         title="Competency Assessment: Sampling Techniques"
         description="Generate MCQs from pasted learning text using the current backend quiz endpoint."
-        action={
-          <div className="flex items-center gap-2">
-            <Link
-              href="/quiz"
-              className="focus-ring inline-flex items-center gap-1.5 rounded-lg bg-[#F4511E] px-3.5 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#d84315] transition"
-            >
-              <Icon name="smart_toy" className="text-[16px]" /> Open AI Quiz Generator &rarr;
-            </Link>
-            <Badge tone={status === "ready" ? "success" : "warning"}>
-              {status === "ready" ? "Backend quiz" : "Demo-ready"}
-            </Badge>
-          </div>
-        }
       />
       <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
         <FadeIn from="left">

@@ -1,0 +1,483 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DIKSHA MoSPI - Officer Onboarding &amp; Competency Profiling</title>
+<!-- Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            saffron: {
+              DEFAULT: '#f47920',
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#f47920',
+              700: '#c2410c',
+            },
+            govnavy: {
+              DEFAULT: '#0b2545',
+              800: '#0f2942',
+              900: '#07162c',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans', 'Segoe UI', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="base-layout">
+    body {
+      background-color: #f8f9ff;
+      color: #1e293b;
+      font-family: 'Inter', 'Noto Sans', sans-serif;
+    }
+    .tricolor-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%);
+    }
+  </style>
+<style data-purpose="form-controls">
+    /* Custom radio & select visual adjustments */
+    .chip-checkbox:checked + label {
+      border-color: #f47920;
+      background-color: #fff7ed;
+      color: #c2410c;
+    }
+    .chip-checkbox:checked + label .check-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+<!-- BEGIN: SovereignTopUtilityBar -->
+<!-- 3px Tricolor Bar -->
+<div class="tricolor-bar w-full" data-purpose="tricolor-strip"></div>
+<!-- Government Utility Header -->
+<aside class="bg-white border-b border-slate-200 text-xs text-slate-600 px-4 sm:px-8 py-1.5" data-purpose="gov-utility-bar">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+<!-- Left Sovereign Attribution -->
+<div class="flex items-center space-x-3">
+<span class="font-medium text-slate-800">भारत सरकार | Government of India</span>
+<span class="text-slate-300">|</span>
+<span class="text-slate-600">Ministry of Statistics &amp; Programme Implementation</span>
+</div>
+<!-- Right Accessibility & Language Controls -->
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-1 font-semibold text-slate-700">
+
+
+
+</div>
+
+<button aria-label="Toggle Contrast" class="flex items-center space-x-1 hover:text-slate-900" type="button">
+
+
+</button>
+<span class="text-slate-300">|</span>
+<div class="flex items-center space-x-1">
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="font-medium text-slate-800">English</span>
+<span class="text-slate-400">/</span>
+<span class="text-slate-600 hover:text-slate-900 cursor-pointer">हिन्दी</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- END: SovereignTopUtilityBar -->
+<!-- BEGIN: GlobalNavigationHeader -->
+<header class="bg-white border-b border-slate-200 px-4 sm:px-8 py-3 sticky top-0 z-30 shadow-sm" data-purpose="diksha-global-header">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<!-- Logo and Platform Identity -->
+<div class="flex items-center space-x-4">
+<a aria-label="DIKSHA MoSPI Home" class="flex items-center" href="#">
+<img alt="DIKSHA Logo" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2RE4G6ChLK3gGBTNq-WK34hMXD5tjDzCxDdmR2CDWk9TT6jXiCQfI38163MknUf2rhAZfj93xEZmuQlHjWBxlIHM8bluL-DH8biVeZccsybt8ypD2fcQzfygclsCPA3hThrEnWVbigtdtZwgWPoI71YsgNXqNB65na6arHxBWksXiSF1oksVUF3y9E6LDTIc2dpaNFUnFO-kYCikjHLL7NqFwYj_TFv2umlMRcSAIOF9hFkepevv5AKvxpHNsVnr-Xw">
+</a>
+<div class="border-l border-slate-200 pl-3">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-sm tracking-wide text-slate-900">DIKSHA</span>
+
+</div>
+<p class="text-[11px] text-slate-500 font-medium leading-tight">Adaptive Skill Intelligence • MoSPI &amp; iGOT Karmayogi</p>
+</div>
+</div>
+<!-- Right Header Actions / Cadre Status -->
+<div class="flex items-center space-x-4">
+<!-- Notification Bell -->
+<button aria-label="Notifications" class="relative p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-saffron rounded-full"></span>
+</button>
+<span class="h-6 w-px bg-slate-200"></span>
+<!-- Officer Profile Preview / Onboarding status badge -->
+<div class="flex items-center space-x-3 bg-slate-50 border border-slate-200/80 rounded-full py-1 pl-1.5 pr-3">
+<div class="w-7 h-7 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold text-xs uppercase">
+            NO
+          </div>
+<div class="text-left">
+<div class="text-xs font-semibold text-slate-800 leading-tight">New Officer Onboarding</div>
+<div class="text-[10px] text-slate-500 font-medium">Subordinate Statistical Service (SSS)</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- END: GlobalNavigationHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow py-8 px-4 sm:px-8 max-w-7xl mx-auto w-full" data-purpose="onboarding-main-container">
+<!-- Hero Title & Subheading -->
+<div class="text-center max-w-2xl mx-auto mb-8" data-purpose="onboarding-hero">
+
+<h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+        Let's build your competency profile
+      </h1>
+<p class="text-sm text-slate-600 mt-2 leading-relaxed">
+        Tell us about your role and experience. DIKSHA will identify the competencies required for your role and create a personalized learning path.
+      </p>
+</div>
+<!-- Stepper Navigation -->
+<div class="max-w-3xl mx-auto mb-10" data-purpose="3-step-progress-stepper">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Background Line -->
+<div class="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-0.5 bg-slate-200 -z-0"></div>
+<!-- Step 1: Active -->
+<div class="relative z-10 flex flex-col items-center group">
+<div class="w-10 h-10 rounded-full bg-saffron text-white font-bold text-sm flex items-center justify-center shadow-md shadow-orange-500/20 ring-4 ring-orange-100">
+            01
+          </div>
+<span class="text-xs font-bold text-saffron mt-2 tracking-wide uppercase">Step 01: Profile</span>
+<span class="text-[11px] text-slate-500 font-medium">(Active Step)</span>
+</div>
+<!-- Step 2: Upcoming -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-white border-2 border-slate-300 text-slate-500 font-semibold text-sm flex items-center justify-center">
+            02
+          </div>
+<span class="text-xs font-semibold text-slate-600 mt-2 tracking-wide uppercase">Step 02: Competencies</span>
+<span class="text-[11px] text-slate-400 font-medium">(Upcoming)</span>
+</div>
+<!-- Step 3: Upcoming -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-white border-2 border-slate-300 text-slate-500 font-semibold text-sm flex items-center justify-center">
+            03
+          </div>
+<span class="text-xs font-semibold text-slate-600 mt-2 tracking-wide uppercase">Step 03: Learning Path</span>
+<span class="text-[11px] text-slate-400 font-medium">(Upcoming)</span>
+</div>
+</div>
+</div>
+<!-- BEGIN: CadreOnboardingFormCard -->
+<div class="bg-white border border-slate-200/90 rounded-xl p-6 sm:p-9 shadow-sm max-w-4xl mx-auto" data-purpose="cadre-onboarding-card">
+<!-- Card Section Header -->
+<div class="border-b border-slate-100 pb-5 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+<div>
+<h2 class="text-lg font-bold text-slate-800">Cadre &amp; Official Designation Profile</h2>
+<p class="text-xs text-slate-500 mt-0.5">Please confirm your current MoSPI posting and statistical duties to calibrate FRAC nodes.</p>
+</div>
+<div class="flex items-center space-x-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="font-medium">DigiLocker Cadre Link Active</span>
+</div>
+</div>
+<form action="#" class="space-y-7" method="POST">
+<!-- Two Column Form Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-purpose="profile-fields-grid">
+<!-- Left Column Fields -->
+<div class="space-y-5">
+<!-- Designation Dropdown -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="designation">
+                Official Designation <span class="text-red-500">*</span>
+</label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="designation" name="designation">
+<option selected="">Statistical Investigator Gr. II (NSSO / FOD)</option>
+<option>Statistical Investigator Gr. I (NSSO / SDRD)</option>
+<option>Junior Statistical Officer (JSO) - MoSPI Cadre</option>
+<option>Senior Statistical Officer (SSO) - MoSPI Cadre</option>
+<option>Assistant Director (ISS Cadre)</option>
+<option>Deputy Director (Data Informatics &amp; Innovation)</option>
+</select>
+</div>
+<!-- Department / Ministry Dropdown -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="department">
+                Department / Attached Office <span class="text-red-500">*</span>
+</label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="department" name="department">
+<option selected="">National Sample Survey Office (NSSO) - Field Operations Division</option>
+<option>National Sample Survey Office (NSSO) - Survey Design and Research Division</option>
+<option>National Accounts Division (NAD) - MoSPI</option>
+<option>Economic Statistics Division (ESD) - MoSPI</option>
+<option>Price Statistics Division (PSD) - MoSPI</option>
+<option>Coordination &amp; Administration Division (CAD)</option>
+</select>
+</div>
+<!-- Job Role Dropdown -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="job-role">
+                Primary Job Role (FRAC Role Map) <span class="text-red-500">*</span>
+</label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="job-role" name="job-role">
+<option selected="">Field Microdata Collection &amp; Survey Audit</option>
+<option>Survey Schedule Designer &amp; Pre-testing Specialist</option>
+<option>National Accounts Aggregation &amp; GVA Modeling</option>
+<option>Price Index Computation (CPI / IIP Validation)</option>
+<option>Statistical Data Science &amp; Python Analytics</option>
+</select>
+</div>
+<!-- Years of Experience -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="experience">
+                Cadre Seniority &amp; Experience <span class="text-red-500">*</span>
+</label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="experience" name="experience">
+<option>0 - 3 Years (Probationary / Gr. II Entry)</option>
+<option selected="">4 - 7 Years (Cadre Seniority Grade II)</option>
+<option>8 - 12 Years (Senior Cadre Investigator)</option>
+<option>12+ Years (Supervisory Cadre)</option>
+</select>
+</div>
+</div>
+<!-- Right Column Fields -->
+<div class="space-y-5">
+<!-- Highest Qualification Dropdown -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="qualification">
+                Highest Qualification <span class="text-red-500">*</span>
+</label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="qualification" name="qualification">
+<option selected="">Post Graduate in Statistics / Applied Econometrics</option>
+<option>Master of Science (M.Sc) in Mathematical Statistics</option>
+<option>Master of Arts (M.A) in Economics</option>
+<option>Bachelor of Science (B.Sc) in Statistics / Mathematics</option>
+<option>Post Graduate Diploma in Data Analytics / IT</option>
+<option>Doctorate (Ph.D) in Statistical Sciences</option>
+</select>
+</div>
+<!-- Previous Training -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="training">
+                Previous Institutional Training
+              </label>
+<select class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron" id="training" name="training">
+<option selected="">NSSTA Induction Training (Batch 2021)</option>
+<option>NSSTA In-Service Refresher on CAPI / PLFS (2023)</option>
+<option>ISTM Administrative Procedures &amp; e-Office</option>
+<option>International Statistical Institute (ISI) Workshop</option>
+<option>None / Direct Cadre Entry</option>
+</select>
+</div>
+<!-- Current Responsibilities Textarea -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1.5" for="responsibilities">
+                Current Responsibilities <span class="text-slate-400 font-normal">(Optional context for AI mapping)</span>
+</label>
+<textarea class="w-full text-xs sm:text-sm rounded-lg border-slate-300 text-slate-800 bg-slate-50/50 focus:bg-white focus:border-saffron focus:ring-saffron resize-none" id="responsibilities" name="responsibilities" rows="4">Conducting household listing, multi-stage cluster sampling, and CAPI validation for Periodic Labour Force Survey (PLFS) &amp; HCES.</textarea>
+</div>
+</div>
+</div>
+<!-- Section: Primary Statistical Areas & Cadre Focus -->
+<div class="pt-5 border-t border-slate-100" data-purpose="statistical-areas-selection">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Primary Statistical Areas &amp; Cadre Focus</h3>
+<p class="text-xs text-slate-500">Select all areas relevant to your current field operations and target promotion role</p>
+</div>
+<span class="text-xs font-medium text-slate-500">4 Selected</span>
+</div>
+<!-- Checkbox Chips Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+<!-- Item 1: Survey & Sampling Techniques (Checked) -->
+<div class="relative">
+<input checked="" class="sr-only chip-checkbox" id="area-1" name="statistical_areas[]" type="checkbox" value="survey_sampling">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-1">
+<span class="text-xs font-medium text-slate-800">Survey &amp; Sampling Techniques</span>
+<span class="check-icon w-4 h-4 rounded-full bg-saffron text-white flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 2: Labour Statistics (Checked) -->
+<div class="relative">
+<input checked="" class="sr-only chip-checkbox" id="area-2" name="statistical_areas[]" type="checkbox" value="labour_stats">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-2">
+<span class="text-xs font-medium text-slate-800">Labour Statistics (PLFS / UR / WPR)</span>
+<span class="check-icon w-4 h-4 rounded-full bg-saffron text-white flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 3: National Accounts (Unchecked) -->
+<div class="relative">
+<input class="sr-only chip-checkbox" id="area-3" name="statistical_areas[]" type="checkbox" value="national_accounts">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-3">
+<span class="text-xs font-medium text-slate-800">National Accounts (NAS / GVA)</span>
+<span class="check-icon w-4 h-4 rounded-full bg-transparent border border-slate-300 text-transparent flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 4: Price Statistics (Unchecked) -->
+<div class="relative">
+<input class="sr-only chip-checkbox" id="area-4" name="statistical_areas[]" type="checkbox" value="price_stats">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-4">
+<span class="text-xs font-medium text-slate-800">Price Statistics (CPI / IIP)</span>
+<span class="check-icon w-4 h-4 rounded-full bg-transparent border border-slate-300 text-transparent flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 5: Industrial Statistics (Unchecked) -->
+<div class="relative">
+<input class="sr-only chip-checkbox" id="area-5" name="statistical_areas[]" type="checkbox" value="industrial_stats">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-5">
+<span class="text-xs font-medium text-slate-800">Industrial Statistics (ASI / ASUSE)</span>
+<span class="check-icon w-4 h-4 rounded-full bg-transparent border border-slate-300 text-transparent flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 6: Data Analysis & Microdata (Checked) -->
+<div class="relative">
+<input checked="" class="sr-only chip-checkbox" id="area-6" name="statistical_areas[]" type="checkbox" value="microdata_scrubbing">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-6">
+<span class="text-xs font-medium text-slate-800">Data Analysis &amp; Microdata Scrubbing</span>
+<span class="check-icon w-4 h-4 rounded-full bg-saffron text-white flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 7: Data Visualization & Reporting (Checked) -->
+<div class="relative">
+<input checked="" class="sr-only chip-checkbox" id="area-7" name="statistical_areas[]" type="checkbox" value="visualization">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-7">
+<span class="text-xs font-medium text-slate-800">Data Visualization &amp; Reporting</span>
+<span class="check-icon w-4 h-4 rounded-full bg-saffron text-white flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+<!-- Item 8: Other Methodologies (Unchecked) -->
+<div class="relative">
+<input class="sr-only chip-checkbox" id="area-8" name="statistical_areas[]" type="checkbox" value="other_methodologies">
+<label class="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all duration-150 select-none" for="area-8">
+<span class="text-xs font-medium text-slate-800">Other Statistical Methodologies</span>
+<span class="check-icon w-4 h-4 rounded-full bg-transparent border border-slate-300 text-transparent flex items-center justify-center text-[10px] shrink-0 ml-2">✓</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Security & Integration Notice -->
+<div class="rounded-lg bg-blue-50/70 border border-blue-100 p-3.5 flex items-start space-x-3 text-xs text-blue-900" data-purpose="security-badge">
+<svg class="w-4 h-4 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<div class="leading-relaxed">
+<span class="font-semibold text-blue-950">SPARROW &amp; iGOT Cadre Verification:</span> 
+            Information verified against SPARROW e-Office &amp; iGOT Karmayogi Cadre Database. Competency nodes will be benchmarked against FRAC Standard SSS-GrII-2024.
+          </div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4" data-purpose="form-actions">
+<button class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 text-xs font-semibold transition-colors duration-150" type="button">
+            Save &amp; Continue Later
+          </button>
+<button class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3 rounded-lg bg-saffron hover:bg-orange-600 text-white font-semibold text-sm shadow-md shadow-orange-500/25 transition-all duration-150 group" type="submit">
+<span class="">Analyze My Competencies</span>
+<span class="text-base group-hover:translate-x-1 transition-transform duration-150">→</span>
+</button>
+</div>
+</form>
+</div>
+<!-- END: CadreOnboardingFormCard -->
+<!-- Micro Cadre Info Banner below Card -->
+<div class="mt-6 max-w-4xl mx-auto flex items-center justify-between text-xs text-slate-500 px-2" data-purpose="cadre-meta-info">
+<div class="flex items-center space-x-2">
+
+
+</div>
+<div class="">Registry ID: <span class="font-mono text-slate-700 font-medium">FRAC-NSSO-ONBOARD-2025</span></div>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: GlobalFooter -->
+<footer class="bg-govnavy text-slate-300 pt-12 pb-8 px-4 sm:px-8 border-t border-slate-800" data-purpose="global-sovereign-footer">
+<div class="max-w-7xl mx-auto">
+<!-- Top Columns Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800/80 text-xs">
+<!-- Col 1: Platform & Compliance -->
+<div class="space-y-3">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-base text-white tracking-wide">DIKSHA MoSPI</span>
+</div>
+<p class="text-slate-400 text-[11px] leading-relaxed">
+            National Statistical Capacity Intelligence and Adaptive Learning Portal under the Ministry of Statistics &amp; Programme Implementation.
+          </p>
+<div class="flex items-center space-x-2 text-amber-400 text-[11px] font-semibold pt-1">
+<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zm4.293 6.763a1 1 0 00-1.414-1.414L9 11.172 7.121 9.293a1 1 0 00-1.414 1.414l2.5 2.5a1 1 0 001.414 0l5-5z" fill-rule="evenodd"></path>
+</svg>
+<span class="">GIGW 3.0 &amp; WCAG 2.1 AA Compliant</span>
+</div>
+</div>
+<!-- Col 2: Sovereign Stakeholders -->
+<div class="space-y-2.5">
+<h4 class="font-semibold text-white uppercase text-[11px] tracking-wider">Sovereign Stakeholders</h4>
+<ul class="space-y-1.5 text-slate-400">
+<li class=""><a class="hover:text-white transition-colors" href="#">MoSPI Official Portal</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">iGOT Karmayogi Bharat</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Capacity Building Commission (CBC)</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">National Statistical Systems Training (NSSTA)</a></li>
+</ul>
+</div>
+<!-- Col 3: Learning Framework -->
+<div class="space-y-2.5">
+<h4 class="font-semibold text-white uppercase text-[11px] tracking-wider">Learning Framework</h4>
+<ul class="space-y-1.5 text-slate-400">
+<li class=""><a class="hover:text-white transition-colors" href="#">4-Domain Competency Matrix</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">SM-2 Memory Retention Cadence</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Kahn's Topological Prerequisites</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Assessment Integrity Guidelines</a></li>
+</ul>
+</div>
+<!-- Col 4: Support & Governance -->
+<div class="space-y-2.5">
+<h4 class="font-semibold text-white uppercase text-[11px] tracking-wider">Support &amp; Governance</h4>
+<ul class="space-y-1.5 text-slate-400">
+<li class=""><span class="text-slate-300">Helpdesk:</span> 1800-11-2024 (Toll Free)</li>
+<li class=""><a class="hover:text-white transition-colors" href="#">e-Office Integration Support</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Security Audit Certificate (Cert-In)</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Privacy Policy &amp; Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright Line -->
+<div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
+<p class="">© 2025 Ministry of Statistics &amp; Programme Implementation, Government of India. All rights reserved.</p>
+<p class="text-slate-400">Powered by Digital India • Integrated with iGOT Karmayogi Civil Services Platform</p>
+</div>
+</div>
+</footer>
+<!-- END: GlobalFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="chip-selection-handler">
+    // Quick script to toggle checkmark indicator state in UI chip labels
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkboxes = document.querySelectorAll('.chip-checkbox');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const checkIcon = e.target.nextElementSibling.querySelector('.check-icon');
+          if (e.target.checked) {
+            checkIcon.classList.remove('bg-transparent', 'border', 'border-slate-300', 'text-transparent');
+            checkIcon.classList.add('bg-saffron', 'text-white');
+          } else {
+            checkIcon.classList.add('bg-transparent', 'border', 'border-slate-300', 'text-transparent');
+            checkIcon.classList.remove('bg-saffron', 'text-white');
+          }
+        });
+      });
+    });
+  </script>
+<!-- END: InteractiveScripts -->
+
+
+</body></html>

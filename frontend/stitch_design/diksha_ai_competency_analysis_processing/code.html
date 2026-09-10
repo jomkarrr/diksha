@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DIKSHA - AI Competency Analysis | MoSPI &amp; iGOT Karmayogi</title>
+<!-- Tailwind CSS v3 with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#1b365d',
+              saffron: '#f47920',
+              green: '#1b873f',
+              slate: '#f8f9ff',
+              subtle: '#64748b'
+            }
+          }
+        }
+      }
+    };
+  </script>
+<style data-purpose="custom-animations">
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+    .pulse-amber {
+      animation: subtlePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes progressShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .shimmer-bar {
+      background: linear-gradient(90deg, #f47920 0%, #fbbf24 50%, #f47920 100%);
+      background-size: 200% 100%;
+      animation: progressShimmer 2.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#f8f9ff] text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+<!-- BEGIN: SovereignHeaderArea -->
+<header class="w-full bg-white border-b border-slate-200">
+<!-- Tricolor Flag Line -->
+<div class="h-[3px] w-full flex">
+<div class="bg-[#ff9933] w-1/3 h-full"></div>
+<div class="bg-white w-1/3 h-full"></div>
+<div class="bg-[#138808] w-1/3 h-full"></div>
+</div>
+<!-- Sovereign Top Utility Strip -->
+<div class="bg-slate-50 border-b border-slate-200/80 px-4 sm:px-8 py-1.5 text-xs text-slate-600 flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="font-semibold text-slate-700">भारत सरकार | Government of India</span>
+<span class="text-slate-300">|</span>
+<span class="hidden md:inline text-slate-500">Ministry of Statistics &amp; Programme Implementation</span>
+</div>
+<div class="flex items-center space-x-4">
+<!-- Accessibility options -->
+<div class="flex items-center space-x-1.5 text-slate-500">
+
+
+
+</div>
+<span class="text-slate-300">|</span>
+<div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+
+
+</div>
+<span class="text-slate-300">|</span>
+<div class="flex items-center space-x-1 cursor-pointer hover:text-slate-800">
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="font-medium">English</span>
+</div>
+</div>
+</div>
+<!-- Main Navigation Bar -->
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<!-- Diksha Official Logo -->
+<img alt="DIKSHA Logo" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-1wtsa6donRGmzU6TK3f5ESZ6zVSy6CESttFd3Qo47ABYEp6Zp7kW7JWgAfucm8On6nGceLac2vfIVDm7wGKDxHYCGEBMNr86Wixsp59je3tcB73bpg_BJisXNbm9ArPasy97J2CXGM5nlVnX_hQNgDBHQTw8KQRgbW0t5NlooWwqznnrwImUe3wOHPGo3dkt1JYo30IlOCOfYOyM_cyIvZT4ZD6_A_89frO9AhG4gabi-rVVG3NgHr40ed2k6f1HJQ">
+<div class="border-l border-slate-300 pl-3.5">
+<div class="flex items-center space-x-2">
+<span class="text-base font-bold tracking-tight text-[#1b365d]">DIKSHA</span>
+
+</div>
+<p class="text-xs text-slate-500">Adaptive Skill Intelligence • MoSPI &amp; iGOT Karmayogi</p>
+</div>
+</div>
+<!-- User Information Micro-Profile -->
+<div class="flex items-center space-x-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200/80">
+<div class="w-8 h-8 rounded-full bg-[#1b365d] text-white flex items-center justify-center text-xs font-bold ring-2 ring-blue-100">
+          RK
+        </div>
+<div class="hidden sm:block text-left">
+<div class="text-xs font-bold text-slate-800 leading-tight">Rajesh Kumar</div>
+<div class="text-[11px] text-slate-500">Statistical Investigator Gr. II</div>
+</div>
+</div>
+</div>
+</header>
+<!-- END: SovereignHeaderArea -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-10" data-purpose="competency-analysis-container">
+<div class="w-full max-w-2xl bg-white border border-slate-200/90 rounded-2xl shadow-xl shadow-slate-200/40 p-6 sm:p-10 relative overflow-hidden">
+<!-- Top Subtle Background Decoration -->
+<div class="absolute -top-16 -right-16 w-36 h-36 bg-orange-50 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -top-16 -left-16 w-36 h-36 bg-blue-50 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Section: System Engine Status Badge -->
+<div class="flex items-center justify-center mb-6">
+
+</div>
+<!-- Section: Title & Narrative Header -->
+<div class="text-center mb-8">
+<h1 class="text-2xl sm:text-3xl font-extrabold text-[#1b365d] tracking-tight">
+          Building your competency profile
+        </h1>
+<p class="mt-2.5 text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+          DIKSHA is analyzing your role and mapping the competencies required for your position in India's Official Statistical System.
+        </p>
+</div>
+<!-- BEGIN: MultiStepVerticalProgress -->
+<div class="space-y-4 mb-8" data-purpose="sequential-progress-list">
+<!-- Step 1: Completed -->
+<div class="flex items-start space-x-3.5 p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 transition-all">
+<div class="flex-shrink-0 mt-0.5">
+<div class="w-6 h-6 rounded-full bg-[#1b873f] text-white flex items-center justify-center shadow-xs">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<h2 class="text-xs sm:text-sm font-bold text-emerald-950">Profile information received</h2>
+<span class="text-[11px] font-semibold text-[#1b873f] bg-emerald-100/70 px-2 py-0.5 rounded">Verified</span>
+</div>
+<p class="text-xs text-emerald-800 mt-0.5">Officer: Rajesh Kumar • Statistical Investigator Gr. II • NSSO FOD</p>
+</div>
+</div>
+<!-- Step 2: Completed -->
+<div class="flex items-start space-x-3.5 p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 transition-all">
+<div class="flex-shrink-0 mt-0.5">
+<div class="w-6 h-6 rounded-full bg-[#1b873f] text-white flex items-center justify-center shadow-xs">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<h2 class="text-xs sm:text-sm font-bold text-emerald-950">Role requirements identified</h2>
+<span class="text-[11px] font-semibold text-[#1b873f] bg-emerald-100/70 px-2 py-0.5 rounded">Indexed</span>
+</div>
+<p class="text-xs text-emerald-800 mt-0.5">Loaded MoSPI Cadre Competency Framework for Subordinate Statistical Service (18 Target Nodes)</p>
+</div>
+</div>
+<!-- Step 3: Active Processing -->
+<div class="p-4 rounded-xl bg-orange-50/60 border border-orange-200/90 shadow-sm transition-all">
+<div class="flex items-start space-x-3.5">
+<div class="flex-shrink-0 mt-0.5">
+<div class="w-6 h-6 rounded-full bg-[#f47920] text-white flex items-center justify-center pulse-amber shadow-xs">
+<span class="w-2.5 h-2.5 bg-white rounded-full"></span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<h2 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  Mapping competencies
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#f47920] animate-ping"></span>
+</h2>
+<span class="text-[11px] font-bold text-[#f47920] bg-orange-100 px-2.5 py-0.5 rounded-full">68% Analyzed</span>
+</div>
+<p class="text-xs text-slate-700 mt-1 leading-normal">
+                Synthesizing survey design, sampling weights, CAPI protocols, and data wrangling benchmarks...
+              </p>
+<!-- Shimmering Progress Indicator -->
+<div class="mt-3 w-full bg-orange-200/60 h-2 rounded-full overflow-hidden">
+<div class="h-full rounded-full shimmer-bar w-[68%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex items-start space-x-3.5 p-3.5 rounded-xl bg-slate-50/60 border border-slate-200/60 opacity-60">
+<div class="flex-shrink-0 mt-0.5">
+<div class="w-6 h-6 rounded-full border-2 border-slate-400 bg-white flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<h2 class="text-xs sm:text-sm font-medium text-slate-600">Identifying competency gaps</h2>
+<span class="text-[10px] text-slate-400 font-medium">Queued</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">Comparing current proficiency levels against MoSPI Grade I Promotion Standards</p>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex items-start space-x-3.5 p-3.5 rounded-xl bg-slate-50/60 border border-slate-200/60 opacity-60">
+<div class="flex-shrink-0 mt-0.5">
+<div class="w-6 h-6 rounded-full border-2 border-slate-400 bg-white flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between">
+<h2 class="text-xs sm:text-sm font-medium text-slate-600">Preparing personalized learning path</h2>
+<span class="text-[10px] text-slate-400 font-medium">Queued</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">Configuring Kahn's Topological DAG &amp; NSSTA / iGOT course recommendations</p>
+</div>
+</div>
+</div>
+<!-- END: MultiStepVerticalProgress -->
+<!-- BEGIN: RealTimeTelemetry -->
+
+<!-- END: RealTimeTelemetry -->
+<!-- BEGIN: SupportingNote -->
+<div class="text-center pt-2">
+<p class="text-xs text-slate-500 leading-relaxed max-w-lg mx-auto">
+          This one-time analysis establishes your baseline <strong class="text-slate-700 font-semibold">Competency Passport</strong> and synchronizes your learning roadmap with iGOT Karmayogi.
+        </p>
+<button class="mt-4 text-xs font-semibold text-[#1b365d] hover:text-[#f47920] underline transition-colors focus:outline-none" type="button">
+          View Processing Details
+        </button>
+</div>
+<!-- END: SupportingNote -->
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: SovereignFooter -->
+<footer class="w-full bg-[#1b365d] text-white border-t border-slate-700" data-purpose="sovereign-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-8 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs">
+<!-- Brand & Compliance Column -->
+<div class="space-y-3">
+<div class="flex items-center space-x-2">
+<span class="text-sm font-bold tracking-tight text-white">DIKSHA MoSPI</span>
+</div>
+<p class="text-slate-300 leading-relaxed text-[11px]">
+          National Statistical Capacity Intelligence and Adaptive Learning Portal under the Ministry of Statistics &amp; Programme Implementation.
+        </p>
+<div class="pt-1 flex items-center space-x-1.5 text-orange-400 font-medium text-[11px]">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="">GIGW 3.0 &amp; WCAG 2.1 AA Compliant</span>
+</div>
+</div>
+<!-- Sovereign Stakeholders -->
+<div>
+<h3 class="text-white font-semibold mb-3 tracking-wide">Sovereign Stakeholders</h3>
+<ul class="space-y-2 text-slate-300 text-[11px]">
+<li class=""><a class="hover:text-white transition-colors" href="#">MoSPI Official Portal</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">iGOT Karmayogi Bharat</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Capacity Building Commission (CBC)</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">National Statistical Systems Training (NSSTA)</a></li>
+</ul>
+</div>
+<!-- Learning Framework -->
+<div>
+<h3 class="text-white font-semibold mb-3 tracking-wide">Learning Framework</h3>
+<ul class="space-y-2 text-slate-300 text-[11px]">
+<li class=""><a class="hover:text-white transition-colors" href="#">4-Domain Competency Matrix</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">SM-2 Memory Retention Cadence</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Kahn's Topological Prerequisites</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Assessment Integrity Guidelines</a></li>
+</ul>
+</div>
+<!-- Support & Governance -->
+<div>
+<h3 class="text-white font-semibold mb-3 tracking-wide">Support &amp; Governance</h3>
+<ul class="space-y-2 text-slate-300 text-[11px]">
+<li class=""><span class="text-slate-400">Helpdesk:</span> 1800-11-2024 (Toll Free)</li>
+<li class=""><a class="hover:text-white transition-colors" href="#">e-Office Integration Support</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Security Audit Certificate (Cert-In)</a></li>
+<li class=""><a class="hover:text-white transition-colors" href="#">Privacy Policy &amp; Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright Strip -->
+<div class="border-t border-slate-700/70 bg-[#142947] text-slate-400 py-3 px-4 sm:px-8 text-[11px]">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+<span class="">© 2025 Ministry of Statistics &amp; Programme Implementation, Government of India. All rights reserved.</span>
+<span class="">Powered by Digital India • Integrated with iGOT Karmayogi Civil Services Platform</span>
+</div>
+</div>
+</footer>
+<!-- END: SovereignFooter -->
+
+
+</body></html>

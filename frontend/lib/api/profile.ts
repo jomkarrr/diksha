@@ -7,3 +7,6 @@ export function submitProfile(payload: ProfileRequest) {
     body: JSON.stringify(payload)
   });
 }
+
+export const createProfile = submitProfile;
+

@@ -1,0 +1,315 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DIKSHA MoSPI AI LAYER — Adaptive Skill Intelligence for Official Statistics</title>
+<!-- Tailwind CSS CDN with forms and container plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts: Inter & Noto Sans for Indian Institutional Standard -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mospi: {
+              navy: '#1b365d',
+              navyDeep: '#11223b',
+              blue: '#1b4ca1',
+              lightBg: '#f4f6f9',
+              saffron: '#f47920',
+              saffronGold: '#ffa730',
+              green: '#138808'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans', 'ui-sans-serif', 'system-ui']
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Typography and Layout CSS -->
+<style data-purpose="custom-decorations">
+    .tricolor-stripe {
+      height: 3px;
+      background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
+    }
+    .mesh-subtle {
+      background-image: radial-gradient(rgba(27, 76, 161, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .focus-ring:focus {
+      outline: none;
+      border-color: #1b4ca1;
+      box-shadow: 0 0 0 3px rgba(27, 76, 161, 0.15);
+    }
+  </style>
+<!-- END: Custom Typography and Layout CSS -->
+</head>
+<body class="h-full bg-[#f8f9ff] text-slate-800 flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900 contrast-125">
+<!-- BEGIN: Top Accessibility & Government Utility Bar -->
+<header class="w-full bg-slate-900 text-white text-xs border-b border-slate-800">
+<!-- Tricolor 3px hairline band -->
+<div class="tricolor-stripe w-full"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex flex-wrap justify-between items-center gap-2">
+<!-- Left: Sovereign Attribution -->
+<div class="flex items-center space-x-3 text-slate-300 font-medium">
+<span class="">भारत सरकार | Government of India</span>
+<span class="text-slate-600">|</span>
+<span class="text-amber-400 font-semibold tracking-wide">सांख्यिकी एवं कार्यक्रम कार्यान्वयन मंत्रालय (MoSPI)</span>
+</div>
+<!-- Right: Accessibility & Language Controls -->
+<nav aria-label="Accessibility Bar" class="flex items-center space-x-4">
+
+
+<div class="flex items-center space-x-1 font-medium text-slate-300">
+<span class="text-white font-semibold underline decoration-amber-500 underline-offset-2">English</span>
+<span class="text-slate-600">/</span>
+<button class="hover:text-amber-300 transition-colors" type="button">हिन्दी</button>
+</div>
+</nav>
+</div>
+</header>
+<!-- END: Top Accessibility & Government Utility Bar -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-10 mesh-subtle">
+<div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+<!-- BEGIN: Left Column - Branding & Competency Narrative -->
+<section class="lg:col-span-7 flex flex-col justify-center space-y-6" data-purpose="institutional-narrative">
+<!-- Header Lockup: Official Logo and Department Details -->
+<div>
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200/80 mb-4">
+<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+
+</div>
+<!-- Co-branded Visual Element -->
+<div class="flex items-center gap-4">
+<div class="p-1 bg-white rounded-lg shadow-sm border border-slate-200">
+<img alt="दीक्षा DIKSHA - लोकहितं मम करणीयम्" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt_UTum4OXrpkZmBPA5fKuzazwfErvPdgDjoOsR1Eynybfn0WfyDJeGfmppgCxsd0s1MDBB3eSSSX_ZbG7NDAUrdij-OOexGLzDt3k7-BndE63WDcuZ9kufx2MW3wFbYpvPMdOjTt0DczQhTI6ygMTrgiaKxzZpmi2itGCbdIu5QzU2JNEoEb0FX9oQ26_R-M7r2ag0yqgqD9SjEWA3yhvqk9lEt_isBCEeS2NBx0em5PlLIFP_YWOGmWvCtlt9L6Y6w">
+</div>
+<div>
+<div class="flex items-baseline space-x-2">
+<h1 class="text-2xl font-bold tracking-tight text-mospi-navy">DIKSHA</h1>
+
+</div>
+<p class="text-xs font-medium text-slate-500 tracking-wide uppercase mt-0.5">
+                Adaptive Skill Intelligence for Official Statistics
+              </p>
+</div>
+</div>
+</div>
+<!-- Headline & Description -->
+<div class="space-y-3">
+<h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+            Build verified competencies for your role in <span class="text-mospi-blue">India's Official Statistical System</span>.
+          </h2>
+<p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+            Empowering the Indian Statistical Service (ISS), Subordinate Statistical Service (SSS), and field officers across data collection cycles (PLFS, ASI, HCES, ASUSE) with automated competency diagnostic mapping.
+          </p>
+</div>
+<!-- Capability Highlights Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+<!-- Capability 1 -->
+<div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm flex flex-col justify-between hover:border-blue-300 transition-all">
+<div>
+<div class="w-8 h-8 rounded-md bg-blue-50 text-mospi-blue flex items-center justify-center mb-2 font-semibold text-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="text-xs font-bold text-slate-800">Adaptive Diagnostic</h3>
+</div>
+<p class="text-[11px] text-slate-500 mt-1.5 leading-normal">FRAC 18-node competency matrix mapping for precision cadre fit.</p>
+</div>
+<!-- Capability 2 -->
+<div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm flex flex-col justify-between hover:border-blue-300 transition-all">
+<div>
+<div class="w-8 h-8 rounded-md bg-amber-50 text-mospi-saffron flex items-center justify-center mb-2 font-semibold text-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="text-xs font-bold text-slate-800">Knowledge Retention</h3>
+</div>
+<p class="text-[11px] text-slate-500 mt-1.5 leading-normal">Kahn's DAG prerequisites coupled with SM-2 algorithmic learning memory.</p>
+</div>
+<!-- Capability 3 -->
+<div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm flex flex-col justify-between hover:border-blue-300 transition-all">
+<div>
+<div class="w-8 h-8 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center mb-2 font-semibold text-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="text-xs font-bold text-slate-800">MoSPI Manual AI</h3>
+</div>
+<p class="text-[11px] text-slate-500 mt-1.5 leading-normal">Live synthesis of official survey instructions &amp; methodological circulars.</p>
+</div>
+</div>
+<!-- Compliance & Accreditation Strip -->
+<div class="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 border-t border-slate-200/80">
+<div class="flex items-center gap-1.5">
+<svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+<path clip-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span class="font-medium text-slate-700">GIGW 3.0 &amp; WCAG 2.1 AA Compliant</span>
+</div>
+<span class="text-slate-300">•</span>
+<div class="flex items-center gap-1">
+<span class="">Data Sovereignty:</span>
+<span class="font-semibold text-slate-700">NIC MeghRaj Cloud</span>
+</div>
+</div>
+</section>
+<!-- END: Left Column - Branding & Competency Narrative -->
+<!-- BEGIN: Right Column - Sovereign Authentication Portal Card -->
+<section class="lg:col-span-5" data-purpose="auth-card-wrapper">
+<div class="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6 sm:p-8 relative overflow-hidden">
+<!-- Subtle Top Indicator -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-mospi-navy via-mospi-blue to-mospi-saffron"></div>
+<!-- Card Header with Institutional Badge -->
+<div class="text-center mb-6">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 border border-slate-200 text-mospi-navy shadow-inner mb-3">
+<!-- Official Emblem / Pillar Symbol representation -->
+<svg class="w-6 h-6 text-mospi-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold text-slate-900 tracking-tight">Sign in to DIKSHA</h2>
+<p class="text-xs text-slate-500 mt-1">Access your personalized capacity-building journey</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="space-y-4" data-purpose="login-form" method="POST" onsubmit="return false;">
+<!-- Employee ID / Gov Email Input -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="employee-id">
+                Official Email / Cadre ID <span class="text-red-500">*</span>
+</label>
+<div class="relative rounded-md shadow-sm">
+<input class="focus-ring block w-full rounded-md border-slate-300 pl-3 pr-10 py-2 text-sm placeholder-slate-400" id="employee-id" name="employee-id" placeholder="e.g., rajesh.kumar@gov.in or SI-9842" required="" type="text">
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+<svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Accepts MoSPI NIC mail, iGOT ID, or Cadre Code</p>
+</div>
+<!-- Password Input -->
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="password">
+                Password <span class="text-red-500">*</span>
+</label>
+<div class="relative rounded-md shadow-sm">
+<input class="focus-ring block w-full rounded-md border-slate-300 pl-3 pr-10 py-2 text-sm placeholder-slate-400" id="password" name="password" placeholder="••••••••••••" required="" type="password">
+<button aria-label="Show or Hide Password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none" id="toggle-password" type="button">
+<svg class="h-4 w-4" fill="none" id="eye-icon" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Remember Me & Forgot Password Row -->
+<div class="flex items-center justify-between text-xs pt-1">
+<div class="flex items-center">
+<input class="h-4 w-4 rounded border-slate-300 text-mospi-navy focus:ring-mospi-blue" id="remember-me" name="remember-me" type="checkbox">
+<label class="ml-2 block text-slate-600 font-medium" for="remember-me">
+                  Remember sovereign workstation
+                </label>
+</div>
+<a class="font-semibold text-mospi-blue hover:text-mospi-navy hover:underline" href="#forgot">
+                Forgot Password?
+              </a>
+</div>
+<!-- Primary CTA: Sign In -->
+<div class="pt-2">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-mospi-navy hover:bg-mospi-blue active:bg-slate-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mospi-blue" type="submit">
+<span class="">Sign In to DIKSHA</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Government SSO Divider -->
+<div class="relative my-4">
+<div aria-hidden="true" class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200"></div>
+</div>
+<div class="relative flex justify-center text-xs uppercase">
+<span class="bg-white px-2 text-slate-400 font-medium tracking-wider">or verify via SSO</span>
+</div>
+</div>
+<!-- Jan Parichay SSO Button -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-slate-400 text-slate-700 text-xs sm:text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-amber-500" type="button">
+<svg class="w-4 h-4 text-mospi-saffron" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path>
+</svg>
+<span class="">Continue with MeriPehchan / Parichay</span>
+</button>
+<!-- Onboarding Footnote Link -->
+<div class="pt-2 text-center">
+<a class="inline-flex items-center text-xs font-semibold text-mospi-saffron hover:text-orange-700 transition-colors" href="#onboarding">
+<span class="">New to DIKSHA MoSPI Cadre? Complete your profile</span>
+<span class="ml-1 font-bold">→</span>
+</a>
+</div>
+</form>
+<!-- Security Badging Footer -->
+<div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-slate-400">
+<svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" fill-rule="evenodd"></path>
+</svg>
+<span class="">256-Bit SSL Encrypted • Certified by National Informatics Centre (NIC)</span>
+</div>
+</div>
+</section>
+<!-- END: Right Column - Sovereign Authentication Portal Card -->
+</div>
+</main>
+<!-- END: Main Content Area -->
+<!-- BEGIN: Minimal Sovereign Footer -->
+<footer class="w-full bg-slate-900 text-slate-400 text-xs py-4 border-t border-slate-800" data-purpose="institutional-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+<div>
+<p class="text-slate-300 font-medium">Government of India • Ministry of Statistics &amp; Programme Implementation (MoSPI)</p>
+<p class="text-[11px] text-slate-400 mt-0.5">Integrated with iGOT Karmayogi National Civil Services Capacity Building Platform</p>
+</div>
+<div class="flex items-center space-x-4 text-[11px]">
+<a class="hover:text-amber-400 transition-colors" href="#privacy">Privacy Policy</a>
+<span class="text-slate-700">|</span>
+<a class="hover:text-amber-400 transition-colors" href="#terms">Terms of Usage</a>
+<span class="text-slate-700">|</span>
+<a class="hover:text-amber-400 transition-colors" href="#helpdesk">MoSPI Helpdesk</a>
+</div>
+</div>
+</footer>
+<!-- END: Minimal Sovereign Footer -->
+<!-- BEGIN: Interactive Logic for Password Toggle & High Contrast -->
+<script data-purpose="login-interactions">
+    // Toggle Password Visibility
+    const togglePasswordBtn = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+    
+    if (togglePasswordBtn && passwordInput) {
+      togglePasswordBtn.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+      });
+    }
+
+    // Accessible Contrast Toggle Simulation
+    const contrastToggle = document.getElementById('contrast-toggle');
+    if (contrastToggle) {
+      contrastToggle.addEventListener('click', function () {
+        document.body.classList.toggle('contrast-125');
+      });
+    }
+  </script>
+<!-- END: Interactive Logic for Password Toggle & High Contrast -->
+
+
+</body></html>

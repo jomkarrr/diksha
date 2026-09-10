@@ -13,6 +13,8 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Icon } from "@/components/ui/Icon";
 import { mockAdminDashboard, competencyCatalogue, levelScore } from "@/lib/mock/data";
 
+import type { AdminEmployee } from "@/lib/types/contracts";
+
 export default function EmployeeDetailPage({
   params,
 }: {
@@ -22,7 +24,7 @@ export default function EmployeeDetailPage({
 
   const employee = useMemo(() => {
     return mockAdminDashboard.employees.find(
-      (emp) => emp.profile_id.toLowerCase() === id.toLowerCase()
+      (emp: AdminEmployee) => emp.profile_id.toLowerCase() === id.toLowerCase()
     );
   }, [id]);
 
@@ -31,7 +33,7 @@ export default function EmployeeDetailPage({
     if (!employee) return [];
     return competencyCatalogue.filter((c) =>
       employee.top_gaps.some(
-        (gap) => gap.toLowerCase() === c.name.toLowerCase()
+        (gap: string) => gap.toLowerCase() === c.name.toLowerCase()
       )
     );
   }, [employee]);
