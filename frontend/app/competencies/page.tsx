@@ -20,9 +20,15 @@ export default function CompetencyPassportPage() {
   const [exported, setExported] = useState(false);
   const [dashboardData, setDashboardData] = useState<EmployeeDashboard | null>(null);
 
-  const officer = OFFICIAL_CADRES[0]; // Rajesh Kumar
+  const officer = useMemo(() => {
+    const pId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("diksha_profile_id") || "prof_demo"
+        : "prof_demo";
+    return OFFICIAL_CADRES.find((c) => c.id === pId) || OFFICIAL_CADRES[0];
+  }, []);
 
-  useEffect(() => {
+  const loadData = () => {
     const profileId =
       typeof window !== "undefined"
         ? localStorage.getItem("diksha_profile_id") || "prof_demo"
@@ -30,6 +36,16 @@ export default function CompetencyPassportPage() {
     fetchEmployeeDashboard(profileId)
       .then((data) => setDashboardData(data))
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    loadData();
+    window.addEventListener("diksha_cadre_change", loadData);
+    window.addEventListener("storage", loadData);
+    return () => {
+      window.removeEventListener("diksha_cadre_change", loadData);
+      window.removeEventListener("storage", loadData);
+    };
   }, []);
 
   const liveCatalogue = useMemo(() => {
@@ -96,6 +112,12 @@ export default function CompetencyPassportPage() {
   const benchmarkMetCount = useMemo(() => {
     return liveCatalogue.filter((c) => c.gap_severity === "low" || c.mastery >= 70).length;
   }, [liveCatalogue]);
+
+  const overallIndex = useMemo(() => {
+    return dashboardData?.overall_progress_pct !== undefined
+      ? Math.round(dashboardData.overall_progress_pct)
+      : 68;
+  }, [dashboardData]);
 
   const handleExportPDF = () => {
     setExported(true);
@@ -189,19 +211,19 @@ export default function CompetencyPassportPage() {
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
                     stroke="currentColor"
-                    strokeDasharray="68, 100"
+                    strokeDasharray={`${overallIndex}, 100`}
                     strokeLinecap="round"
                     strokeWidth="3.5"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-extrabold text-primary">68</span>
+                  <span className="text-sm font-extrabold text-primary">{overallIndex}</span>
                 </div>
               </div>
               <div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase">Role Index</span>
                 <div className="text-lg font-extrabold text-primary">
-                  68 <span className="text-xs font-normal text-slate-500">/ 100</span>
+                  {overallIndex} <span className="text-xs font-normal text-slate-500">/ 100</span>
                 </div>
                 <p className="text-[11px] text-slate-500 leading-tight mt-0.5">Competency readiness score</p>
               </div>
@@ -411,7 +433,7 @@ export default function CompetencyPassportPage() {
                     Last review: {formatDisplayDate(node.last_reviewed)}
                   </span>
                   <Link
-                    href="/quiz"
+                    href={`/assessments?node_id=${node.node_id}&topic=${encodeURIComponent(node.name)}`}
                     className="font-bold text-domain-statistical hover:text-primary flex items-center gap-0.5"
                   >
                     <span>Assess</span>

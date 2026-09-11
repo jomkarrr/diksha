@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -10,6 +10,8 @@ import { FadeIn } from "@/components/motion/FadeIn";
 import { StaggerChildren, StaggerItem } from "@/components/motion/StaggerChildren";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Icon } from "@/components/ui/Icon";
+import { fetchEmployeeDashboard } from "@/lib/api/dashboard";
+import type { EmployeeDashboard } from "@/lib/types/contracts";
 import {
   competencyCatalogue,
   domainLabels,
@@ -23,10 +25,21 @@ export default function CompetencyDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const [dashboardData, setDashboardData] = useState<EmployeeDashboard | null>(null);
 
-  const competency = competencyCatalogue.find((c) => c.node_id === id);
+  useEffect(() => {
+    const profileId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("diksha_profile_id") || "prof_demo"
+        : "prof_demo";
+    fetchEmployeeDashboard(profileId)
+      .then((data) => setDashboardData(data))
+      .catch(() => {});
+  }, []);
 
-  if (!competency) {
+  const baseCompetency = competencyCatalogue.find((c) => c.node_id === id);
+
+  if (!baseCompetency) {
     return (
       <AppShell>
         <PageHeader
@@ -53,7 +66,29 @@ export default function CompetencyDetailPage({
     );
   }
 
-  // Find matched learning courses
+  const liveSummary = dashboardData?.competency_summary?.find((s) => s.node_id === id);
+  let liveLevel = baseCompetency.current_level;
+  let liveMastery = baseCompetency.mastery;
+
+  if (liveSummary?.mastery !== undefined) {
+    liveMastery = Math.round(liveSummary.mastery);
+    if (liveSummary.mastery >= 81) liveLevel = "advanced";
+    else if (liveSummary.mastery >= 56) liveLevel = "intermediate";
+    else if (liveSummary.mastery >= 26) liveLevel = "basic";
+    else liveLevel = "none";
+  }
+
+  const currentScore = levelScore[liveLevel] || 0;
+  const requiredScore = levelScore[baseCompetency.required_level] || 3;
+  const progressPct = Math.round((currentScore / requiredScore) * 100);
+
+  const competency = {
+    ...baseCompetency,
+    current_level: liveLevel,
+    mastery: liveMastery,
+    gap_severity: (currentScore >= requiredScore ? "low" : requiredScore - currentScore >= 2 ? "high" : "medium") as any
+  };
+
   const matchedCourse =
     learningResources.find(
       (r) =>
@@ -61,14 +96,9 @@ export default function CompetencyDetailPage({
         r.id.includes(competency.node_id.replace("-101", ""))
     ) || learningResources[0];
 
-  // Resolve related competencies
-  const relatedCompetencies = competency.related_node_ids
+  const relatedCompetencies = (competency.related_node_ids || [])
     .map((relId) => competencyCatalogue.find((c) => c.node_id === relId))
     .filter(Boolean);
-
-  const currentScore = levelScore[competency.current_level] || 0;
-  const requiredScore = levelScore[competency.required_level] || 3;
-  const progressPct = Math.round((currentScore / requiredScore) * 100);
 
   return (
     <AppShell>
@@ -89,23 +119,21 @@ export default function CompetencyDetailPage({
       <div className="grid gap-6 xl:grid-cols-[1.35fr_0.8fr]">
         <FadeIn>
           <section className="card border-l-4 border-l-[#F4511E] p-5">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge tone="neutral">Current: {competency.current_level}</Badge>
-              <Badge tone="primary">Required: {competency.required_level}</Badge>
-              <Badge severity={competency.gap_severity}>{competency.gap_severity} Gap</Badge>
-              <Badge tone="neutral">{domainLabels[competency.domain]}</Badge>
+            <div className="flex items-center justify-between">
+              <Badge tone="primary">{domainLabels[competency.domain]}</Badge>
+              <Badge tone={competency.gap_severity === "high" ? "danger" : competency.gap_severity === "medium" ? "warning" : "success"}>
+                {competency.gap_severity.toUpperCase()} GAP
+              </Badge>
             </div>
 
-            <h2 className="mt-5 text-xl font-semibold">Why this matters</h2>
-            <p className="mt-2 text-sm leading-6 text-on-surface-variant">
-              {competency.description}
-            </p>
+            <h2 className="mt-4 text-2xl font-bold font-sans">{competency.name}</h2>
+            <p className="mt-2 text-sm leading-6 text-on-surface-variant">{competency.description}</p>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               <div className="rounded-lg border border-slate-200 bg-surface p-4">
                 <div className="flex items-center gap-2">
-                  <Icon name="person" className="text-primary text-[18px]" />
-                  <p className="label text-on-surface-variant">Current Capability</p>
+                  <Icon name="verified" className="text-secondary text-[18px]" />
+                  <p className="label text-on-surface-variant">Current Demonstrated Capability</p>
                 </div>
                 <p className="mt-2 text-sm leading-6 text-on-surface">
                   {competency.current_description}
@@ -142,7 +170,7 @@ export default function CompetencyDetailPage({
                   Open Course <Icon name="arrow_forward" className="text-[16px]" />
                 </Link>
                 <Link
-                  href="/assessments"
+                  href={`/assessments?node_id=${competency.node_id}&topic=${encodeURIComponent(competency.name)}`}
                   className="text-xs font-semibold uppercase text-primary hover:underline"
                 >
                   Take Practice Quiz &rarr;

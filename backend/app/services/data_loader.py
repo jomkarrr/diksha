@@ -116,11 +116,19 @@ class DataLoader:
     @classmethod
     def save_profile(cls, profile_id: str, profile_data: Dict[str, Any]):
         cls._profiles_cache[profile_id] = profile_data
+        if profile_id == "prof_demo":
+            cls._profiles_cache["emp-101"] = profile_data
+        elif profile_id == "emp-101":
+            cls._profiles_cache["prof_demo"] = profile_data
 
     @classmethod
     def get_profile(cls, profile_id: str) -> Optional[Dict[str, Any]]:
         if profile_id in cls._profiles_cache:
             return cls._profiles_cache[profile_id]
+        if profile_id == "prof_demo" and "emp-101" in cls._profiles_cache:
+            return cls._profiles_cache["emp-101"]
+        if profile_id == "emp-101" and "prof_demo" in cls._profiles_cache:
+            return cls._profiles_cache["prof_demo"]
 
         emp = cls.get_employee_by_id(profile_id)
         if not emp and profile_id == "prof_demo":
