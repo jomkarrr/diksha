@@ -5,7 +5,6 @@ import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { fetchRoadmap } from "@/lib/api/roadmap";
 import { fetchEmployeeDashboard } from "@/lib/api/dashboard";
-import { CompetencyRadar } from "@/components/charts/CompetencyRadar";
 import {
   demoRoadmap,
   competencyCatalogue,
@@ -13,7 +12,6 @@ import {
   OFFICIAL_CADRES,
   type OfficerPersona
 } from "@/lib/mock/data";
-import { getDomainRadarData } from "@/lib/utils/chartData";
 import type { RoadmapItem, EmployeeDashboard, RevisionSuggestion } from "@/lib/types/contracts";
 
 function subscribeStorage(callback: () => void) {
@@ -70,7 +68,6 @@ export default function DashboardPage() {
     });
   }, [officer.id, officer.job_role]);
 
-  const radarData = useMemo(() => getDomainRadarData(competencyCatalogue), []);
 
   const topRevision = useMemo<RevisionSuggestion>(() => {
     if (dashboardData?.revision_suggestions?.length) {
@@ -328,210 +325,162 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Main 2-Column Grid (60% / 40%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column (7 Cols) */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* 4-Domain Competency Matrix */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-subtle">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                <div>
-                  <h2 className="text-lg font-bold text-primary">4-Domain Competency Matrix</h2>
-                  <p className="text-xs text-slate-500">MoSPI Civil Services Capacity Framework</p>
-                </div>
-                <Link
-                  href="/competencies"
-                  className="text-xs font-bold text-domain-statistical hover:underline flex items-center gap-1"
-                >
-                  <span>View Full Passport</span>
-                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </Link>
+        {/* Main Content Area */}
+        <div className="space-y-6">
+          {/* 4-Domain Competency Matrix */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-subtle">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+              <div>
+                <h2 className="text-lg font-bold text-primary">4-Domain Competency Matrix</h2>
+                <p className="text-xs text-slate-500">MoSPI Civil Services Capacity Framework</p>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                {/* Domain 1: Statistical */}
-                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-domain-statistical" />
-                      <span className="text-xs font-bold text-primary">Statistical Domain</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-domain-statistical uppercase">
-                      Intermediate
-                    </span>
-                  </div>
-                  <div className="my-3">
-                    <div className="flex items-baseline justify-between mb-1 text-xs">
-                      <span className="text-slate-500 font-medium">Mastery</span>
-                      <span className="font-bold text-primary">74%</span>
-                    </div>
-                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-domain-statistical h-full rounded-full" style={{ width: "74%" }} />
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    Stratified sampling, index numbers &amp; NSS variance computation.
-                  </p>
-                </div>
-
-                {/* Domain 2: Technical */}
-                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-domain-technical" />
-                      <span className="text-xs font-bold text-primary">Technical Domain</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-status-gap-high uppercase">
-                      Basic
-                    </span>
-                  </div>
-                  <div className="my-3">
-                    <div className="flex items-baseline justify-between mb-1 text-xs">
-                      <span className="text-slate-500 font-medium">Mastery</span>
-                      <span className="font-bold text-primary">42%</span>
-                    </div>
-                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-domain-technical h-full rounded-full" style={{ width: "42%" }} />
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    CAPI mobile synchronization, Python scripting, validation rules.
-                  </p>
-                </div>
-
-                {/* Domain 3: Digital Governance */}
-                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-domain-governance" />
-                      <span className="text-xs font-bold text-primary">Digital Governance</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-status-mastered uppercase">
-                      Advanced
-                    </span>
-                  </div>
-                  <div className="my-3">
-                    <div className="flex items-baseline justify-between mb-1 text-xs">
-                      <span className="text-slate-500 font-medium">Mastery</span>
-                      <span className="font-bold text-primary">85%</span>
-                    </div>
-                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-domain-governance h-full rounded-full" style={{ width: "85%" }} />
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    e-Office workflow, Collection of Statistics Act, DPDP compliance.
-                  </p>
-                </div>
-
-                {/* Domain 4: Behavioural */}
-                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-domain-behavioural" />
-                      <span className="text-xs font-bold text-primary">Behavioural Domain</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-status-in-progress uppercase">
-                      Basic
-                    </span>
-                  </div>
-                  <div className="my-3">
-                    <div className="flex items-baseline justify-between mb-1 text-xs">
-                      <span className="text-slate-500 font-medium">Mastery</span>
-                      <span className="font-bold text-primary">58%</span>
-                    </div>
-                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-domain-behavioural h-full rounded-full" style={{ width: "58%" }} />
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    Field team leadership, survey conflict mediation, reporting.
-                  </p>
-                </div>
-              </div>
+              <Link
+                href="/competencies"
+                className="text-xs font-bold text-domain-statistical hover:underline flex items-center gap-1"
+              >
+                <span>View Full Passport</span>
+                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </Link>
             </div>
 
-            {/* Active Learning Track Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-subtle">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold text-domain-statistical bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">
-                  Active Enrollment • iGOT Karmayogi
-                </span>
-                <span className="text-xs font-semibold text-slate-500">
-                  Module {activeCourse.completed_modules + 1} of {activeCourse.total_modules}
-                </span>
-              </div>
-              <h3 className="text-base font-bold text-primary">
-                {activeCourse.title}
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                {activeCourse.reason}
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex justify-between text-xs text-slate-600 mb-1">
-                    <span>Progress: {Math.round(activeCourse.progress_pct)}%</span>
-                    <span className="font-semibold text-primary">{activeCourse.duration}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Domain 1: Statistical */}
+              <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-domain-statistical" />
+                    <span className="text-xs font-bold text-primary">Statistical Domain</span>
                   </div>
-                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="bg-secondary-container h-full rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min(100, Math.max(5, Math.round(activeCourse.progress_pct)))}%` }}
-                    />
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-domain-statistical uppercase">
+                    Intermediate
+                  </span>
+                </div>
+                <div className="my-3">
+                  <div className="flex items-baseline justify-between mb-1 text-xs">
+                    <span className="text-slate-500 font-medium">Mastery</span>
+                    <span className="font-bold text-primary">74%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-domain-statistical h-full rounded-full" style={{ width: "74%" }} />
                   </div>
                 </div>
-                <Link
-                  href={`/resources/${activeCourse.id}`}
-                  className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-white font-semibold text-xs transition-colors shrink-0 flex items-center gap-1"
-                >
-                  <span>Resume Course</span>
-                  <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
-                </Link>
+                <p className="text-[11px] text-slate-500">
+                  Stratified sampling, index numbers &amp; NSS variance computation.
+                </p>
+              </div>
+
+              {/* Domain 2: Technical */}
+              <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-domain-technical" />
+                    <span className="text-xs font-bold text-primary">Technical Domain</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-status-gap-high uppercase">
+                    Basic
+                  </span>
+                </div>
+                <div className="my-3">
+                  <div className="flex items-baseline justify-between mb-1 text-xs">
+                    <span className="text-slate-500 font-medium">Mastery</span>
+                    <span className="font-bold text-primary">42%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-domain-technical h-full rounded-full" style={{ width: "42%" }} />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500">
+                  CAPI mobile synchronization, Python scripting, validation rules.
+                </p>
+              </div>
+
+              {/* Domain 3: Digital Governance */}
+              <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-domain-governance" />
+                    <span className="text-xs font-bold text-primary">Digital Governance</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-status-mastered uppercase">
+                    Advanced
+                  </span>
+                </div>
+                <div className="my-3">
+                  <div className="flex items-baseline justify-between mb-1 text-xs">
+                    <span className="text-slate-500 font-medium">Mastery</span>
+                    <span className="font-bold text-primary">85%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-domain-governance h-full rounded-full" style={{ width: "85%" }} />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500">
+                  e-Office workflow, Collection of Statistics Act, DPDP compliance.
+                </p>
+              </div>
+
+              {/* Domain 4: Behavioural */}
+              <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 flex flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-domain-behavioural" />
+                    <span className="text-xs font-bold text-primary">Behavioural Domain</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-status-in-progress uppercase">
+                    Basic
+                  </span>
+                </div>
+                <div className="my-3">
+                  <div className="flex items-baseline justify-between mb-1 text-xs">
+                    <span className="text-slate-500 font-medium">Mastery</span>
+                    <span className="font-bold text-primary">58%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-domain-behavioural h-full rounded-full" style={{ width: "58%" }} />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500">
+                  Field team leadership, survey conflict mediation, reporting.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Right Column (5 Cols) */}
-          <div className="lg:col-span-5 space-y-6">
-            {/* Domain Radar Visualization Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-subtle">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-bold text-primary uppercase tracking-wider">
-                  Competency Radar Assessment
-                </h3>
-                <span className="text-[10px] font-bold text-slate-400">Target vs. Current</span>
-              </div>
-              <div className="h-64 flex items-center justify-center">
-                <CompetencyRadar data={radarData} />
-              </div>
-              <p className="text-[11px] text-slate-500 text-center mt-2">
-                Evaluated against the official 18-node MoSPI Competency Dictionary.
-              </p>
+          {/* Active Learning Track Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-subtle">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] font-bold text-domain-statistical bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">
+                Active Enrollment • iGOT Karmayogi
+              </span>
+              <span className="text-xs font-semibold text-slate-500">
+                Module {activeCourse.completed_modules + 1} of {activeCourse.total_modules}
+              </span>
             </div>
-
-            {/* Quick Practice Sandbox Launcher */}
-            <div className="bg-gradient-to-br from-slate-900 to-primary text-white rounded-2xl p-5 shadow-sm space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-amber-400 text-[20px]">terminal</span>
-                  <span className="text-xs font-bold uppercase tracking-wider">MoSPI Data Practice</span>
+            <h3 className="text-base font-bold text-primary">
+              {activeCourse.title}
+            </h3>
+            <p className="text-xs text-slate-500 mt-1">
+              {activeCourse.reason}
+            </p>
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex justify-between text-xs text-slate-600 mb-1">
+                  <span>Progress: {Math.round(activeCourse.progress_pct)}%</span>
+                  <span className="font-semibold text-primary">{activeCourse.duration}</span>
                 </div>
-                <span className="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded font-semibold">
-                  7 Datasets Online
-                </span>
+                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-secondary-container h-full rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min(100, Math.max(5, Math.round(activeCourse.progress_pct)))}%` }}
+                  />
+                </div>
               </div>
-              <h4 className="text-sm font-bold text-white leading-snug">
-                Periodic Labour Force Survey (PLFS) Practice Workspace
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Run simulated unit-level microdata queries, inspect statement 3.4 LFPR aggregates, and test survey multipliers.
-              </p>
               <Link
-                href="/data-practice/plfs"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-secondary hover:bg-orange-600 text-white text-xs font-bold transition-all shadow-sm"
+                href={`/resources/${activeCourse.id}`}
+                className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-white font-semibold text-xs transition-colors shrink-0 flex items-center gap-1"
               >
-                <span>Launch PLFS Console</span>
-                <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                <span>Resume Course</span>
+                <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
               </Link>
             </div>
           </div>
