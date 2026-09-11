@@ -49,6 +49,7 @@ export type RoadmapResponse = {
 
 export type QuizQuestion = {
   node_id?: string;
+  subtopic?: string;
   question: string;
   options: string[];
   correct_index: number;
@@ -57,16 +58,21 @@ export type QuizQuestion = {
 
 export type QuizResponse = {
   questions: QuizQuestion[];
+  node_id?: string;
+  subtopics_tested?: string[];
 };
 
 export type QuizAnswerItem = {
   node_id: string;
   is_correct: boolean;
+  subtopic?: string;
+  user_answer?: string;
 };
 
 export type QuizSubmitRequest = {
   profile_id: string;
   answers: QuizAnswerItem[];
+  node_id?: string;
 };
 
 export type MasteryUpdateItem = {
@@ -79,6 +85,10 @@ export type MasteryUpdateItem = {
 export type QuizSubmitResponse = {
   profile_id: string;
   mastery_updates: MasteryUpdateItem[];
+  objective_coverage_pct?: number;
+  covered_subtopics?: string[];
+  missed_subtopics?: string[];
+  feedback?: string;
 };
 
 export type CompetencySummaryItem = {

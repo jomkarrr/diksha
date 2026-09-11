@@ -50,10 +50,12 @@ class RoadmapResponse(BaseModel):
 
 # --- Quiz Endpoints ---
 class QuizRequest(BaseModel):
-    content_text: str = Field(..., json_schema_extra={"example": "Sampling error decreases as sample size increases in simple random sampling."})
+    content_text: Optional[str] = Field(default=None, json_schema_extra={"example": "Sampling error decreases as sample size increases in simple random sampling."})
+    node_id: Optional[str] = Field(default=None, json_schema_extra={"example": "stat-sampling-101"})
 
 class QuizQuestion(BaseModel):
     node_id: str = Field(default="stat-sampling-101", json_schema_extra={"example": "stat-sampling-101"})
+    subtopic: Optional[str] = Field(default=None, json_schema_extra={"example": "Simple random sampling"})
     question: str
     options: List[str]
     correct_index: int
@@ -61,15 +63,20 @@ class QuizQuestion(BaseModel):
 
 class QuizResponse(BaseModel):
     questions: List[QuizQuestion]
+    node_id: Optional[str] = None
+    subtopics_tested: List[str] = Field(default_factory=list)
 
 # --- Quiz Submission & Mastery Endpoints ---
 class QuizAnswerItem(BaseModel):
     node_id: str
     is_correct: bool
+    subtopic: Optional[str] = None
+    user_answer: Optional[str] = None
 
 class QuizSubmitRequest(BaseModel):
     profile_id: str = Field(..., json_schema_extra={"example": "prof_12345"})
     answers: List[QuizAnswerItem]
+    node_id: Optional[str] = None
 
 class MasteryUpdateItem(BaseModel):
     node_id: str
@@ -80,6 +87,10 @@ class MasteryUpdateItem(BaseModel):
 class QuizSubmitResponse(BaseModel):
     profile_id: str
     mastery_updates: List[MasteryUpdateItem]
+    objective_coverage_pct: Optional[float] = None
+    covered_subtopics: List[str] = Field(default_factory=list)
+    missed_subtopics: List[str] = Field(default_factory=list)
+    feedback: Optional[str] = None
 
 
 # --- Employee Dashboard Endpoints ---

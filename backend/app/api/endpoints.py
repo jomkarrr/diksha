@@ -78,26 +78,43 @@ def generate_roadmap(payload: RoadmapRequest):
 def generate_quiz(payload: QuizRequest):
     """
     POST /api/quiz
-    Generate between 8 to 10 multiple-choice questions from provided learning material text.
+    Generate targeted multiple-choice questions from node subtopics or learning material.
     """
-    if not payload.content_text.strip():
-        raise HTTPException(status_code=400, detail="content_text cannot be empty")
+    content_text = payload.content_text.strip() if payload.content_text else None
+    node_id = payload.node_id.strip() if payload.node_id else None
 
-    questions = LLMService.generate_quiz(payload.content_text)
-    return QuizResponse(questions=questions)
+    if not content_text and not node_id:
+        raise HTTPException(status_code=400, detail="Either content_text or node_id must be provided")
+
+    result = LLMService.generate_quiz(content_text=content_text, node_id=node_id)
+    return QuizResponse(
+        questions=result["questions"],
+        node_id=result.get("node_id"),
+        subtopics_tested=result.get("subtopics_tested", [])
+    )
 
 
 @router.post("/quiz/submit", response_model=QuizSubmitResponse, status_code=status.HTTP_200_OK)
 def submit_quiz_answers(payload: QuizSubmitRequest):
     """
     POST /api/quiz/submit
-    Submit quiz answers for a profile, persist attempt history, and update competency mastery scores.
+    Submit quiz answers, persist attempt history, evaluate objective coverage, and update competency mastery scores.
     """
     if not payload.answers:
         raise HTTPException(status_code=400, detail="answers array cannot be empty")
 
+    effective_node_id = payload.node_id or payload.answers[0].node_id
     updates = MasteryEngine.process_quiz_submission(payload.profile_id, payload.answers)
-    return QuizSubmitResponse(profile_id=payload.profile_id, mastery_updates=updates)
+    evaluation = LLMService.evaluate_objective_coverage(effective_node_id, payload.answers)
+
+    return QuizSubmitResponse(
+        profile_id=payload.profile_id,
+        mastery_updates=updates,
+        objective_coverage_pct=evaluation.get("objective_coverage_pct"),
+        covered_subtopics=evaluation.get("covered_subtopics", []),
+        missed_subtopics=evaluation.get("missed_subtopics", []),
+        feedback=evaluation.get("feedback")
+    )
 
 
 @router.get("/dashboard/employee", response_model=EmployeeDashboardResponse, status_code=status.HTTP_200_OK)
