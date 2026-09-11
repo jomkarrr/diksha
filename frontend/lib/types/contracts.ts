@@ -104,12 +104,31 @@ export type RevisionSuggestion = {
   reason: string;
 };
 
+export type CourseProgressItem = {
+  course_id: string;
+  title: string;
+  code?: string;
+  provider?: string;
+  domain?: string;
+  competency?: string;
+  difficulty?: string;
+  duration?: string;
+  progress_pct: number;
+  completed_modules: number;
+  total_modules: number;
+  rating?: string;
+  reason?: string;
+};
+
 export type EmployeeDashboard = {
   profile_id: string;
   competency_summary: CompetencySummaryItem[];
   learning_hours_logged: number;
   overall_progress_pct: number;
+  readiness_score?: number;
+  target_role_coverage?: number;
   revision_suggestions: RevisionSuggestion[];
+  active_courses?: CourseProgressItem[];
 };
 
 export type AdminEmployee = {
@@ -120,8 +139,16 @@ export type AdminEmployee = {
   top_gaps: string[];
 };
 
+export type AdminOrganizationalGapItem = {
+  node_id: string;
+  name: string;
+  gap_severity: GapSeverity;
+  progress: number;
+};
+
 export type AdminDashboard = {
   employees: AdminEmployee[];
+  organizational_gaps?: AdminOrganizationalGapItem[];
 };
 
 export type KnowledgeDocument = {

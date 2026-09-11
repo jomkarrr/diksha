@@ -89,8 +89,16 @@ export default function WorkforceAnalyticsPage() {
     return Math.round((fulfilledCount / competencyCatalogue.length) * 100);
   }, []);
 
-  // Top high-priority gaps from the catalogue
+  // Top high-priority gaps from backend organizational_gaps dataset or catalogue fallback
   const topOrganizationalGaps = useMemo(() => {
+    if (dashboard.organizational_gaps && dashboard.organizational_gaps.length > 0) {
+      return dashboard.organizational_gaps.map((g) => ({
+        node_id: g.node_id,
+        name: g.name,
+        progress: Math.round(g.progress),
+        gap_severity: g.gap_severity,
+      }));
+    }
     return competencyCatalogue
       .filter((c) => c.gap_severity === "high" || c.gap_severity === "medium")
       .map((c) => {
@@ -103,7 +111,7 @@ export default function WorkforceAnalyticsPage() {
           gap_severity: c.gap_severity,
         };
       });
-  }, []);
+  }, [dashboard.organizational_gaps]);
 
   const highCount = useMemo(() => {
     return filteredEmployees.filter((emp) => emp.avg_gap_severity === "high").length;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
@@ -10,6 +10,8 @@ import { FadeIn } from "@/components/motion/FadeIn";
 import { StaggerChildren, StaggerItem } from "@/components/motion/StaggerChildren";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { learningResources } from "@/lib/mock/data";
+import { fetchEmployeeDashboard } from "@/lib/api/dashboard";
+import type { EmployeeDashboard } from "@/lib/types/contracts";
 
 export default function ResourcesPage() {
   const [search, setSearch] = useState("");
@@ -17,25 +19,48 @@ export default function ResourcesPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [selectedProvider, setSelectedProvider] = useState("all");
   const [selectedCompetency, setSelectedCompetency] = useState("all");
+  const [dashboardData, setDashboardData] = useState<EmployeeDashboard | null>(null);
+
+  useEffect(() => {
+    const profileId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("diksha_profile_id") || "prof_demo"
+        : "prof_demo";
+    fetchEmployeeDashboard(profileId)
+      .then((data) => setDashboardData(data))
+      .catch(() => {});
+  }, []);
+
+  const resources = useMemo(() => {
+    const progressMap = new Map<string, number>();
+    dashboardData?.active_courses?.forEach((c) => {
+      progressMap.set(c.course_id, c.progress_pct);
+    });
+
+    return learningResources.map((res) => ({
+      ...res,
+      progress: progressMap.has(res.id) ? Math.round(progressMap.get(res.id)!) : res.progress
+    }));
+  }, [dashboardData]);
 
   const domains = useMemo(() => {
-    return Array.from(new Set(learningResources.map((r) => r.domain)));
-  }, []);
+    return Array.from(new Set(resources.map((r) => r.domain)));
+  }, [resources]);
 
   const difficulties = useMemo(() => {
-    return Array.from(new Set(learningResources.map((r) => r.difficulty)));
-  }, []);
+    return Array.from(new Set(resources.map((r) => r.difficulty)));
+  }, [resources]);
 
   const providers = useMemo(() => {
-    return Array.from(new Set(learningResources.map((r) => r.provider)));
-  }, []);
+    return Array.from(new Set(resources.map((r) => r.provider)));
+  }, [resources]);
 
   const competencies = useMemo(() => {
-    return Array.from(new Set(learningResources.map((r) => r.competency)));
-  }, []);
+    return Array.from(new Set(resources.map((r) => r.competency)));
+  }, [resources]);
 
   const filteredResources = useMemo(() => {
-    return learningResources.filter((resource) => {
+    return resources.filter((resource) => {
       const query = search.toLowerCase();
       const matchesSearch =
         resource.title.toLowerCase().includes(query) ||

@@ -83,7 +83,28 @@ export default function DashboardPage() {
     };
   }, [dashboardData]);
 
-  const activeCourse = learningResources[0];
+  const activeCourse = useMemo(() => {
+    if (dashboardData?.active_courses?.length) {
+      const c = dashboardData.active_courses[0];
+      return {
+        id: c.course_id,
+        course_id: c.course_id,
+        title: c.title,
+        reason: c.reason || "High-priority recommended module to bridge competency gap.",
+        duration: c.duration || "16 Hours (Self-paced)",
+        progress_pct: c.progress_pct,
+        completed_modules: c.completed_modules,
+        total_modules: c.total_modules
+      };
+    }
+    return {
+      ...learningResources[0],
+      course_id: learningResources[0].id,
+      progress_pct: (learningResources[0] as any).progress || 0,
+      completed_modules: 1,
+      total_modules: 4
+    };
+  }, [dashboardData]);
 
   return (
     <AppShell>
@@ -436,7 +457,9 @@ export default function DashboardPage() {
                 <span className="text-[11px] font-bold text-domain-statistical bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">
                   Active Enrollment • iGOT Karmayogi
                 </span>
-                <span className="text-xs font-semibold text-slate-500">Module 1 of 4</span>
+                <span className="text-xs font-semibold text-slate-500">
+                  Module {activeCourse.completed_modules + 1} of {activeCourse.total_modules}
+                </span>
               </div>
               <h3 className="text-base font-bold text-primary">
                 {activeCourse.title}
@@ -447,11 +470,14 @@ export default function DashboardPage() {
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex justify-between text-xs text-slate-600 mb-1">
-                    <span>Progress: 0%</span>
+                    <span>Progress: {Math.round(activeCourse.progress_pct)}%</span>
                     <span className="font-semibold text-primary">{activeCourse.duration}</span>
                   </div>
                   <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-secondary-container h-full rounded-full" style={{ width: "15%" }} />
+                    <div
+                      className="bg-secondary-container h-full rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min(100, Math.max(5, Math.round(activeCourse.progress_pct)))}%` }}
+                    />
                   </div>
                 </div>
                 <Link

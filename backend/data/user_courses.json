@@ -1,0 +1,115 @@
+{
+  "prof_demo": [
+    {
+      "course_id": "igot-stat-104",
+      "title": "Advanced Stratified Sampling in Field Surveys: Multi-Stage Cluster & PPS Modeling",
+      "code": "NSSTA-STAT-302",
+      "provider": "NSSTA & iGOT Karmayogi",
+      "domain": "statistical",
+      "competency": "Sampling Techniques",
+      "difficulty": "Intermediate to Advanced",
+      "duration": "16 Hours (Self-paced)",
+      "progress_pct": 35.0,
+      "completed_modules": 1,
+      "total_modules": 4,
+      "rating": "4.8/5",
+      "reason": "Your assessed proficiency in Sampling Techniques is at Basic (42%), whereas your cadre requirement is Advanced (80%). Completing this module will bridge the deficit."
+    },
+    {
+      "course_id": "igot-tech-202",
+      "title": "Python for Statistical Analysis & Microdata Wrangling",
+      "code": "NSSTA-TECH-204",
+      "provider": "MoSPI Training Division",
+      "domain": "technical",
+      "competency": "Python for Data Analysis",
+      "difficulty": "Intermediate",
+      "duration": "15 Hours",
+      "progress_pct": 60.0,
+      "completed_modules": 1,
+      "total_modules": 2,
+      "rating": "4.7/5",
+      "reason": "Required for automated microdata extraction and CAPI validation script writing."
+    },
+    {
+      "course_id": "igot-stat-110",
+      "title": "UN NQAF Data Quality Assurance & Official Survey Auditing",
+      "code": "NSSTA-QUAL-101",
+      "provider": "Central Statistical Coordination Unit",
+      "domain": "statistical",
+      "competency": "Data Quality Frameworks",
+      "difficulty": "Intermediate",
+      "duration": "10 Hours",
+      "progress_pct": 10.0,
+      "completed_modules": 0,
+      "total_modules": 1,
+      "rating": "4.9/5",
+      "reason": "Critical capability gap flagged in your NSSO FOD review."
+    }
+  ],
+  "emp-101": [
+    {
+      "course_id": "igot-stat-104",
+      "title": "Advanced Stratified Sampling in Field Surveys: Multi-Stage Cluster & PPS Modeling",
+      "code": "NSSTA-STAT-302",
+      "provider": "NSSTA & iGOT Karmayogi",
+      "domain": "statistical",
+      "competency": "Sampling Techniques",
+      "difficulty": "Intermediate to Advanced",
+      "duration": "16 Hours (Self-paced)",
+      "progress_pct": 25.0,
+      "completed_modules": 1,
+      "total_modules": 4,
+      "rating": "4.8/5",
+      "reason": "Bridges sampling techniques gap for NSSO field officers."
+    },
+    {
+      "course_id": "igot-tech-202",
+      "title": "Python for Statistical Analysis & Microdata Wrangling",
+      "code": "NSSTA-TECH-204",
+      "provider": "MoSPI Training Division",
+      "domain": "technical",
+      "competency": "Python for Data Analysis",
+      "difficulty": "Intermediate",
+      "duration": "15 Hours",
+      "progress_pct": 10.0,
+      "completed_modules": 0,
+      "total_modules": 2,
+      "rating": "4.7/5",
+      "reason": "Required for automated microdata extraction and CAPI validation."
+    }
+  ],
+  "emp-102": [
+    {
+      "course_id": "igot-stat-106",
+      "title": "Macroeconomic Aggregates & System of National Accounts (SNA)",
+      "code": "NSSTA-STAT-305",
+      "provider": "CSO National Accounts Division",
+      "domain": "statistical",
+      "competency": "National Accounts & GDP Compilation",
+      "difficulty": "Advanced",
+      "duration": "18 Hours",
+      "progress_pct": 80.0,
+      "completed_modules": 3,
+      "total_modules": 4,
+      "rating": "4.9/5",
+      "reason": "Quarterly GDP compilation mandate."
+    }
+  ],
+  "emp-103": [
+    {
+      "course_id": "igot-tech-202",
+      "title": "Python for Statistical Analysis & Microdata Wrangling",
+      "code": "NSSTA-TECH-204",
+      "provider": "MoSPI Training Division",
+      "domain": "technical",
+      "competency": "Python for Data Analysis",
+      "difficulty": "Intermediate",
+      "duration": "15 Hours",
+      "progress_pct": 90.0,
+      "completed_modules": 2,
+      "total_modules": 2,
+      "rating": "4.7/5",
+      "reason": "Pipeline automation and data wrangling."
+    }
+  ]
+}

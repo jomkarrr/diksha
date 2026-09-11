@@ -10,6 +10,7 @@ class DataLoader:
     _job_reqs: Dict[str, List[Dict[str, Any]]] = {}
     _employees: List[Dict[str, Any]] = []
     _objectives: Dict[str, Dict[str, List[str]]] = {}
+    _user_courses: Dict[str, List[Dict[str, Any]]] = {}
     _profiles_cache: Dict[str, Any] = {}
 
     @classmethod
@@ -38,6 +39,11 @@ class DataLoader:
         if objectives_path.exists():
             with open(objectives_path, "r", encoding="utf-8") as f:
                 cls._objectives = json.load(f)
+
+        user_courses_path = DATA_DIR / "user_courses.json"
+        if user_courses_path.exists():
+            with open(user_courses_path, "r", encoding="utf-8") as f:
+                cls._user_courses = json.load(f)
 
     @classmethod
     def get_nodes(cls) -> List[Dict[str, Any]]:
@@ -73,6 +79,16 @@ class DataLoader:
         if not cls._courses:
             cls.load_all()
         return cls._courses
+
+    @classmethod
+    def get_user_courses(cls, profile_id: str) -> List[Dict[str, Any]]:
+        if not cls._user_courses:
+            cls.load_all()
+        # Direct lookup or fallback to prof_demo
+        courses = cls._user_courses.get(profile_id)
+        if not courses:
+            courses = cls._user_courses.get("prof_demo", [])
+        return courses
 
     @classmethod
     def get_job_requirements(cls, job_role: str) -> List[Dict[str, Any]]:

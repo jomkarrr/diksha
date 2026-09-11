@@ -148,6 +148,31 @@ class MasteryEngine:
 
         avg_progress = (total_mastery / (len(summary_items) * 100.0)) * 100.0 if summary_items else 50.0
 
+        # Calculate Readiness Score & Target Role Coverage based on Job Role
+        job_role = (profile.get("job_role") if profile else None) or "Statistical Investigator"
+        job_reqs = DataLoader.get_job_requirements(job_role)
+        level_num = {"none": 0, "basic": 1, "intermediate": 2, "advanced": 3}
+
+        if job_reqs:
+            req_mastery_sum = 0.0
+            fulfilled_count = 0
+            for req in job_reqs:
+                nid = req.get("node_id")
+                req_lvl = req.get("required_level", "intermediate")
+                curr_lvl = "none"
+                # Check current level or mastery
+                if nid in mastery_map:
+                    m_val = mastery_map[nid].get("mastery", 0.0)
+                    req_mastery_sum += m_val
+                    curr_lvl = get_level_from_mastery(m_val)
+                if level_num.get(curr_lvl, 0) >= level_num.get(req_lvl, 2):
+                    fulfilled_count += 1
+            readiness_score = round(req_mastery_sum / len(job_reqs), 1) if job_reqs else round(avg_progress, 1)
+            target_role_coverage = round((fulfilled_count / len(job_reqs)) * 100.0, 1) if job_reqs else 60.0
+        else:
+            readiness_score = round(avg_progress, 1)
+            target_role_coverage = 65.0
+
         # Attempts & learning hours
         attempts_count = cls._get_attempts_count(profile_id)
         learning_hours = round(attempts_count * 1.5 + 8.0, 1)
@@ -155,12 +180,20 @@ class MasteryEngine:
         # Forgetting-curve Spaced Repetition Revisions
         suggestions = cls._calculate_revision_suggestions(mastery_map, nodes_by_id)
 
+        # Dynamic Active Courses for Profile
+        from app.schemas.contracts import CourseProgress
+        raw_courses = DataLoader.get_user_courses(profile_id)
+        active_courses = [CourseProgress(**c) for c in raw_courses]
+
         return EmployeeDashboardResponse(
             profile_id=profile_id,
             competency_summary=summary_items,
             learning_hours_logged=learning_hours,
             overall_progress_pct=round(avg_progress, 1),
-            revision_suggestions=suggestions
+            readiness_score=readiness_score,
+            target_role_coverage=target_role_coverage,
+            revision_suggestions=suggestions,
+            active_courses=active_courses
         )
 
     @classmethod

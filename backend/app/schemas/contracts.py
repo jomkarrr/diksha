@@ -105,12 +105,30 @@ class RevisionSuggestion(BaseModel):
     name: str
     reason: str
 
+class CourseProgress(BaseModel):
+    course_id: str
+    title: str
+    code: Optional[str] = None
+    provider: Optional[str] = None
+    domain: Optional[str] = None
+    competency: Optional[str] = None
+    difficulty: Optional[str] = None
+    duration: Optional[str] = None
+    progress_pct: float = 0.0
+    completed_modules: int = 0
+    total_modules: int = 1
+    rating: Optional[str] = None
+    reason: Optional[str] = None
+
 class EmployeeDashboardResponse(BaseModel):
     profile_id: str
     competency_summary: List[CompetencySummaryItem]
     learning_hours_logged: float
     overall_progress_pct: float
+    readiness_score: float = 0.0
+    target_role_coverage: float = 0.0
     revision_suggestions: List[RevisionSuggestion]
+    active_courses: List[CourseProgress] = Field(default_factory=list)
 
 
 # --- Dashboard Admin Endpoints ---
@@ -121,8 +139,15 @@ class AdminEmployeeItem(BaseModel):
     avg_gap_severity: GapSeverity
     top_gaps: List[str]
 
+class AdminOrganizationalGap(BaseModel):
+    node_id: str
+    name: str
+    gap_severity: GapSeverity
+    progress: float
+
 class AdminDashboardResponse(BaseModel):
     employees: List[AdminEmployeeItem]
+    organizational_gaps: List[AdminOrganizationalGap] = Field(default_factory=list)
 
 
 # --- Knowledge Hub Endpoints ---

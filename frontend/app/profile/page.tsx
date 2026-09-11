@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppShell } from "@/components/layout/AppShell";
@@ -10,14 +10,26 @@ import { Icon } from "@/components/ui/Icon";
 import { AnimatedProgressBar } from "@/components/motion/AnimatedProgressBar";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { submitProfile } from "@/lib/api/profile";
+import { fetchEmployeeDashboard } from "@/lib/api/dashboard";
 import { demoLearner } from "@/lib/mock/data";
-import type { ProfileResponse } from "@/lib/types/contracts";
+import type { ProfileResponse, EmployeeDashboard } from "@/lib/types/contracts";
 
 export default function ProfilePage() {
   const router = useRouter();
   const [result, setResult] = useState<ProfileResponse | null>(null);
+  const [dashboardData, setDashboardData] = useState<EmployeeDashboard | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const profileId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("diksha_profile_id") || "prof_demo"
+        : "prof_demo";
+    fetchEmployeeDashboard(profileId)
+      .then((data) => setDashboardData(data))
+      .catch(() => {});
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -95,8 +107,14 @@ export default function ProfilePage() {
             <div className="mt-6">
               <p className="label text-on-surface-variant">Role competency requirements map</p>
               <div className="mt-3 space-y-3">
-                <AnimatedProgressBar value={82} label="Current readiness score" />
-                <AnimatedProgressBar value={54} label="Target role coverage" />
+                <AnimatedProgressBar
+                  value={dashboardData?.readiness_score !== undefined ? Math.round(dashboardData.readiness_score) : 75}
+                  label={`Current readiness score (${dashboardData?.readiness_score !== undefined ? Math.round(dashboardData.readiness_score) : 75}%)`}
+                />
+                <AnimatedProgressBar
+                  value={dashboardData?.target_role_coverage !== undefined ? Math.round(dashboardData.target_role_coverage) : 60}
+                  label={`Target role coverage (${dashboardData?.target_role_coverage !== undefined ? Math.round(dashboardData.target_role_coverage) : 60}%)`}
+                />
               </div>
             </div>
           </section>

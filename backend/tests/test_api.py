@@ -123,6 +123,11 @@ def test_get_employee_dashboard():
     assert len(data["competency_summary"]) > 0
     assert "learning_hours_logged" in data
     assert "overall_progress_pct" in data
+    assert "readiness_score" in data
+    assert "target_role_coverage" in data
+    assert "active_courses" in data
+    assert len(data["active_courses"]) > 0
+    assert "progress_pct" in data["active_courses"][0]
     assert len(data["revision_suggestions"]) > 0
     assert "reason" in data["revision_suggestions"][0]
 
@@ -132,6 +137,9 @@ def test_get_admin_dashboard_dynamic():
     data = response.json()
     assert "employees" in data
     assert len(data["employees"]) == 6
+    assert "organizational_gaps" in data
+    assert len(data["organizational_gaps"]) > 0
+    assert "progress" in data["organizational_gaps"][0]
     emp = data["employees"][0]
     assert "profile_id" in emp
     assert emp["avg_gap_severity"] in ["low", "medium", "high"]

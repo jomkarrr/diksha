@@ -7,7 +7,7 @@ from app.schemas.contracts import (
     QuizRequest, QuizResponse,
     QuizSubmitRequest, QuizSubmitResponse,
     EmployeeDashboardResponse,
-    AdminDashboardResponse, AdminEmployeeItem, GapSeverity,
+    AdminDashboardResponse, AdminEmployeeItem, AdminOrganizationalGap, GapSeverity,
     KnowledgeDocument, KnowledgeDocumentListResponse,
     PracticeDatasetResponse
 )
@@ -164,6 +164,8 @@ def get_admin_dashboard():
     """
     raw_employees = DataLoader.get_employees()
     admin_items: List[AdminEmployeeItem] = []
+    level_num = {"none": 0, "basic": 1, "intermediate": 2, "advanced": 3}
+    org_gap_map: dict = {}
 
     for emp in raw_employees:
         profile_req = ProfileRequest(
@@ -178,6 +180,20 @@ def get_admin_dashboard():
         raw_comps = LLMService.parse_profile(profile_req)
         competencies = [{"node_id": c["node_id"], "current_level": c["current_level"]} for c in raw_comps]
         roadmap = RoadmapEngine.calculate_roadmap(competencies, profile_req.job_role)
+
+        for r_node in roadmap:
+            if r_node.node_id not in org_gap_map:
+                org_gap_map[r_node.node_id] = {
+                    "name": r_node.name,
+                    "gap_severity": r_node.gap_severity,
+                    "progress_sum": 0.0,
+                    "count": 0
+                }
+            cur_s = level_num.get(r_node.current_level, 0)
+            req_s = level_num.get(r_node.required_level, 2)
+            pct = (cur_s / req_s * 100.0) if req_s > 0 else 100.0
+            org_gap_map[r_node.node_id]["progress_sum"] += pct
+            org_gap_map[r_node.node_id]["count"] += 1
 
         high_count = sum(1 for node in roadmap if node.gap_severity == "high")
         medium_count = sum(1 for node in roadmap if node.gap_severity == "medium")
@@ -204,7 +220,19 @@ def get_admin_dashboard():
             )
         )
 
-    return AdminDashboardResponse(employees=admin_items)
+    org_gaps = [
+        AdminOrganizationalGap(
+            node_id=nid,
+            name=data["name"],
+            gap_severity=data["gap_severity"],
+            progress=round(data["progress_sum"] / max(data["count"], 1), 1)
+        )
+        for nid, data in org_gap_map.items()
+    ]
+    # Sort with high severity first and lowest progress first
+    org_gaps.sort(key=lambda g: (0 if g.gap_severity == "high" else 1 if g.gap_severity == "medium" else 2, g.progress))
+
+    return AdminDashboardResponse(employees=admin_items, organizational_gaps=org_gaps)
 
 
 @router.post("/knowledge/upload", response_model=KnowledgeDocument, status_code=status.HTTP_200_OK)
