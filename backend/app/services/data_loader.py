@@ -9,6 +9,7 @@ class DataLoader:
     _courses: List[Dict[str, Any]] = []
     _job_reqs: Dict[str, List[Dict[str, Any]]] = {}
     _employees: List[Dict[str, Any]] = []
+    _objectives: Dict[str, Dict[str, List[str]]] = {}
     _profiles_cache: Dict[str, Any] = {}
 
     @classmethod
@@ -33,11 +34,39 @@ class DataLoader:
             with open(employees_path, "r", encoding="utf-8") as f:
                 cls._employees = json.load(f)
 
+        objectives_path = DATA_DIR / "node_objectives.json"
+        if objectives_path.exists():
+            with open(objectives_path, "r", encoding="utf-8") as f:
+                cls._objectives = json.load(f)
+
     @classmethod
     def get_nodes(cls) -> List[Dict[str, Any]]:
         if not cls._nodes:
             cls.load_all()
         return cls._nodes
+
+    @classmethod
+    def get_node_by_id(cls, node_id: str) -> Optional[Dict[str, Any]]:
+        nodes = cls.get_nodes()
+        for n in nodes:
+            if n.get("id") == node_id:
+                return n
+        return None
+
+    @classmethod
+    def get_node_objectives(cls, node_id: str) -> List[str]:
+        if not cls._objectives:
+            cls.load_all()
+        node_obj = cls._objectives.get(node_id)
+        if node_obj and "subtopics" in node_obj:
+            return node_obj["subtopics"]
+        return []
+
+    @classmethod
+    def get_all_node_objectives(cls) -> Dict[str, Dict[str, List[str]]]:
+        if not cls._objectives:
+            cls.load_all()
+        return cls._objectives
 
     @classmethod
     def get_courses(cls) -> List[Dict[str, Any]]:

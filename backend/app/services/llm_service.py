@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.core.config import settings
 from app.services.data_loader import DataLoader
 from app.schemas.contracts import ProfileRequest, QuizQuestion
@@ -93,21 +93,61 @@ Do NOT include any markdown formatting, code blocks, or extra text.
         return cls._heuristic_profile_parse(request, nodes)
 
     @classmethod
-    def generate_quiz(cls, content_text: str) -> List[QuizQuestion]:
+    def generate_quiz(cls, content_text: Optional[str] = None, node_id: Optional[str] = None) -> Dict[str, Any]:
+        target_node_id = node_id or ""
+        subtopics: List[str] = []
+        node_info = None
+
+        if target_node_id:
+            node_info = DataLoader.get_node_by_id(target_node_id)
+            subtopics = DataLoader.get_node_objectives(target_node_id)
+        elif content_text:
+            # Try to match content_text to an existing competency node
+            nodes = DataLoader.get_nodes()
+            lowered_text = content_text.lower()
+            for n in nodes:
+                if n["id"].lower() in lowered_text or n["name"].lower() in lowered_text:
+                    target_node_id = n["id"]
+                    node_info = n
+                    subtopics = DataLoader.get_node_objectives(target_node_id)
+                    break
+
+        if not target_node_id and not content_text:
+            target_node_id = "stat-sampling-101"
+            node_info = DataLoader.get_node_by_id(target_node_id)
+            subtopics = DataLoader.get_node_objectives(target_node_id)
+
+        topic_display = node_info["name"] if node_info else (content_text or target_node_id)
+        subtopics_instruction = ""
+        if subtopics:
+            subtopics_str = "\n".join([f"- {st}" for st in subtopics])
+            subtopics_instruction = f"""
+Target Subtopics / Learning Objectives to Cover:
+{subtopics_str}
+
+Ensure each generated question directly assesses one of the subtopics listed above. Set the "subtopic" field in each question to the exact corresponding subtopic name from this list.
+"""
+
         prompt = f"""
-System: You are an expert AI Quiz Generator for government official training.
-Generate between 5 to 8 distinct multiple-choice questions (MCQs) based on the provided input text.
-Note: If the input text is a short topic name or keywords (such as "quantum computing", "data privacy", "python pandas"), generate 5 to 8 multiple-choice questions testing core concepts, definitions, techniques, and principles of THAT SPECIFIC SUBJECT.
+System: You are an expert AI Assessment & Quiz Generator for government official training.
+Generate between 4 to 6 high-quality multiple-choice questions (MCQs) for the topic: "{topic_display}".
+{subtopics_instruction}
 
-Do NOT mix subjects. The questions must be 100% focused on the topic: "{content_text}".
+Context / Material (if any):
+\"\"\"{content_text or ''}\"\"\"
 
-Input Content / Topic:
-\"\"\"{content_text}\"\"\"
+Requirements:
+1. Each question must test conceptual understanding, practical methodology, or core definitions.
+2. Provide exactly 4 plausible options for each question.
+3. Indicate the zero-based index (0, 1, 2, or 3) of the single correct answer.
+4. Include a concise, clear explanation explaining why the correct answer is right.
+5. Tag the question with its specific competency node_id ("{target_node_id or 'stat-sampling-101'}") and "subtopic".
 
 Return ONLY a valid JSON array of question objects matching this exact structure:
 [
   {{
-    "node_id": "stat-sampling-101",
+    "node_id": "{target_node_id or 'stat-sampling-101'}",
+    "subtopic": "Name of subtopic",
     "question": "Clear question text?",
     "options": ["Option A", "Option B", "Option C", "Option D"],
     "correct_index": 0,
@@ -127,8 +167,14 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                     contents=prompt
                 )
                 parsed = cls._extract_json(res.text)
-                if isinstance(parsed, list) and len(parsed) >= 3:
-                    return [QuizQuestion(**q) for q in parsed]
+                if isinstance(parsed, list) and len(parsed) >= 2:
+                    valid_questions = cls._validate_and_sanitize_questions(parsed, target_node_id or "stat-sampling-101", subtopics)
+                    if valid_questions:
+                        return {
+                            "questions": valid_questions,
+                            "node_id": target_node_id,
+                            "subtopics_tested": subtopics or [q.subtopic for q in valid_questions if q.subtopic]
+                        }
             except Exception as e:
                 print(f"[LLMService] Gemini API quiz failed: {e}. Falling back...")
 
@@ -142,12 +188,118 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                     messages=[{"role": "user", "content": prompt}]
                 )
                 parsed = cls._extract_json(res.content[0].text)
-                if isinstance(parsed, list) and len(parsed) >= 3:
-                    return [QuizQuestion(**q) for q in parsed]
+                if isinstance(parsed, list) and len(parsed) >= 2:
+                    valid_questions = cls._validate_and_sanitize_questions(parsed, target_node_id or "stat-sampling-101", subtopics)
+                    if valid_questions:
+                        return {
+                            "questions": valid_questions,
+                            "node_id": target_node_id,
+                            "subtopics_tested": subtopics or [q.subtopic for q in valid_questions if q.subtopic]
+                        }
             except Exception as e:
                 print(f"[LLMService] Claude API quiz failed: {e}. Falling back...")
 
-        return cls._fallback_quiz_generate(content_text)
+        fallback_questions = cls._fallback_quiz_generate(content_text or topic_display, target_node_id, subtopics)
+        return {
+            "questions": fallback_questions,
+            "node_id": target_node_id or "stat-sampling-101",
+            "subtopics_tested": subtopics
+        }
+
+    @classmethod
+    def _validate_and_sanitize_questions(
+        cls, raw_list: List[Dict[str, Any]], default_node_id: str, subtopics: List[str]
+    ) -> List[QuizQuestion]:
+        sanitized: List[QuizQuestion] = []
+        for i, item in enumerate(raw_list):
+            if not isinstance(item, dict):
+                continue
+            question_text = str(item.get("question", "")).strip()
+            options = item.get("options", [])
+            correct_idx = item.get("correct_index", 0)
+            explanation = str(item.get("explanation", "")).strip()
+
+            # Flaw check: Must have question text and at least 3 options
+            if not question_text or not isinstance(options, list) or len(options) < 2:
+                continue
+
+            # Flaw check: correct_index bounds
+            if not isinstance(correct_idx, int) or correct_idx < 0 or correct_idx >= len(options):
+                correct_idx = 0
+
+            # Flaw check: Ensure subtopic assigned
+            assigned_subtopic = item.get("subtopic")
+            if not assigned_subtopic and subtopics:
+                assigned_subtopic = subtopics[i % len(subtopics)]
+
+            sanitized.append(
+                QuizQuestion(
+                    node_id=item.get("node_id") or default_node_id,
+                    subtopic=assigned_subtopic,
+                    question=question_text,
+                    options=[str(opt) for opt in options],
+                    correct_index=correct_idx,
+                    explanation=explanation or "Verified official competency standard concept."
+                )
+            )
+        return sanitized
+
+    @classmethod
+    def evaluate_objective_coverage(
+        cls, node_id: str, answers: List[Any]
+    ) -> Dict[str, Any]:
+        subtopics = DataLoader.get_node_objectives(node_id)
+        if not subtopics:
+            node_info = DataLoader.get_node_by_id(node_id)
+            node_name = node_info["name"] if node_info else node_id
+            subtopics = [f"{node_name} Core Principles", f"{node_name} Practical Application"]
+
+        total_subtopics = len(subtopics)
+        covered_subtopics: List[str] = []
+        missed_subtopics: List[str] = []
+
+        # Map correct/incorrect status by subtopic if provided in answers
+        subtopic_status: Dict[str, bool] = {}
+        for ans in answers:
+            st = getattr(ans, "subtopic", None)
+            is_corr = getattr(ans, "is_correct", False)
+            if st:
+                subtopic_status[st] = is_corr
+
+        if subtopic_status:
+            for st in subtopics:
+                if subtopic_status.get(st, False):
+                    covered_subtopics.append(st)
+                else:
+                    missed_subtopics.append(st)
+        else:
+            # Fallback: estimate proportional coverage based on overall accuracy
+            correct_count = sum(1 for a in answers if getattr(a, "is_correct", False))
+            total_answers = max(1, len(answers))
+            ratio = correct_count / total_answers
+            split_idx = int(round(ratio * total_subtopics))
+            covered_subtopics = subtopics[:split_idx]
+            missed_subtopics = subtopics[split_idx:]
+
+        coverage_pct = round((len(covered_subtopics) / max(1, total_subtopics)) * 100.0, 1)
+
+        # Generate intelligent AI feedback summary
+        node_info = DataLoader.get_node_by_id(node_id)
+        node_name = node_info["name"] if node_info else node_id
+
+        if coverage_pct >= 80.0:
+            feedback = f"Outstanding mastery in {node_name}! You demonstrated a comprehensive understanding across all key learning objectives, including {', '.join(covered_subtopics[:2])}."
+        elif coverage_pct >= 50.0:
+            feedback = f"Solid foundation in {node_name} ({coverage_pct}% objective coverage). You have covered {', '.join(covered_subtopics) if covered_subtopics else 'foundational concepts'}, but review is recommended for {', '.join(missed_subtopics)} to achieve intermediate proficiency."
+        else:
+            feedback = f"Initial progress in {node_name} ({coverage_pct}% coverage). Focused revision on {', '.join(missed_subtopics[:2])} will help close your competency gap effectively."
+
+        return {
+            "objective_coverage_pct": coverage_pct,
+            "covered_subtopics": covered_subtopics,
+            "missed_subtopics": missed_subtopics,
+            "feedback": feedback
+        }
 
     @classmethod
     def _heuristic_profile_parse(cls, req: ProfileRequest, nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -189,8 +341,12 @@ Do NOT include markdown formatting, backticks, or extra commentary.
         return results
 
     @classmethod
-    def _fallback_quiz_generate(cls, text: str) -> List[QuizQuestion]:
+    def _fallback_quiz_generate(
+        cls, text: str, target_node_id: Optional[str] = None, subtopics: Optional[List[str]] = None
+    ) -> List[QuizQuestion]:
         lowered = text.lower().strip()
+        effective_node_id = target_node_id or "stat-sampling-101"
+        effective_subtopics = subtopics or DataLoader.get_node_objectives(effective_node_id)
 
         if "quantum" in lowered:
             return [
@@ -337,11 +493,32 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                 )
             ]
 
-        # Generic Dynamic Topic Fallback
-        topic = text[:35].strip("- *•") if text else "General Knowledge"
+        # Dynamic Subtopic-aware Fallback
+        topic = text[:40].strip("- *•") if text else "Competency Module"
+        if effective_subtopics and len(effective_subtopics) > 0:
+            subtopic_questions = []
+            for i, st in enumerate(effective_subtopics[:5]):
+                subtopic_questions.append(
+                    QuizQuestion(
+                        node_id=effective_node_id,
+                        subtopic=st,
+                        question=f"Which principle is central to understanding '{st}' in official statistical practice?",
+                        options=[
+                            f"Applying standard methodologies and validation protocols for {st}",
+                            f"Bypassing data quality audits and verification steps in {st}",
+                            f"Arbitrary estimation without standardized sampling frames",
+                            f"Disregarding regulatory guidelines and official standards"
+                        ],
+                        correct_index=0,
+                        explanation=f"Adhering to standard methodologies and quality frameworks is the established best practice for {st}."
+                    )
+                )
+            return subtopic_questions
+
         return [
             QuizQuestion(
-                node_id="stat-sampling-101",
+                node_id=effective_node_id,
+                subtopic=f"Foundations of {topic}",
                 question=f"1. What is the fundamental concept underlying '{topic}'?",
                 options=[
                     f"Core principles, methodology, and foundational frameworks of {topic}",
@@ -353,7 +530,8 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                 explanation=f"Understanding foundational principles is essential when studying {topic}."
             ),
             QuizQuestion(
-                node_id="stat-sampling-101",
+                node_id=effective_node_id,
+                subtopic=f"Evaluation of {topic}",
                 question=f"2. Which key metric is used to evaluate performance in '{topic}'?",
                 options=[
                     f"Accuracy, reliability, and precision of {topic} implementations",
@@ -365,7 +543,8 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                 explanation=f"Performance in {topic} is measured by system accuracy, precision, and reliability."
             ),
             QuizQuestion(
-                node_id="stat-data-quality-101",
+                node_id=effective_node_id,
+                subtopic=f"Practical Application of {topic}",
                 question=f"3. What is a primary real-world application of '{topic}'?",
                 options=[
                     f"Optimizing data processing, analytics, and operational efficiency",
@@ -377,7 +556,8 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                 explanation=f"Real-world deployment of {topic} focuses on efficiency, optimization, and accurate analysis."
             ),
             QuizQuestion(
-                node_id="gov-cybersecurity-101",
+                node_id=effective_node_id,
+                subtopic=f"Governance and Compliance in {topic}",
                 question=f"4. What security or governance protocol applies when implementing '{topic}'?",
                 options=[
                     "Applying strict access control, audit logging, and compliance standards",
@@ -389,7 +569,8 @@ Do NOT include markdown formatting, backticks, or extra commentary.
                 explanation="Access control, security standards, and compliance govern technical implementations."
             ),
             QuizQuestion(
-                node_id="mgr-project-mgmt-101",
+                node_id=effective_node_id,
+                subtopic=f"Scaling & Architecture for {topic}",
                 question=f"5. What best practice should be followed when scaling '{topic}'?",
                 options=[
                     f"Continuous evaluation, structured testing, and modular architecture",

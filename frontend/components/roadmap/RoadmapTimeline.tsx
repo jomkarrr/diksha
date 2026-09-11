@@ -68,12 +68,20 @@ export function RoadmapTimeline({ items }: RoadmapTimelineProps) {
                         </div>
                       ) : null}
                     </div>
-                    <Link
-                      href={firstCourse?.course_id ? `/resources/${firstCourse.course_id}` : "/resources"}
-                      className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white shrink-0 hover:bg-[#d84315] transition"
-                    >
-                      View Resource <Icon name="arrow_forward" />
-                    </Link>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+                      <Link
+                        href={`/assessments?node_id=${item.node_id}&topic=${encodeURIComponent(item.name || "")}`}
+                        className="focus-ring inline-flex items-center justify-center gap-1.5 rounded-lg border border-[#F4511E] bg-white px-3.5 py-2 text-xs font-semibold uppercase tracking-wide text-[#F4511E] hover:bg-[#F4511E]/5 transition"
+                      >
+                        <Icon name="quiz" className="text-[16px]" /> Start Quiz
+                      </Link>
+                      <Link
+                        href={firstCourse?.course_id ? `/resources/${firstCourse.course_id}` : "/resources"}
+                        className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[#F4511E] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#d84315] transition"
+                      >
+                        View Resource <Icon name="arrow_forward" />
+                      </Link>
+                    </div>
                   </div>
                 </section>
               </div>

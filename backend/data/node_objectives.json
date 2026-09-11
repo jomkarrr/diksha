@@ -1,0 +1,145 @@
+{
+  "stat-survey-design-101": {
+    "subtopics": [
+      "Principles of designing national statistical surveys",
+      "Formulation of effective questionnaires",
+      "Field methodology and data collection protocols"
+    ]
+  },
+  "stat-sampling-101": {
+    "subtopics": [
+      "Simple random sampling",
+      "Stratified sampling",
+      "Cluster sampling",
+      "Frame estimation techniques",
+      "Calculation and minimization of sampling errors"
+    ]
+  },
+  "stat-national-accounts-101": {
+    "subtopics": [
+      "System of National Accounts (SNA) fundamentals",
+      "Calculation of Gross Value Added (GVA)",
+      "GDP compilation methodologies",
+      "Key macro-economic metrics analysis"
+    ]
+  },
+  "stat-price-stats-101": {
+    "subtopics": [
+      "Consumer Price Index (CPI) methodology",
+      "Wholesale Price Index (WPI) calculation",
+      "Understanding inflation indices",
+      "Basket weighting and item selection"
+    ]
+  },
+  "stat-labour-stats-101": {
+    "subtopics": [
+      "Periodic Labour Force Survey (PLFS) execution",
+      "Calculating workforce participation rate",
+      "Activity status classification rules"
+    ]
+  },
+  "stat-sdg-indicators-101": {
+    "subtopics": [
+      "National Indicator Framework (NIF) for SDGs",
+      "Defining and measuring target metrics",
+      "Continuous tracking and reporting of SDG progress"
+    ]
+  },
+  "stat-data-quality-101": {
+    "subtopics": [
+      "UN National Quality Assurance Framework (NQAF) compliance",
+      "Establishing validation rules",
+      "Outlier detection techniques",
+      "Statistical data auditing procedures"
+    ]
+  },
+  "tech-python-101": {
+    "subtopics": [
+      "Data manipulation using Pandas",
+      "Numerical computations with NumPy",
+      "Implementing statistical functions in Python",
+      "Building automated data processing pipelines"
+    ]
+  },
+  "tech-sql-101": {
+    "subtopics": [
+      "Relational data modeling principles",
+      "Writing complex SQL queries",
+      "Data aggregations and joins",
+      "Using window functions for analytics",
+      "Database management and optimization"
+    ]
+  },
+  "tech-data-vis-101": {
+    "subtopics": [
+      "Creating visualizations with Matplotlib and Seaborn",
+      "Building interactive dashboards in PowerBI",
+      "Web-based dashboarding concepts",
+      "Effective visual communication of data"
+    ]
+  },
+  "tech-gis-101": {
+    "subtopics": [
+      "Fundamentals of Geographical Information Systems (GIS)",
+      "Spatial data mapping techniques",
+      "Geo-tagging and utilizing location-based survey data",
+      "Practical usage of QGIS"
+    ]
+  },
+  "tech-ai-ml-101": {
+    "subtopics": [
+      "Core machine learning algorithms",
+      "Predictive analytics and modeling",
+      "Automated data classification methods",
+      "LLM applications and use-cases in official statistics"
+    ]
+  },
+  "gov-cybersecurity-101": {
+    "subtopics": [
+      "Core information security policies in government",
+      "Threat mitigation strategies",
+      "Data encryption techniques",
+      "Secure handling and storage of census/survey data"
+    ]
+  },
+  "gov-data-privacy-101": {
+    "subtopics": [
+      "Digital Personal Data Protection (DPDP) Act compliance",
+      "Data anonymization and masking techniques",
+      "Government data sharing guidelines",
+      "Data ethics and consent management"
+    ]
+  },
+  "gov-cloud-101": {
+    "subtopics": [
+      "Navigating NIC MeghRaj Cloud services",
+      "Secure server deployment",
+      "API gateway management",
+      "Cloud security best practices for government apps"
+    ]
+  },
+  "mgr-communication-101": {
+    "subtopics": [
+      "Writing formal statistical reports",
+      "Preparing effective policy briefings",
+      "Executive presentation skills",
+      "Managing stakeholder communication"
+    ]
+  },
+  "mgr-leadership-101": {
+    "subtopics": [
+      "Managing and motivating field teams",
+      "Efficient task allocation",
+      "Conducting performance evaluations",
+      "Principles of organizational leadership"
+    ]
+  },
+  "mgr-project-mgmt-101": {
+    "subtopics": [
+      "Executing Agile vs Waterfall project frameworks",
+      "Government procurement and budgeting",
+      "Monitoring project timelines",
+      "Resource allocation and management"
+    ]
+  }
+}

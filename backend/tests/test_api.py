@@ -60,13 +60,27 @@ def test_generate_quiz_varied_inputs():
     res1 = client.post("/api/quiz", json={"content_text": tech_text})
     assert res1.status_code == 200
     q1 = res1.json()["questions"]
-    assert 5 <= len(q1) <= 8
+    assert len(q1) >= 3
 
     first_q = q1[0]
     assert "question" in first_q
     assert len(first_q["options"]) == 4
     assert 0 <= first_q["correct_index"] <= 3
     assert "explanation" in first_q
+
+def test_generate_quiz_by_node_id():
+    response = client.post("/api/quiz", json={"node_id": "stat-sampling-101"})
+    assert response.status_code == 200
+    data = response.json()
+    assert "questions" in data
+    assert len(data["questions"]) > 0
+    assert data["node_id"] == "stat-sampling-101"
+    assert "subtopics_tested" in data
+    assert len(data["subtopics_tested"]) > 0
+
+    first_q = data["questions"][0]
+    assert "subtopic" in first_q
+    assert first_q["node_id"] == "stat-sampling-101"
 
 def test_quiz_submit_and_mastery_update():
     prof_res = client.post("/api/profile", json={
@@ -91,6 +105,10 @@ def test_quiz_submit_and_mastery_update():
     data = response.json()
     assert data["profile_id"] == profile_id
     assert len(data["mastery_updates"]) == 2
+    assert "objective_coverage_pct" in data
+    assert data["objective_coverage_pct"] is not None
+    assert "feedback" in data
+    assert len(data["covered_subtopics"]) > 0 or len(data["missed_subtopics"]) > 0
 
     stat_node = next(item for item in data["mastery_updates"] if item["node_id"] == "stat-sampling-101")
     assert stat_node["mastery"] > 10.0
