@@ -13,8 +13,6 @@ const navigationTabs = [
   { href: "/competencies", label: "Competency Passport", icon: "badge" },
   { href: "/roadmap", label: "Learning Roadmap", icon: "route" },
   { href: "/resources", label: "Learning Resources", icon: "menu_book" },
-  { href: "/data-practice", label: "Data Practice Lab", icon: "terminal" },
-  { href: "/assessments", label: "Assessments & Quiz", icon: "quiz" },
   { href: "/knowledge", label: "Knowledge Repository", icon: "library_books" },
   { href: "/admin/analytics", label: "MDO Workforce Analytics", icon: "analytics" }
 ];
