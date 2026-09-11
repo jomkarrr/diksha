@@ -19,18 +19,21 @@ export default function DataPracticePage() {
   const [inspectingDomain, setInspectingDomain] = useState<string | null>(null);
   const [inspectedData, setInspectedData] = useState<PracticeDatasetResponse | null>(null);
   const [isLoadingInspection, setIsLoadingInspection] = useState(false);
+  const [inspectionError, setInspectionError] = useState<string | null>(null);
   const [scannedIssueKeys, setScannedIssueKeys] = useState<Set<number>>(new Set());
 
   async function handleInspectDataset(domainKey: string) {
     setInspectingDomain(domainKey);
     setIsLoadingInspection(true);
     setInspectedData(null);
+    setInspectionError(null);
     setScannedIssueKeys(new Set());
     try {
       const res = await apiFetch<PracticeDatasetResponse>(`/practice/${domainKey}`);
       setInspectedData(res);
     } catch (err) {
       console.error(`Failed to fetch practice dataset for ${domainKey}:`, err);
+      setInspectionError(err instanceof Error ? err.message : String(err));
     } finally {
       setIsLoadingInspection(false);
     }
@@ -727,8 +730,18 @@ export default function DataPracticePage() {
                     </div>
                   </>
                 ) : (
-                  <div className="p-8 text-center text-xs text-slate-500">
-                    Failed to load dataset records.
+                  <div className="p-8 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto border border-amber-200">
+                      <Icon name="warning" className="text-[24px]" />
+                    </div>
+                    <div className="space-y-1 max-w-md mx-auto">
+                      <div className="text-sm font-bold text-slate-800">
+                        Unable to Retrieve Dataset
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        {inspectionError || "Failed to load dataset records. Please verify that the DIKSHA API server is running and reachable."}
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>

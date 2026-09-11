@@ -62,12 +62,54 @@ class DataLoader:
         return cls._employees
 
     @classmethod
+    def get_employee_by_id(cls, profile_id: str) -> Optional[Dict[str, Any]]:
+        for emp in cls.get_employees():
+            if emp.get("profile_id", "").lower() == profile_id.lower():
+                return emp
+        return None
+
+    @classmethod
     def save_profile(cls, profile_id: str, profile_data: Dict[str, Any]):
         cls._profiles_cache[profile_id] = profile_data
 
     @classmethod
     def get_profile(cls, profile_id: str) -> Optional[Dict[str, Any]]:
-        return cls._profiles_cache.get(profile_id)
+        if profile_id in cls._profiles_cache:
+            return cls._profiles_cache[profile_id]
+
+        emp = cls.get_employee_by_id(profile_id)
+        if not emp and profile_id == "prof_demo":
+            emp = cls.get_employee_by_id("emp-101")
+
+        if emp:
+            from app.schemas.contracts import ProfileRequest
+            from app.services.llm_service import LLMService
+            req = ProfileRequest(
+                designation=emp.get("designation", "Officer"),
+                department=emp.get("department", "Statistics"),
+                job_role=emp.get("job_role", "Statistical Investigator"),
+                experience_years=float(emp.get("experience_years", 2.0)),
+                education=emp.get("education", "Bachelor"),
+                prior_trainings=emp.get("prior_trainings", [])
+            )
+            raw_comps = LLMService.parse_profile(req)
+            competencies = [{"node_id": c["node_id"], "current_level": c["current_level"]} for c in raw_comps]
+            profile_data = {
+                "profile_id": emp["profile_id"],
+                "name": emp["name"],
+                "designation": emp["designation"],
+                "department": emp["department"],
+                "job_role": emp["job_role"],
+                "experience_years": emp.get("experience_years", 2.0),
+                "education": emp.get("education", "Bachelor"),
+                "prior_trainings": emp.get("prior_trainings", []),
+                "competencies": competencies
+            }
+            cls._profiles_cache[emp["profile_id"]] = profile_data
+            cls._profiles_cache[profile_id] = profile_data
+            return profile_data
+
+        return None
 
     @classmethod
     def get_practice_dataset(cls, domain: str) -> Optional[Dict[str, Any]]:

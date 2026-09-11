@@ -653,10 +653,21 @@ export default function PLFSPracticeWorkspacePage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 bg-white">
-                    {(validationFilter === "suspect"
-                      ? rawRecords.filter(r => r.is_quality_issue)
-                      : rawRecords.slice(0, 20)
-                    ).map((rec: any) => {
+                    {rawRecords.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="py-8 text-center text-slate-500">
+                          <Icon name="cloud_off" className="text-[24px] text-slate-400 mx-auto mb-1" />
+                          <div className="font-semibold text-slate-700">Microdata not loaded from backend API</div>
+                          <div className="text-[11px] text-slate-400">
+                            Start the FastAPI backend server on port 5001 to enable live unit-level scrutiny.
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      (validationFilter === "suspect"
+                        ? rawRecords.filter(r => r.is_quality_issue)
+                        : rawRecords.slice(0, 20)
+                      ).map((rec: any) => {
                       const isInspected = validatedRecordIds.has(rec.record_id);
                       const isFlagged = flaggedIssueIds.has(rec.record_id);
 
@@ -735,7 +746,7 @@ export default function PLFSPracticeWorkspacePage() {
                           </td>
                         </tr>
                       );
-                    })}
+                    }))}
                   </tbody>
                 </table>
               </div>

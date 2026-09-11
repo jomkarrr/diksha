@@ -139,4 +139,21 @@ export type PracticeDatasetResponse = {
   records: Record<string, any>[];
 };
 
+export interface EmployeeRecord {
+  profile_id: string;
+  name: string;
+  designation: string;
+  department: string;
+  job_role: string;
+  experience_years: number;
+  education: string;
+  prior_trainings: string[];
+  initials?: string;
+  cadreCode?: string;
+  employeeCode?: string;
+  email?: string;
+  location?: string;
+}
+
+
 

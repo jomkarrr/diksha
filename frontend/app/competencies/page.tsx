@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
+import { formatDisplayDate } from "@/lib/utils/date";
 import {
   competencyCatalogue,
   getCompetencyLevel5,
@@ -353,7 +354,7 @@ export default function CompetencyPassportPage() {
 
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span className="text-slate-400 text-[11px]">
-                    Last review: {new Date(node.last_reviewed).toLocaleDateString()}
+                    Last review: {formatDisplayDate(node.last_reviewed)}
                   </span>
                   <Link
                     href="/quiz"

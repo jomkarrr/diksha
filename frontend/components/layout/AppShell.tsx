@@ -6,51 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { PageTransition } from "@/components/motion/PageTransition";
 
-interface OfficerInfo {
-  profileId: string;
-  name: string;
-  designation: string;
-  department: string;
-  initials: string;
-}
-
-const CADRE_PERSONAS: Record<string, OfficerInfo> = {
-  prof_demo: {
-    profileId: "prof_demo",
-    name: "Rajesh Kumar",
-    designation: "Statistical Investigator Gr. II",
-    department: "NSSO • Field Operations",
-    initials: "RK"
-  },
-  "emp-101": {
-    profileId: "emp-101",
-    name: "Rajesh Kumar",
-    designation: "Statistical Investigator Gr. II",
-    department: "NSSO • Field Operations",
-    initials: "RK"
-  },
-  "emp-102": {
-    profileId: "emp-102",
-    name: "Priya Sharma",
-    designation: "Senior Statistical Officer",
-    department: "National Accounts Division (NAD)",
-    initials: "PS"
-  },
-  "emp-103": {
-    profileId: "emp-103",
-    name: "Dr. Amitabh Verma",
-    designation: "Director",
-    department: "Central Statistics Office (CSO)",
-    initials: "AV"
-  },
-  "emp-104": {
-    profileId: "emp-104",
-    name: "Sunita Patel",
-    designation: "Field Officer",
-    department: "Price Statistics Wing (PSD)",
-    initials: "SP"
-  }
-};
+import { useActiveEmployee, clearActiveEmployee } from "@/lib/auth/employee";
 
 const navigationTabs = [
   { href: "/dashboard", label: "My Dashboard", icon: "dashboard" },
@@ -63,42 +19,12 @@ const navigationTabs = [
   { href: "/admin/analytics", label: "MDO Workforce Analytics", icon: "analytics" }
 ];
 
-function subscribeStorage(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener("diksha_cadre_change", callback);
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener("diksha_cadre_change", callback);
-  };
-}
-
-function useCadreStore() {
-  const profileId = useSyncExternalStore(
-    subscribeStorage,
-    () => localStorage.getItem("diksha_profile_id") || "prof_demo",
-    () => "prof_demo"
-  );
-  const jobRole = useSyncExternalStore(
-    subscribeStorage,
-    () => localStorage.getItem("diksha_job_role") || "",
-    () => ""
-  );
-
-  return useMemo<OfficerInfo>(() => {
-    const base = CADRE_PERSONAS[profileId] || CADRE_PERSONAS.prof_demo;
-    return {
-      ...base,
-      profileId,
-      designation: jobRole || base.designation
-    };
-  }, [profileId, jobRole]);
-}
-
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const officer = useCadreStore();
+  const { employee: officer, allEmployees, setEmployeeId } = useActiveEmployee();
+  const [showSwitchCadreModal, setShowSwitchCadreModal] = useState(false);
   const [activeLang, setActiveLang] = useState<"en" | "hi">("en");
   const [fontScale, setFontScale] = useState<"sm" | "md" | "lg">("md");
   const [searchQuery, setSearchQuery] = useState("");
@@ -310,14 +236,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
 
               {/* Switch Cadre Action Button */}
-              <Link
-                href="/login"
+              <button
+                type="button"
+                onClick={() => setShowSwitchCadreModal(true)}
                 title="Switch Cadre Persona"
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-border-subtle bg-white hover:bg-slate-50 text-text-secondary hover:text-primary text-xs font-semibold shadow-xs transition-colors shrink-0"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-border-subtle bg-white hover:bg-slate-50 text-text-secondary hover:text-primary text-xs font-semibold shadow-xs transition-colors shrink-0 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[15px]">swap_horiz</span>
                 <span className="hidden md:inline">Switch Cadre</span>
-              </Link>
+              </button>
             </div>
           </div>
         </header>
@@ -413,6 +340,104 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </footer>
+      )}
+
+      {/* Switch Cadre Persona Modal Dialog */}
+      {showSwitchCadreModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-xl w-full p-6 relative overflow-hidden">
+            <div className="tricolor-stripe absolute top-0 left-0 right-0 h-[3px]" />
+            <div className="flex items-center justify-between mb-4 pt-2">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-domain-statistical flex items-center justify-center font-bold text-xs">
+                  <span className="material-symbols-outlined text-[18px]">group</span>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">Switch Official Cadre Persona</h3>
+                  <p className="text-[11px] text-slate-500">Select an active MoSPI official to simulate their adaptive learning trajectory</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSwitchCadreModal(false)}
+                className="text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[60vh] overflow-y-auto pr-1 my-4">
+              {allEmployees.map((emp) => {
+                const isActive = emp.id === officer.id;
+                return (
+                  <button
+                    key={emp.id}
+                    type="button"
+                    onClick={() => {
+                      setEmployeeId(emp.id);
+                      setShowSwitchCadreModal(false);
+                    }}
+                    className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between group cursor-pointer ${
+                      isActive
+                        ? "border-[#F47920] bg-orange-50/40 ring-1 ring-[#F47920]"
+                        : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wide text-domain-statistical bg-blue-50 px-1.5 py-0.5 rounded">
+                          {emp.cadreCode}
+                        </span>
+                        {isActive ? (
+                          <span className="text-[10px] font-bold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-600" />
+                            Active
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-semibold text-slate-400 group-hover:text-primary transition-colors">
+                            Select →
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs font-bold text-slate-900 leading-snug">
+                        {emp.name}
+                      </p>
+                      <p className="text-[11px] text-slate-600 mt-0.5 leading-tight">
+                        {emp.designation}
+                      </p>
+                    </div>
+                    <div className="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+                      <span className="truncate max-w-[130px]">{emp.department}</span>
+                      <span className="font-semibold text-slate-500">{emp.employeeCode}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => {
+                  clearActiveEmployee();
+                  setShowSwitchCadreModal(false);
+                  router.push("/login");
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 text-xs font-semibold transition cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px]">logout</span>
+                <span>Sign Out</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowSwitchCadreModal(false)}
+                className="px-4 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

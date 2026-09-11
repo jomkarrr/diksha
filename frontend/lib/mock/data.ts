@@ -25,18 +25,18 @@ export interface OfficerPersona {
 
 export const OFFICIAL_CADRES: OfficerPersona[] = [
   {
-    id: "prof_demo",
+    id: "emp-101",
     cadreCode: "JSO / SSS",
     title: "Junior Statistical Officer (JSO)",
     name: "Rajesh Kumar",
-    designation: "Statistical Investigator Gr. II",
-    department: "NSSO • Field Operations Division (FOD)",
+    designation: "Statistical Investigator Grade II",
+    department: "National Sample Survey Office (NSSO)",
     job_role: "Statistical Investigator",
-    experience_years: 4.5,
+    experience_years: 1.5,
     education: "B.Sc. Statistics",
-    prior_trainings: ["Field Survey Basics", "Sampling Frames"],
+    prior_trainings: ["Field Survey Basics"],
     initials: "RK",
-    badge: "Active Hackathon Demo Profile"
+    badge: "Field Operations & Survey Data"
   },
   {
     id: "emp-102",
@@ -44,7 +44,7 @@ export const OFFICIAL_CADRES: OfficerPersona[] = [
     title: "Senior Statistical Officer (SSO)",
     name: "Priya Sharma",
     designation: "Senior Statistical Officer",
-    department: "National Accounts Division (NAD)",
+    department: "Central Statistics Office (CSO)",
     job_role: "Director / Senior Statistical Officer",
     experience_years: 8.0,
     education: "M.Sc. Mathematical Statistics",
@@ -54,31 +54,73 @@ export const OFFICIAL_CADRES: OfficerPersona[] = [
   },
   {
     id: "emp-103",
-    cadreCode: "ISS Cadre",
-    title: "Director (ISS Cadre)",
-    name: "Dr. Amitabh Verma",
-    designation: "Director",
-    department: "Central Statistics Office (CSO)",
-    job_role: "Director / Senior Statistical Officer",
-    experience_years: 14.0,
-    education: "Ph.D. Statistics & Econometrics",
-    prior_trainings: ["Policy Formulation", "Strategic Leadership"],
+    cadreCode: "DA / DQAD",
+    title: "Data Analyst",
+    name: "Amitabh Verma",
+    designation: "Data Analyst",
+    department: "Data Quality & Analytics Division",
+    job_role: "Data Analyst",
+    experience_years: 3.0,
+    education: "B.Tech. Computer Science",
+    prior_trainings: ["Python Programming", "SQL Database Management"],
     initials: "AV",
-    badge: "Senior Executive Cadre"
+    badge: "Analytics & Systems"
   },
   {
     id: "emp-104",
-    cadreCode: "FOD / SSS",
-    title: "Field Investigator",
+    cadreCode: "FO / SSS",
+    title: "Field Officer",
     name: "Sunita Patel",
     designation: "Field Officer",
-    department: "Price Statistics Wing (PSD)",
+    department: "Price Statistics Wing",
     job_role: "Field Officer",
-    experience_years: 2.0,
+    experience_years: 0.5,
     education: "B.A. Economics",
-    prior_trainings: ["CPI Rural Basket Collection"],
+    prior_trainings: [],
     initials: "SP",
-    badge: "Field Operations & Data Collection"
+    badge: "Price Collection & Field Enumeration"
+  },
+  {
+    id: "emp-105",
+    cadreCode: "AD / ISS",
+    title: "Assistant Director",
+    name: "Vikram Singh",
+    designation: "Assistant Director",
+    department: "Labour Statistics Division",
+    job_role: "Statistical Investigator",
+    experience_years: 6.0,
+    education: "M.A. Economics",
+    prior_trainings: ["PLFS Survey Design", "Basic R"],
+    initials: "VS",
+    badge: "Methodology & Survey Administration"
+  },
+  {
+    id: "emp-106",
+    cadreCode: "IT / Cell",
+    title: "IT & Governance Lead",
+    name: "Ananya Roy",
+    designation: "IT & Governance Lead",
+    department: "MoSPI Digital Governance Cell",
+    job_role: "Data Analyst",
+    experience_years: 5.0,
+    education: "M.Tech. Data Science",
+    prior_trainings: ["Cybersecurity Guidelines", "DPDP Compliance"],
+    initials: "AR",
+    badge: "Digital Governance & Privacy"
+  },
+  {
+    id: "prof_demo",
+    cadreCode: "JSO / SSS",
+    title: "Junior Statistical Officer (JSO)",
+    name: "Rajesh Kumar",
+    designation: "Statistical Investigator Grade II",
+    department: "National Sample Survey Office (NSSO)",
+    job_role: "Statistical Investigator",
+    experience_years: 1.5,
+    education: "B.Sc. Statistics",
+    prior_trainings: ["Field Survey Basics"],
+    initials: "RK",
+    badge: "Demo Alias Profile"
   }
 ];
 

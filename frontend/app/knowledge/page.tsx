@@ -11,6 +11,7 @@ import { FadeIn } from "@/components/motion/FadeIn";
 import { StaggerChildren, StaggerItem } from "@/components/motion/StaggerChildren";
 import { fetchKnowledgeDocuments, uploadKnowledgeDocument } from "@/lib/api/knowledge";
 import type { KnowledgeDocument } from "@/lib/types/contracts";
+import { formatLongDate } from "@/lib/utils/date";
 
 function formatBytes(bytes: number): string {
   if (!bytes || bytes === 0) return "0 B";
@@ -21,17 +22,7 @@ function formatBytes(bytes: number): string {
 }
 
 function formatDate(isoString: string): string {
-  try {
-    const date = new Date(isoString);
-    if (isNaN(date.getTime())) return "Recent";
-    return date.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    });
-  } catch {
-    return "Recent";
-  }
+  return formatLongDate(isoString);
 }
 
 export default function KnowledgePage() {

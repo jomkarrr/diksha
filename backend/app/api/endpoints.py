@@ -102,13 +102,40 @@ def submit_quiz_answers(payload: QuizSubmitRequest):
 
 
 @router.get("/dashboard/employee", response_model=EmployeeDashboardResponse, status_code=status.HTTP_200_OK)
-def get_employee_dashboard(profile_id: str = Query("prof_demo", description="Official Profile ID")):
+def get_employee_dashboard(
+    profile_id: Optional[str] = Query(None, description="Official Profile ID"),
+    employee_id: Optional[str] = Query(None, description="Official Employee ID")
+):
     """
-    GET /api/dashboard/employee?profile_id=...
+    GET /api/dashboard/employee?employee_id=...&profile_id=...
     Retrieve employee adaptive learning dashboard metrics: node mastery scores, learning hours,
     overall progress %, and SM-2 forgetting-curve revision priority suggestions.
     """
-    return MasteryEngine.get_employee_dashboard(profile_id)
+    pid = employee_id or profile_id or "emp-101"
+    return MasteryEngine.get_employee_dashboard(pid)
+
+
+@router.get("/employees", response_model=List[dict], status_code=status.HTTP_200_OK)
+def get_employees():
+    """
+    GET /api/employees
+    List all official employee personas from mock_employees.json
+    """
+    return DataLoader.get_employees()
+
+
+@router.get("/employees/{profile_id}", response_model=dict, status_code=status.HTTP_200_OK)
+def get_employee_by_id(profile_id: str):
+    """
+    GET /api/employees/{profile_id}
+    Retrieve single employee by ID from mock_employees.json
+    """
+    emp = DataLoader.get_employee_by_id(profile_id)
+    if not emp and profile_id == "prof_demo":
+        emp = DataLoader.get_employee_by_id("emp-101")
+    if not emp:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Employee '{profile_id}' not found")
+    return emp
 
 
 @router.get("/dashboard/admin", response_model=AdminDashboardResponse, status_code=status.HTTP_200_OK)
