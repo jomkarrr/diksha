@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { fetchRoadmap } from "@/lib/api/roadmap";
-import { demoRoadmap, demoLearner } from "@/lib/mock/data";
+import { demoRoadmap, demoLearner, levelScore } from "@/lib/mock/data";
 import type { RoadmapItem } from "@/lib/types/contracts";
 
 export default function LearningRoadmapPage() {
@@ -60,29 +60,25 @@ export default function LearningRoadmapPage() {
               <span className="text-xs text-slate-500 font-medium">Cadre: Statistical Investigator Gr. II</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
-              Learning Roadmap &amp; Prerequisite Tree
+              Personalized Learning Roadmap
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-              Automated Topological Prerequisite Sequencing (Kahn&apos;s Algorithm) aligned with MoSPI Statistical Cadre Competencies and synchronous iGOT Karmayogi Bharat training pathways.
+            <p className="text-xs sm:text-sm text-slate-600">
+              Gap-scored, prerequisite-ordered learning path calibrated against the 18-Node MoSPI FRAC Framework.
             </p>
           </div>
 
-          {/* Algorithmic Health & Cadence Metric Pill */}
           <div className="flex items-center gap-4 bg-white p-3 rounded-2xl shadow-sm border border-slate-200 self-start lg:self-auto shrink-0">
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-domain-statistical">
               <span className="material-symbols-outlined text-[20px]">account_tree</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] text-slate-400 font-semibold uppercase">Kahn DAG Order</span>
-              <span className="text-xs text-primary font-bold flex items-center gap-1">
-                Zero Cycles Detected
-                <span className="material-symbols-outlined text-status-mastered text-[14px]">check_circle</span>
-              </span>
+              <span className="text-[10px] text-slate-400 font-semibold uppercase">Total Milestones</span>
+              <span className="text-xs text-primary font-bold">{items.length} Modules</span>
             </div>
             <div className="h-7 w-px bg-slate-200" />
             <div className="flex flex-col">
-              <span className="text-[10px] text-slate-400 font-semibold uppercase">Next SM-2 Review</span>
-              <span className="text-xs text-status-gap-high font-bold">Today (Node 2)</span>
+              <span className="text-[10px] text-slate-400 font-semibold uppercase">Next Review</span>
+              <span className="text-xs text-status-gap-high font-bold">Recommended</span>
             </div>
           </div>
         </div>
@@ -269,10 +265,10 @@ export default function LearningRoadmapPage() {
                           Curriculum
                         </Link>
                         <Link
-                          href="/quiz"
+                          href={`/assessments?node_id=${item.node_id}&topic=${encodeURIComponent(item.name)}`}
                           className="px-3.5 py-1.5 rounded-lg bg-secondary hover:bg-orange-600 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1"
                         >
-                          <span>Quiz</span>
+                          <span>Start Quiz</span>
                           <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                         </Link>
                       </div>

@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { formatDisplayDate } from "@/lib/utils/date";
+import { fetchEmployeeDashboard } from "@/lib/api/dashboard";
+import type { EmployeeDashboard } from "@/lib/types/contracts";
 import {
   competencyCatalogue,
   getCompetencyLevel5,
   OFFICIAL_CADRES,
+  levelScore,
   type CompetencyDetailItem
 } from "@/lib/mock/data";
 
@@ -15,21 +18,72 @@ export default function CompetencyPassportPage() {
   const [selectedDomain, setSelectedDomain] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
   const [exported, setExported] = useState(false);
+  const [dashboardData, setDashboardData] = useState<EmployeeDashboard | null>(null);
 
   const officer = OFFICIAL_CADRES[0]; // Rajesh Kumar
 
-  const domainCounts = useMemo(() => {
-    return {
-      all: competencyCatalogue.length,
-      statistical: competencyCatalogue.filter((c) => c.domain === "statistical").length,
-      technical: competencyCatalogue.filter((c) => c.domain === "technical").length,
-      digital_governance: competencyCatalogue.filter((c) => c.domain === "digital_governance").length,
-      behavioural: competencyCatalogue.filter((c) => c.domain === "behavioural").length
-    };
+  useEffect(() => {
+    const profileId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("diksha_profile_id") || "prof_demo"
+        : "prof_demo";
+    fetchEmployeeDashboard(profileId)
+      .then((data) => setDashboardData(data))
+      .catch(() => {});
   }, []);
 
+  const liveCatalogue = useMemo(() => {
+    if (!dashboardData?.competency_summary?.length) return competencyCatalogue;
+
+    const masteryMap = new Map<string, { mastery: number; last_reviewed: string }>();
+    dashboardData.competency_summary.forEach((item) => {
+      masteryMap.set(item.node_id, {
+        mastery: item.mastery,
+        last_reviewed: item.last_reviewed
+      });
+    });
+
+    return competencyCatalogue.map((node) => {
+      if (masteryMap.has(node.node_id)) {
+        const m = masteryMap.get(node.node_id)!;
+        let currentLevel: "none" | "basic" | "intermediate" | "advanced" = "none";
+        if (m.mastery >= 81) currentLevel = "advanced";
+        else if (m.mastery >= 56) currentLevel = "intermediate";
+        else if (m.mastery >= 26) currentLevel = "basic";
+
+        const reqScore = levelScore[node.required_level] || 2;
+        const curScore = levelScore[currentLevel] || 0;
+        const gapSeverity: "low" | "medium" | "high" =
+          curScore >= reqScore
+            ? "low"
+            : reqScore - curScore >= 2
+            ? "high"
+            : "medium";
+
+        return {
+          ...node,
+          mastery: Math.round(m.mastery),
+          current_level: currentLevel,
+          gap_severity: gapSeverity,
+          last_assessed: m.last_reviewed
+        };
+      }
+      return node;
+    });
+  }, [dashboardData]);
+
+  const domainCounts = useMemo(() => {
+    return {
+      all: liveCatalogue.length,
+      statistical: liveCatalogue.filter((c) => c.domain === "statistical").length,
+      technical: liveCatalogue.filter((c) => c.domain === "technical").length,
+      digital_governance: liveCatalogue.filter((c) => c.domain === "digital_governance").length,
+      behavioural: liveCatalogue.filter((c) => c.domain === "behavioural").length
+    };
+  }, [liveCatalogue]);
+
   const filteredNodes = useMemo(() => {
-    return competencyCatalogue.filter((node) => {
+    return liveCatalogue.filter((node) => {
       const matchDomain = selectedDomain === "all" || node.domain === selectedDomain;
       const matchSearch =
         search === "" ||
@@ -37,11 +91,11 @@ export default function CompetencyPassportPage() {
         node.description.toLowerCase().includes(search.toLowerCase());
       return matchDomain && matchSearch;
     });
-  }, [selectedDomain, search]);
+  }, [liveCatalogue, selectedDomain, search]);
 
   const benchmarkMetCount = useMemo(() => {
-    return competencyCatalogue.filter((c) => c.gap_severity === "low" || c.mastery >= 70).length;
-  }, []);
+    return liveCatalogue.filter((c) => c.gap_severity === "low" || c.mastery >= 70).length;
+  }, [liveCatalogue]);
 
   const handleExportPDF = () => {
     setExported(true);
